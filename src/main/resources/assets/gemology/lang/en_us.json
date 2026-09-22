@@ -1,7 +1,51 @@
 {
   "itemGroup.gemology": "Gemology",
-  "block.gemology.example_block": "Example Block",
-  "item.gemology.example_item": "Example Item",
+
+  "block.gemology.deepslate_tungsten_ore": "Deepslate Tungsten Ore",
+  "block.gemology.tungsten_ore": "Tungsten Ore",
+  "block.gemology.tungsten_block": "Tungsten Block",
+
+  "block.gemology.white_chroma_crystal": "White Chroma Crystal",
+  "block.gemology.orange_chroma_crystal": "Orange Chroma Crystal",
+  "block.gemology.magenta_chroma_crystal": "Magenta Chroma Crystal",
+  "block.gemology.light_blue_chroma_crystal": "Light Blue Chroma Crystal",
+  "block.gemology.yellow_chroma_crystal": "Yellow Chroma Crystal",
+  "block.gemology.lime_chroma_crystal": "Lime Chroma Crystal",
+  "block.gemology.pink_chroma_crystal": "Pink Chroma Crystal",
+  "block.gemology.gray_chroma_crystal": "Gray Chroma Crystal",
+  "block.gemology.light_gray_chroma_crystal": "Light Gray Chroma Crystal",
+  "block.gemology.cyan_chroma_crystal": "Cyan Chroma Crystal",
+  "block.gemology.purple_chroma_crystal": "Purple Chroma Crystal",
+  "block.gemology.blue_chroma_crystal": "Blue Chroma Crystal",
+  "block.gemology.brown_chroma_crystal": "Brown Chroma Crystal",
+  "block.gemology.green_chroma_crystal": "Green Chroma Crystal",
+  "block.gemology.red_chroma_crystal": "Red Chroma Crystal",
+  "block.gemology.black_chroma_crystal": "Black Chroma Crystal",
+
+  "item.gemology.white_chroma": "White Chroma",
+  "item.gemology.orange_chroma": "Orange Chroma",
+  "item.gemology.magenta_chroma": "Magenta Chroma",
+  "item.gemology.light_blue_chroma": "Light Blue Chroma",
+  "item.gemology.yellow_chroma": "Yellow Chroma",
+  "item.gemology.lime_chroma": "Lime Chroma",
+  "item.gemology.pink_chroma": "Pink Chroma",
+  "item.gemology.gray_chroma": "Gray Chroma",
+  "item.gemology.light_gray_chroma": "Light Gray Chroma",
+  "item.gemology.cyan_chroma": "Cyan Chroma",
+  "item.gemology.purple_chroma": "Purple Chroma",
+  "item.gemology.blue_chroma": "Blue Chroma",
+  "item.gemology.brown_chroma": "Brown Chroma",
+  "item.gemology.green_chroma": "Green Chroma",
+  "item.gemology.red_chroma": "Red Chroma",
+  "item.gemology.black_chroma": "Black Chroma",
+  "item.gemology.special_chroma": "Prismatic Chroma",
+
+  "item.gemology.raw_tungsten": "Raw Tungsten",
+  "item.gemology.tungsten_ingot": "Tungsten Ingot",
+  "item.gemology.tungsten_nugget": "Tungsten Nugget",
+
+
+
 
   "gemology.configuration.title": "Gemology Configs",
   "gemology.configuration.section.gemology.common.toml": "Gemology Configs",

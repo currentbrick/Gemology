@@ -1,0 +1,6 @@
+{
+	"parent": "gemology:block/template_chroma_crystal",
+	"textures": {
+		"crystal": "gemology:block/chroma_green"
+	}
+}

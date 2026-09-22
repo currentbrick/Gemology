@@ -1,0 +1,61 @@
+package com.currentbrick.gemology;
+
+import com.currentbrick.gemology.datagen.ModBlockLootProvider;
+import com.currentbrick.gemology.datagen.ModBlockTagsProvider;
+import com.currentbrick.gemology.datagen.ModModelProvider;
+import com.currentbrick.gemology.datagen.ModRecipeProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+
+import java.util.List;
+import java.util.Set;
+
+// This class will not load on dedicated servers. Accessing client side code from here is safe.
+@Mod(value = Gemology.MODID, dist = Dist.CLIENT)
+// You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+@EventBusSubscriber(modid = Gemology.MODID, value = Dist.CLIENT)
+public class GemologyClient {
+    public GemologyClient(ModContainer container) {
+        // Allows NeoForge to create a config screen for this mod's configs.
+        // The config screen is accessed by going to the Mods screen > clicking on your mod > clicking on config.
+        // Do not forget to add translations for your config options to the en_us.json file.
+        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+    }
+
+    @SubscribeEvent
+    static void onClientSetup(FMLClientSetupEvent event) {
+        // Some client setup code
+        Gemology.LOGGER.info("HELLO FROM CLIENT SETUP");
+        Gemology.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+    }
+
+    @SubscribeEvent
+    public static void gatherData(GatherDataEvent.Client event) {
+
+        event.createProvider(ModModelProvider::new);
+
+        event.createProvider(ModBlockTagsProvider::new);
+
+        event.createReloadableRegistryObjects(
+                new RegistrySetBuilder().add(Registries.LOOT_TABLE, new LootTableProvider(
+                                        Set.of(), List.of(
+                                                new LootTableProvider.SubProviderEntry(ModBlockLootProvider::new,
+                                                        LootContextParamSets.BLOCK
+                                                ))))
+                        .add(ModRecipeProvider.create())
+                        );
+    }
+
+}
