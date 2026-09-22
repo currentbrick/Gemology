@@ -1,0 +1,13 @@
+{
+  "itemGroup.gemology": "Example Mod Tab",
+  "block.gemology.example_block": "Example Block",
+  "item.gemology.example_item": "Example Item",
+
+  "gemology.configuration.title": "Gemology Configs",
+  "gemology.configuration.section.gemology.common.toml": "Gemology Configs",
+  "gemology.configuration.section.gemology.common.toml.title": "Gemology Configs",
+  "gemology.configuration.items": "Item List",
+  "gemology.configuration.logDirtBlock": "Log Dirt Block",
+  "gemology.configuration.magicNumberIntroduction": "Magic Number Text",
+  "gemology.configuration.magicNumber": "Magic Number"
+}
