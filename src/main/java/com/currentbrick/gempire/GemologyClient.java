@@ -1,5 +1,6 @@
 package com.currentbrick.gempire;
 
+import com.currentbrick.gempire.datagen.ModModelProvider;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -9,6 +10,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
 @Mod(value = Gemology.MODID, dist = Dist.CLIENT)
@@ -27,5 +29,12 @@ public class GemologyClient {
         // Some client setup code
         Gemology.LOGGER.info("HELLO FROM CLIENT SETUP");
         Gemology.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+    }
+
+    @SubscribeEvent
+    public static void gatherData(GatherDataEvent.Client event) {
+
+        event.createProvider(ModModelProvider::new);
+
     }
 }
