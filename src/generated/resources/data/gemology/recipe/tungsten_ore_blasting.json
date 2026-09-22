@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "ingredient": "gemology:tungsten_ore",
+  "result": {
+    "id": "gemology:tungsten_ingot"
+  }
+}

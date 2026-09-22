@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "gemology:tungsten_ingot",
+    "gemology:tungsten_ingot",
+    "gemology:tungsten_ingot",
+    "gemology:tungsten_ingot",
+    "gemology:tungsten_ingot",
+    "gemology:tungsten_ingot",
+    "gemology:tungsten_ingot",
+    "gemology:tungsten_ingot",
+    "gemology:tungsten_ingot"
+  ],
+  "result": {
+    "id": "gemology:tungsten_block"
+  }
+}
