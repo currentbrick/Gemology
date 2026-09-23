@@ -1,5 +1,6 @@
 package com.currentbrick.gemology;
 
+import com.currentbrick.gemology.entities.EntityGem;
 import com.currentbrick.gemology.entities.gem.GemDefinitionLoader;
 import com.currentbrick.gemology.entities.gem.GemDefinitionManager;
 import com.currentbrick.gemology.entities.gem.abilities.AbilityDefinitionLoader;
@@ -7,9 +8,18 @@ import com.currentbrick.gemology.entities.gem.abilities.AbilityManager;
 import com.currentbrick.gemology.entities.gem.abilities.AbilityTypeRegistry;
 import com.currentbrick.gemology.entities.gem.abilities.EffectAbility;
 import com.currentbrick.gemology.init.*;
+import com.currentbrick.gemology.items.ItemGem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -91,5 +101,54 @@ public class Gemology {
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+    }
+
+    @SubscribeEvent
+    public void onEntityTick(EntityTickEvent.Post event) {
+
+        if (!(event.getEntity() instanceof ItemEntity itemEntity)) {
+            return;
+        }
+
+        if (!(itemEntity.getItem().getItem() instanceof ItemGem gemItem)) {
+            return;
+        }
+
+        if (itemEntity.level().isClientSide()) {
+            return;
+        }
+
+        CompoundTag data = itemEntity.getPersistentData();
+
+        if (!data.contains("Reforming")) {
+            data.putBoolean("Reforming", true);
+            data.putInt("ReformationTimer", 0);
+
+            System.out.println("REFORMATION STARTED: " + gemItem.getGemId());
+        }
+
+        int timer = data.getInt("ReformationTimer").orElse(0);
+        timer++;
+
+        data.putInt("ReformationTimer", timer);
+
+        if (timer > 40 && timer < 80) {
+            itemEntity.setNoGravity(true);
+            itemEntity.setDeltaMovement(0, 0.075, 0);
+
+
+            if (itemEntity.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.END_ROD, itemEntity.getX(), itemEntity.getY() + 0.3, itemEntity.getZ(), 3, 0.25, 0.25, 0.25, 0.02);
+            }
+            itemEntity.setGlowingTag(true);
+        } else if (timer > 80) {
+            EntityGem gem = gemItem.createGem(event.getEntity().level(), itemEntity.getItem());
+            if (gem != null) {
+                BlockPos pos = event.getEntity().getOnPos();
+                gem.setPos(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
+                event.getEntity().level().addFreshEntity(gem);
+            }
+            itemEntity.discard();
+        }
     }
 }

@@ -1,6 +1,9 @@
 package com.currentbrick.gemology.entities;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.entities.ai.GemFollowOwnerGoal;
+import com.currentbrick.gemology.entities.ai.GemWanderGoal;
+import com.currentbrick.gemology.entities.ai.MovementMode;
 import com.currentbrick.gemology.entities.gem.GemDefinition;
 import com.currentbrick.gemology.entities.gem.GemDimensions;
 import com.currentbrick.gemology.entities.gem.GemStats;
@@ -28,6 +31,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -44,13 +48,21 @@ public class EntityGem extends Monster implements GeoAnimatable {
 
     private static final int ABILITY_CHECK_INTERVAL = 10;
 
+    private MovementMode movementMode = MovementMode.WANDER;
+
     private static final EntityDataAccessor<String> GEM_ID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> OWNER_UUID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
 
     public EntityGem(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+    }
 
-        System.out.println("CONSTRUCTED GEM INSTANCE: " + System.identityHashCode(this));
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(5, new GemWanderGoal(this, 1.0));
+        goalSelector.addGoal(5, new GemFollowOwnerGoal(this, 1.0, 2, 6));
+        goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
     }
 
     public void setGemId(Identifier gemId) {
@@ -98,12 +110,15 @@ public class EntityGem extends Monster implements GeoAnimatable {
         super.readAdditionalSaveData(input);
 
         input.getString("GemType").ifPresent(value -> {
-            System.out.println("LOADED GEM TYPE: " + value);
             setGemId(Identifier.parse(value));
         });
 
         input.getString("Owner").ifPresent(value -> {
             setOwnerUUID(UUID.fromString(value));
+        });
+
+        input.getString("MovementMode").ifPresent(value -> {
+            movementMode = MovementMode.valueOf(value);
         });
 
         applyGemStats();
@@ -117,7 +132,6 @@ public class EntityGem extends Monster implements GeoAnimatable {
         Identifier gemId = getGemId();
 
         if (gemId != null) {
-            Gemology.LOGGER.info("Saving GemType: {}", gemId);
             output.putString("GemType", gemId.toString());
         }
 
@@ -126,6 +140,8 @@ public class EntityGem extends Monster implements GeoAnimatable {
         if (ownerUUID != null) {
             output.putString("Owner", ownerUUID.toString());
         }
+
+        output.putString("MovementMode", movementMode.name());
     }
 
     public CompoundTag createGemData() {
@@ -158,6 +174,14 @@ public class EntityGem extends Monster implements GeoAnimatable {
 
         applyGemStats();
         refreshDimensions();
+    }
+
+    public MovementMode getMovementMode() {
+        return movementMode;
+    }
+
+    public void setMovementMode(MovementMode movementMode) {
+        this.movementMode = movementMode;
     }
 
     public void setOwnerUUID(UUID uuid) {
@@ -245,25 +269,13 @@ public class EntityGem extends Monster implements GeoAnimatable {
     public EntityDimensions getDefaultDimensions(Pose pose) {
         Identifier gemId = getGemId();
 
-        System.out.println("GETTING DIMENSIONS: " + gemId);
-
         if (gemId != null) {
             GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gemId);
 
             if (definition != null) {
                 GemDimensions dimensions = definition.getDimensions();
 
-                System.out.println(
-                        "DIMENSIONS: "
-                                + dimensions.getWidth()
-                                + " x "
-                                + dimensions.getHeight()
-                );
-
-                return EntityDimensions.scalable(
-                        dimensions.getWidth(),
-                        dimensions.getHeight()
-                );
+                return EntityDimensions.scalable(dimensions.getWidth(), dimensions.getHeight());
             }
         }
 
@@ -314,46 +326,75 @@ public class EntityGem extends Monster implements GeoAnimatable {
         if (level().isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        ItemStack stack = player.getItemInHand(hand);
-        if (stack.getItem() instanceof FusionItem) {
-            CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        if (hasOwner() && player.getUUID().equals(getOwnerUUID())) {
+            ItemStack stack = player.getItemInHand(hand);
+            if (stack.getItem() instanceof FusionItem) {
+                CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
 
-            if (customData == null) {
-                CompoundTag tag = new CompoundTag();
-                CompoundTag firstGemData = createGemData();
+                if (customData == null) {
+                    CompoundTag tag = new CompoundTag();
+                    CompoundTag firstGemData = createGemData();
 
-                tag.put("FirstGemData", firstGemData);
+                    tag.put("FirstGemData", firstGemData);
+                    tag.putString("FirstGemUUID", getUUID().toString());
 
-                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+                    stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 
-                player.sendSystemMessage(Component.literal(getGemName() + " selected"));
+                    stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+
+                    player.sendSystemMessage(Component.literal(getGemName() + " selected"));
+
+                    return InteractionResult.SUCCESS;
+                }
+
+                CompoundTag fusionData = customData.copyTag();
+
+                fusionData.getCompound("FirstGemData").ifPresent(firstGemData -> {
+
+                    EntityGem firstGem = null;
+
+                    if (fusionData.getString("FirstGemUUID").isPresent()) {
+                        UUID firstGemUUID = UUID.fromString(fusionData.getString("FirstGemUUID").get());
+                        Entity entity = level().getEntity(firstGemUUID);
+
+                        if (entity instanceof EntityGem) {
+                            firstGem = (EntityGem) entity;
+                        }
+                    }
+
+                    CompoundTag secondGemData = createGemData();
+
+                    EntityFusion fusion = ModEntities.FUSION.get().create(level(), EntitySpawnReason.SPAWN_ITEM_USE
+                    );
+
+                    if (fusion == null) {
+                        return;
+                    }
+
+                    fusion.setComponents(firstGemData, secondGemData);
+
+                    fusion.setPos(getX(), getY(), getZ());
+
+                    level().addFreshEntity(fusion);
+
+                    if (firstGem != null) {
+                        firstGem.discard();
+                    }
+
+                    discard();
+
+                    stack.remove(DataComponents.CUSTOM_DATA);
+
+                    player.sendSystemMessage(Component.literal("Fused " + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(0, 1).toUpperCase() + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(1) + " + " + getGemName()));
+                });
 
                 return InteractionResult.SUCCESS;
             }
+        }
 
-            customData.copyTag().getCompound("FirstGemData").ifPresent(firstGemData -> {
-
-                CompoundTag secondGemData = createGemData();
-
-                EntityFusion fusion = ModEntities.FUSION.get().create(level(), EntitySpawnReason.SPAWN_ITEM_USE);
-
-                if (fusion == null) {
-                    return;
-                }
-
-                fusion.setComponents(firstGemData, secondGemData);
-
-                fusion.setPos(getX(), getY(), getZ());
-
-                level().addFreshEntity(fusion);
-
-                discard();
-
-                stack.remove(DataComponents.CUSTOM_DATA);
-
-                player.sendSystemMessage(Component.literal("Fused " + firstGemData.getString("GemType").orElse("unknown") + " + " + getGemId().getPath()));
-            });
-
+        if (hasOwner() && player.getUUID().equals(getOwnerUUID()) && player.isShiftKeyDown()) {
+            setMovementMode(getMovementMode().next());
+            player.sendSystemMessage(Component.literal("Set "  + getGemName() + " to "+ getMovementMode().name().toLowerCase().replace("_", " ")));
             return InteractionResult.SUCCESS;
         }
 
