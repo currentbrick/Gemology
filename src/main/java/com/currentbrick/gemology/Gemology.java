@@ -1,7 +1,11 @@
 package com.currentbrick.gemology;
 
-import com.currentbrick.gemology.entities.GemDefinitionLoader;
-import com.currentbrick.gemology.entities.GemDefinitionManager;
+import com.currentbrick.gemology.entities.gem.GemDefinitionLoader;
+import com.currentbrick.gemology.entities.gem.GemDefinitionManager;
+import com.currentbrick.gemology.entities.gem.abilities.AbilityDefinitionLoader;
+import com.currentbrick.gemology.entities.gem.abilities.AbilityManager;
+import com.currentbrick.gemology.entities.gem.abilities.AbilityTypeRegistry;
+import com.currentbrick.gemology.entities.gem.abilities.EffectAbility;
 import com.currentbrick.gemology.init.*;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
@@ -31,6 +35,7 @@ public class Gemology {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final GemDefinitionManager GEM_DEFINITION_MANAGER = new GemDefinitionManager();
+    public static final AbilityManager ABILITY_MANAGER = new AbilityManager();
 
     public Gemology(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
@@ -47,6 +52,8 @@ public class Gemology {
         modEventBus.addListener(this::createAttributes);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        AbilityTypeRegistry.register(Identifier.fromNamespaceAndPath(MODID, "effect"), EffectAbility::new);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -71,10 +78,12 @@ public class Gemology {
     @SubscribeEvent
     public void addReloadListeners(AddServerReloadListenersEvent event) {
         event.addListener(Identifier.fromNamespaceAndPath(MODID, "gem_definitions"), new GemDefinitionLoader(GEM_DEFINITION_MANAGER));
+        event.addListener(Identifier.fromNamespaceAndPath(MODID, "ability_definitions"), new AbilityDefinitionLoader(ABILITY_MANAGER));
     }
 
     public void createAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.GEM.get(), ModEntityAttributes.createGemAttributes().build());
+        event.put(ModEntities.FUSION.get(), ModEntityAttributes.createFusionAttributes().build());
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

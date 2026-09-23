@@ -1,6 +1,7 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.entities.EntityFusion;
 import com.currentbrick.gemology.entities.EntityGem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -16,9 +17,17 @@ public class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<EntityGem>> GEM =
             ENTITY_TYPES.register("gem", () ->
                     EntityType.Builder.of(EntityGem::new, MobCategory.CREATURE)
-                            .sized(0.8F, 2.0F)
+                            .sized(0.8F, 1.5F)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     Identifier.fromNamespaceAndPath(Gemology.MODID, "gem")))
+            );
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntityFusion>> FUSION =
+            ENTITY_TYPES.register("fusion", () ->
+                    EntityType.Builder.of(EntityFusion::new, MobCategory.CREATURE)
+                            .sized(1F, 3.0F)
+                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                    Identifier.fromNamespaceAndPath(Gemology.MODID, "fusion")))
             );
 
 

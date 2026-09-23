@@ -1,0 +1,7 @@
+{
+  "type": "gemology:effect",
+  "effect": "minecraft:strength",
+  "duration": 200,
+  "amplifier": 1,
+  "trigger": "gemology:passive"
+}

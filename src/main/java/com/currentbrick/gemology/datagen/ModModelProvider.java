@@ -62,5 +62,8 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.PURPLE_CHROMA.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.PRISMATIC_CHROMA.get(), ModelTemplates.FLAT_ITEM);
 
+
+        itemModels.generateFlatItem(ModItems.RUBY.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.JASPER.get(), ModelTemplates.FLAT_ITEM);
     }
 }

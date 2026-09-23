@@ -1,15 +1,23 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.items.FusionItem;
+import com.currentbrick.gemology.items.ItemGem;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Gemology.MODID);
 
+    private static final Map<Identifier, DeferredItem<Item>> GEM_ITEMS = new HashMap<>();
 
     // ----------- ITEMS -----------
 
@@ -37,6 +45,15 @@ public class ModItems {
     public static final DeferredItem<Item> PRISMATIC_CHROMA = ITEMS.registerSimpleItem("prismatic_chroma");
 
 
+    public static final DeferredHolder<Item, FusionItem> FUSION = ITEMS.registerItem("fusion", FusionItem::new);
+
+
+    // ----------- GEMS ------------
+
+    public static final DeferredItem<Item> RUBY = registerGemItem("ruby", Identifier.fromNamespaceAndPath(Gemology.MODID, "ruby"));
+    public static final DeferredItem<Item> JASPER = registerGemItem("jasper", Identifier.fromNamespaceAndPath(Gemology.MODID, "jasper"));
+
+
     // ----------- BLOCK ITEMS -----------
 
 
@@ -61,4 +78,26 @@ public class ModItems {
     public static final DeferredItem<BlockItem> MAGENTA_CHROMA_CRYSTAL = ITEMS.registerSimpleBlockItem("magenta_chroma_crystal", ModBlocks.MAGENTA_CHROMA_CRYSTAL);
     public static final DeferredItem<BlockItem> PURPLE_CHROMA_CRYSTAL = ITEMS.registerSimpleBlockItem("purple_chroma_crystal", ModBlocks.PURPLE_CHROMA_CRYSTAL);
     public static final DeferredItem<BlockItem> BROWN_CHROMA_CRYSTAL = ITEMS.registerSimpleBlockItem("brown_chroma_crystal", ModBlocks.BROWN_CHROMA_CRYSTAL);
+
+
+    private static DeferredItem<Item> registerGemItem(String name, Identifier gemId) {
+        DeferredItem<Item> item = ITEMS.registerItem(
+                name,
+                properties -> new ItemGem(properties, gemId)
+        );
+
+        GEM_ITEMS.put(gemId, item);
+
+        return item;
+    }
+
+    public static ItemGem getGemItem(Identifier gemId) {
+        DeferredItem<Item> item = GEM_ITEMS.get(gemId);
+
+        if (item == null) {
+            return null;
+        }
+
+        return (ItemGem) item.get();
+    }
 }

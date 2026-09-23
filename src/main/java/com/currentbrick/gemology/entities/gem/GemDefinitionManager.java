@@ -1,4 +1,4 @@
-package com.currentbrick.gemology.entities;
+package com.currentbrick.gemology.entities.gem;
 
 import net.minecraft.resources.Identifier;
 
@@ -11,21 +11,14 @@ public class GemDefinitionManager {
     private final Map<Identifier, GemDefinition> definitions = new HashMap<>();
 
     public void register(GemDefinition definition) {
-
         definitions.put(definition.getId(), definition);
-
     }
 
     public GemDefinition get(Identifier id) {
-
         return definitions.get(id);
-
     }
 
     public void clear() {
-
         definitions.clear();
-
     }
-
 }

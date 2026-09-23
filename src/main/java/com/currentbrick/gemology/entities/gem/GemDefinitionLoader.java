@@ -1,7 +1,9 @@
-package com.currentbrick.gemology.entities;
+package com.currentbrick.gemology.entities.gem;
 
 import com.currentbrick.gemology.Gemology;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
@@ -11,7 +13,9 @@ import net.minecraft.util.profiling.ProfilerFiller;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Identifier, GemDefinition>> {
@@ -28,7 +32,7 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
     protected Map<Identifier, GemDefinition> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         Map<Identifier, GemDefinition> definitions = new HashMap<>();
 
-        for (Map.Entry<Identifier, Resource> entry : resourceManager.listResources("gems", path -> path.getPath().endsWith(".json")).entrySet()) {
+        for (Map.Entry<Identifier, Resource> entry : resourceManager.listResources("gems", path -> path.getPath().endsWith(".json") && !path.getPath().startsWith("gems/abilities/")).entrySet()) {
             Identifier resourceId = entry.getKey();
             Resource resource = entry.getValue();
 
@@ -43,14 +47,22 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
 
                 JsonObject stats = json.getAsJsonObject("stats");
                 JsonObject dimensions = json.getAsJsonObject("dimensions");
+                JsonArray abilitiesJson = json.getAsJsonArray("abilities");
+
+                List<Identifier> abilities = new ArrayList<>();
+
+                for (JsonElement element : abilitiesJson) {
+                    abilities.add(Identifier.parse(element.getAsString()));
+                }
 
                 GemDimensions defDimensions = new GemDimensions(dimensions.get("width").getAsFloat(), dimensions.get("height").getAsFloat());
                 GemStats defStats = new GemStats(stats.get("health").getAsFloat(), stats.get("strength").getAsFloat(), stats.get("speed").getAsFloat());
 
-                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions);
+                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions, abilities);
 
                 definitions.put(gemId, definition);
-                Gemology.LOGGER.info("Loaded gem definition: {}", gemId);
+                Gemology.LOGGER.info("Loaded gem {} with abilities: {}", gemId, abilities);
+                //Gemology.LOGGER.info("Loaded gem definition: {}", gemId);
             } catch (IOException | RuntimeException e) {
                 throw new RuntimeException("Failed to load gem definition: " + resourceId, e);
             }

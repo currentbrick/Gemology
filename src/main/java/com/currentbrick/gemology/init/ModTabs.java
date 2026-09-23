@@ -62,5 +62,9 @@ public class ModTabs {
                 output.accept(ModBlocks.PURPLE_CHROMA_CRYSTAL.get());
                 output.accept(ModBlocks.MAGENTA_CHROMA_CRYSTAL.get());
                 output.accept(ModBlocks.PINK_CHROMA_CRYSTAL.get());
+
+                output.accept(ModItems.RUBY.get());
+                output.accept(ModItems.JASPER.get());
+                output.accept(ModItems.FUSION.get());
             }).build());
 }

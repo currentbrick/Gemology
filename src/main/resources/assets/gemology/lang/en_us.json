@@ -38,7 +38,13 @@
   "item.gemology.green_chroma": "Green Chroma",
   "item.gemology.red_chroma": "Red Chroma",
   "item.gemology.black_chroma": "Black Chroma",
-  "item.gemology.special_chroma": "Prismatic Chroma",
+  "item.gemology.prismatic_chroma": "Prismatic Chroma",
+
+  "item.gemology.ruby": "Ruby",
+  "item.gemology.jasper": "Jasper",
+
+  "entity.gemology.ruby": "Ruby",
+  "entity.gemology.jasper": "Jasper",
 
   "item.gemology.raw_tungsten": "Raw Tungsten",
   "item.gemology.tungsten_ingot": "Tungsten Ingot",

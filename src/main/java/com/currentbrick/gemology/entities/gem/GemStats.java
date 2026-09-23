@@ -1,4 +1,4 @@
-package com.currentbrick.gemology.entities;
+package com.currentbrick.gemology.entities.gem;
 
 public class GemStats {
 

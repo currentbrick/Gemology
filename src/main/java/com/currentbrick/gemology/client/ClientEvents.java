@@ -1,6 +1,8 @@
 package com.currentbrick.gemology.client;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.client.entity.FusionRenderer;
+import com.currentbrick.gemology.client.entity.GemRenderer;
 import com.currentbrick.gemology.init.ModEntities;
 
 import net.neoforged.api.distmarker.Dist;
@@ -17,5 +19,6 @@ public class ClientEvents {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.GEM.get(), GemRenderer::new);
+        event.registerEntityRenderer(ModEntities.FUSION.get(), FusionRenderer::new);
     }
 }
