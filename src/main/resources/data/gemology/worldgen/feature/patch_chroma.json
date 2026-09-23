@@ -1,0 +1,69 @@
+{
+  "type": "minecraft:weighted_random_selector",
+  "features": [
+    {
+      "data": "gemology:patch_white_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_orange_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_magenta_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_light_blue_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_yellow_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_lime_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_pink_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_gray_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_light_gray_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_cyan_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_purple_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_blue_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_brown_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_green_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_red_chroma",
+      "weight": 1
+    },
+    {
+      "data": "gemology:patch_black_chroma",
+      "weight": 1
+    }
+  ]
+}

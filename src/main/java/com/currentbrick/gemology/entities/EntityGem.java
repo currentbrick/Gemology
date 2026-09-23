@@ -1,5 +1,7 @@
 package com.currentbrick.gemology.entities;
 
+import com.currentbrick.gemology.Gemology;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.EntityType;
@@ -12,76 +14,42 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
-public class EntityGem extends Monster implements RangedAttackMob, Container, MenuProvider, ContainerListener {
+public class EntityGem extends Monster {
 
-    protected EntityGem(EntityType<? extends Monster> type, Level level) {
+    public EntityGem(EntityType<? extends Monster> type, Level level) {
         super(type, level);
     }
 
-    @Override
-    public int getContainerSize() {
-        return 0;
+    private Identifier gemId;
+
+
+    public void setGemId(Identifier gemId) {
+        this.gemId = gemId;
+    }
+
+    public Identifier getGemId() {
+        return gemId;
     }
 
     @Override
-    public boolean isEmpty() {
-        return false;
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        input.getString("GemType").ifPresent(value -> {
+            Gemology.LOGGER.info("GemType loaded: {}", value);
+            gemId = Identifier.parse(value);
+        });
     }
 
     @Override
-    public ItemStack getItem(int i) {
-        return null;
-    }
-
-    @Override
-    public ItemStack removeItem(int i, int i1) {
-        return null;
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int i) {
-        return null;
-    }
-
-    @Override
-    public void setItem(int i, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void setChanged() {
-
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        return false;
-    }
-
-    @Override
-    public void clearContent() {
-
-    }
-
-    @Override
-    public void performRangedAttack(LivingEntity livingEntity, float v) {
-
-    }
-
-    @Override
-    public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return null;
-    }
-
-    @Override
-    public void slotChanged(AbstractContainerMenu abstractContainerMenu, int i, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void dataChanged(AbstractContainerMenu abstractContainerMenu, int i, int i1) {
-
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        Gemology.LOGGER.info("Saving GemType: {}", gemId);
+        if (gemId != null) {
+            output.putString("GemType", gemId.toString());
+        }
     }
 }

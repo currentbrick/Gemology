@@ -1,0 +1,25 @@
+{
+  "stats": {
+    "health": 100.0,
+    "strength": 15.0,
+    "speed": 0.28
+  },
+
+  "dimensions": {
+    "width": 0.8,
+    "height": 2.0
+  },
+
+  "appearance": {
+    "model": "gemology:jasper",
+    "texture": "gemology:entity/jasper/jasper.png",
+
+    "palettes": {
+      "skin": "gemology:entity/jasper/palettes/skin_palette.png",
+      "hair": "gemology:entity/jasper/palettes/hair_palette.png",
+      "markings": "gemology:entity/jasper/palettes/markings_palette.png"
+    }
+  },
+
+  "abilities": []
+}
