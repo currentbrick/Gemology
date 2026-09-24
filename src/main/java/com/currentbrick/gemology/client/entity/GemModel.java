@@ -42,5 +42,9 @@ public class GemModel extends GeoModel<EntityGem> {
         );
     }
 
+    public Identifier getSkinTexture(GemRenderState state) {
+        return state.skinTexture;
+    }
+
 
 }

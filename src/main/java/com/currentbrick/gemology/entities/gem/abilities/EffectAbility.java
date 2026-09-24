@@ -19,7 +19,7 @@ public class EffectAbility implements Ability {
 
         Holder<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.get(effectId).orElse(null);
 
-        gem.addEffect(new MobEffectInstance(effect, duration, amplifier, false, true));
-        if (gem.getOwner() != null) gem.getOwner().addEffect(new MobEffectInstance(effect, duration, amplifier, false, true));
+        gem.addEffect(new MobEffectInstance(effect, duration, amplifier, false, false));
+        if (gem.getOwner() != null) gem.getOwner().addEffect(new MobEffectInstance(effect, duration, amplifier, false, false));
     }
 }
