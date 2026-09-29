@@ -1,6 +1,120 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "gemology:item/jasper"
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/zebra"
+        },
+        "when": 0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/red_striped"
+        },
+        "when": 1
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/ripple"
+        },
+        "when": 2
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/imperial"
+        },
+        "when": 3
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/golden"
+        },
+        "when": 4
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/rainforest"
+        },
+        "when": 5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/mookaite"
+        },
+        "when": 6
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/matrix"
+        },
+        "when": 7
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/picasso"
+        },
+        "when": 8
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/ocean"
+        },
+        "when": 9
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/royal_plume"
+        },
+        "when": 10
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/blue_snakeskin"
+        },
+        "when": 11
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/biggs"
+        },
+        "when": 12
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/kambaba"
+        },
+        "when": 13
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/flame"
+        },
+        "when": 14
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/jasper/black"
+        },
+        "when": 15
+      }
+    ],
+    "property": "gemology:gem_variant"
   }
 }

@@ -48,17 +48,42 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
                 JsonObject stats = json.getAsJsonObject("stats");
                 JsonObject dimensions = json.getAsJsonObject("dimensions");
                 JsonArray abilitiesJson = json.getAsJsonArray("abilities");
+                JsonArray variantsJson = json.getAsJsonArray("variants");
 
                 List<Identifier> abilities = new ArrayList<>();
+                List<GemVariant> variants = new ArrayList<>();
 
                 for (JsonElement element : abilitiesJson) {
                     abilities.add(Identifier.parse(element.getAsString()));
                 }
 
+                if (json.has("variants")) {
+                    for (JsonElement element : variantsJson) {
+                        JsonObject variantJson = element.getAsJsonObject();
+
+                        int id = variantJson.get("id").getAsInt();
+                        String name = variantJson.get("name").getAsString();
+
+                        Identifier chromaId = Identifier.parse(
+                                variantJson.get("chroma").getAsString()
+                        );
+                        Identifier itemTexture = Identifier.parse(
+                                variantJson.get("item_texture").getAsString()
+                        );
+
+                        variants.add(new GemVariant(
+                                id,
+                                name,
+                                chromaId,
+                                itemTexture
+                        ));
+                    }
+                }
+
                 GemDimensions defDimensions = new GemDimensions(dimensions.get("width").getAsFloat(), dimensions.get("height").getAsFloat());
                 GemStats defStats = new GemStats(stats.get("health").getAsFloat(), stats.get("strength").getAsFloat(), stats.get("speed").getAsFloat());
 
-                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions, abilities);
+                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions, abilities, variants);
 
                 definitions.put(gemId, definition);
                 Gemology.LOGGER.info("Loaded gem {} with abilities: {}", gemId, abilities);

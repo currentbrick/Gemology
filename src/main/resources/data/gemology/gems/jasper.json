@@ -23,5 +23,110 @@
 
   "abilities": [
     "gemology:strength"
+  ],
+
+  "variants": [
+    {
+      "id": 0,
+      "name": "Zebra",
+      "chroma": "gemology:white",
+      "item_texture": "gemology:item/jasper/zebra"
+    },
+    {
+      "id": 1,
+      "name": "Red Striped",
+      "chroma": "gemology:orange",
+      "item_texture": "gemology:item/jasper/red_striped"
+    },
+    {
+      "id": 2,
+      "name": "Ripple",
+      "chroma": "gemology:magenta",
+      "item_texture": "gemology:item/jasper/ripple"
+    },
+    {
+      "id": 3,
+      "name": "Imperial",
+      "chroma": "gemology:light_blue",
+      "item_texture": "gemology:item/jasper/imperial"
+    },
+    {
+      "id": 4,
+      "name": "Golden",
+      "chroma": "gemology:yellow",
+      "item_texture": "gemology:item/jasper/golden"
+    },
+    {
+      "id": 5,
+      "name": "Rainforest",
+      "chroma": "gemology:lime",
+      "item_texture": "gemology:item/jasper/rainforest"
+    },
+    {
+      "id": 6,
+      "name": "Mookaite",
+      "chroma": "gemology:pink",
+      "item_texture": "gemology:item/jasper/mookaite"
+    },
+    {
+      "id": 7,
+      "name": "Matrix",
+      "chroma": "gemology:gray",
+      "item_texture": "gemology:item/jasper/matrix"
+    },
+    {
+      "id": 8,
+      "name": "Picasso",
+      "chroma": "gemology:light_gray",
+      "item_texture": "gemology:item/jasper/picasso"
+    },
+    {
+      "id": 9,
+      "name": "Ocean",
+      "chroma": "gemology:cyan",
+      "item_texture": "gemology:item/jasper/ocean"
+    },
+    {
+      "id": 10,
+      "name": "Royal Plume",
+      "chroma": "gemology:purple",
+      "item_texture": "gemology:item/jasper/royal_plume"
+    },
+    {
+      "id": 11,
+      "name": "Blue Snakeskin",
+      "chroma": "gemology:blue",
+      "item_texture": "gemology:item/jasper/blue_snakeskin"
+    },
+    {
+      "id": 12,
+      "name": "Biggs",
+      "chroma": "gemology:brown",
+      "item_texture": "gemology:item/jasper/biggs"
+    },
+    {
+      "id": 13,
+      "name": "Kambaba",
+      "chroma": "gemology:green",
+      "item_texture": "gemology:item/jasper/kambaba"
+    },
+    {
+      "id": 14,
+      "name": "Flame",
+      "chroma": "gemology:red",
+      "item_texture": "gemology:item/jasper/flame"
+    },
+    {
+      "id": 15,
+      "name": "Black",
+      "chroma": "gemology:black",
+      "item_texture": "gemology:item/jasper/black"
+    },
+    {
+      "id": 16,
+      "name": "Butterfly",
+      "chroma": "gemology:white",
+      "item_texture": "gemology:item/jasper/butterfly"
+    }
   ]
 }

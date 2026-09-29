@@ -1,10 +1,15 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -64,7 +69,29 @@ public class ModTabs {
                 output.accept(ModBlocks.PINK_CHROMA_CRYSTAL.get());
 
                 output.accept(ModItems.RUBY.get());
-                output.accept(ModItems.JASPER.get());
                 output.accept(ModItems.FUSION.get());
+
+                addGemVariants(output, ModItems.JASPER.get(), 16);
             }).build());
+
+
+    private static ItemStack createGemVariantStack(Item item, int variant) {
+        ItemStack stack = new ItemStack(item);
+
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("Variant", variant);
+
+        stack.set(
+                DataComponents.CUSTOM_DATA,
+                CustomData.of(tag)
+        );
+
+        return stack;
+    }
+
+    private static void addGemVariants(CreativeModeTab.Output output, Item item, int variantCount) {
+        for (int i = 0; i < variantCount; i++) {
+            output.accept(createGemVariantStack(item, i));
+        }
+    }
 }

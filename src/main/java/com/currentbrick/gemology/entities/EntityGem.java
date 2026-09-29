@@ -4,9 +4,8 @@ import com.currentbrick.gemology.Gemology;
 import com.currentbrick.gemology.entities.ai.GemFollowOwnerGoal;
 import com.currentbrick.gemology.entities.ai.GemWanderGoal;
 import com.currentbrick.gemology.entities.ai.MovementMode;
-import com.currentbrick.gemology.entities.gem.GemDefinition;
-import com.currentbrick.gemology.entities.gem.GemDimensions;
-import com.currentbrick.gemology.entities.gem.GemStats;
+import com.currentbrick.gemology.entities.fusion.FusionGenerator;
+import com.currentbrick.gemology.entities.gem.*;
 import com.currentbrick.gemology.entities.gem.abilities.Ability;
 import com.currentbrick.gemology.entities.gem.abilities.AbilityDefinition;
 import com.currentbrick.gemology.entities.gem.abilities.AbilityTypeRegistry;
@@ -26,6 +25,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -41,6 +41,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
 import java.util.UUID;
 
 public class EntityGem extends Monster implements GeoAnimatable {
@@ -49,12 +50,51 @@ public class EntityGem extends Monster implements GeoAnimatable {
     private static final int ABILITY_CHECK_INTERVAL = 10;
 
     private MovementMode movementMode = MovementMode.WANDER;
+    private GemInstanceData instanceData;
 
     private static final EntityDataAccessor<String> GEM_ID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> OWNER_UUID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
 
     public EntityGem(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+    }
+
+    private void ensureInstanceData() {
+        if (instanceData != null) {
+            return;
+        }
+
+        instanceData = new GemInstanceData(UUID.randomUUID(), 1.0F, generateRandomVariant());
+    }
+
+
+
+    public GemInstanceData getInstanceData() {
+        ensureInstanceData();
+        return instanceData;
+    }
+
+    public void setInstanceData(GemInstanceData instanceData) {
+        this.instanceData = instanceData;
+    }
+
+    private int generateRandomVariant() {
+        Identifier gemId = getGemId();
+
+        if (gemId == null) {
+            return -1;
+        }
+
+        GemDefinition definition =
+                Gemology.GEM_DEFINITION_MANAGER.get(gemId);
+
+        if (definition == null || definition.getVariants().isEmpty()) {
+            return -1;
+        }
+
+        List<GemVariant> variants = definition.getVariants();
+
+        return variants.get(random.nextInt(variants.size())).getId();
     }
 
     @Override
@@ -121,6 +161,19 @@ public class EntityGem extends Monster implements GeoAnimatable {
             movementMode = MovementMode.valueOf(value);
         });
 
+        input.getString("InstanceId").ifPresent(value -> {
+
+            UUID instanceId = UUID.fromString(value);
+
+            float quality = input.getFloatOr("Quality", 1.0F);
+            int variant = input.getIntOr("Variant", -1);
+            instanceData = new GemInstanceData(
+                    instanceId,
+                    quality,
+                    variant
+            );
+        });
+
         applyGemStats();
         refreshDimensions();
     }
@@ -142,34 +195,55 @@ public class EntityGem extends Monster implements GeoAnimatable {
         }
 
         output.putString("MovementMode", movementMode.name());
+
+        GemInstanceData instance = getInstanceData();
+
+        output.putString("InstanceId", instance.getInstanceId().toString());
+        output.putFloat("Quality", instance.getQuality());
+        output.putInt("Variant", instance.getVariant());
     }
 
     public CompoundTag createGemData() {
         CompoundTag tag = new CompoundTag();
 
         Identifier gemId = getGemId();
-
         if (gemId != null) {
             tag.putString("GemType", gemId.toString());
         }
 
         UUID ownerUUID = getOwnerUUID();
-
         if (ownerUUID != null) {
             tag.putString("Owner", ownerUUID.toString());
         }
+
+        GemInstanceData instance = getInstanceData();
+
+        tag.putString("InstanceId", instance.getInstanceId().toString());
+        tag.putFloat("Quality", instance.getQuality());
+        tag.putInt("Variant", instance.getVariant());
+
+        System.out.println("INSTANCE: " + getInstanceData().getInstanceId());
 
         return tag;
     }
 
     public void applyGemData(CompoundTag tag) {
+        tag.getString("GemType").ifPresent(value ->
+                setGemId(Identifier.parse(value))
+        );
+        tag.getString("Owner").ifPresent(value ->
+                setOwnerUUID(UUID.fromString(value))
+        );
+        tag.getString("InstanceId").ifPresent(value -> {
+            UUID instanceId = UUID.fromString(value);
+            float quality = tag.getFloat("Quality").orElse(1.0F);
+            int variant = tag.getInt("Variant").orElse(-1);
 
-        tag.getString("GemType").ifPresent(value -> {
-            setGemId(Identifier.parse(value));
-        });
-
-        tag.getString("Owner").ifPresent(value -> {
-            setOwnerUUID(UUID.fromString(value));
+            instanceData = new GemInstanceData(
+                    instanceId,
+                    quality,
+                    variant
+            );
         });
 
         applyGemStats();
@@ -364,6 +438,27 @@ public class EntityGem extends Monster implements GeoAnimatable {
 
                     CompoundTag secondGemData = createGemData();
 
+                    GemInstanceData firstInstance =
+                            FusionGenerator.getInstanceData(firstGemData);
+
+                    GemInstanceData secondInstance =
+                            FusionGenerator.getInstanceData(secondGemData);
+
+                    long seed = FusionGenerator.getFusionSeed(firstInstance, secondInstance);
+                    System.out.println("FUSION SEED: " + seed);
+
+                    RandomSource random = FusionGenerator.createRandom(seed);
+
+                    GemDefinition firstDefinition = Gemology.GEM_DEFINITION_MANAGER.get(Identifier.parse(firstGemData.getString("GemType").orElseThrow()));
+                    GemDefinition secondDefinition = Gemology.GEM_DEFINITION_MANAGER.get(Identifier.parse(secondGemData.getString("GemType").orElseThrow()));
+
+                    GemStats fusionStats = FusionGenerator.generateStats(firstDefinition, firstInstance, secondDefinition, secondInstance, random);
+                    List<Identifier> fusionAbilities = FusionGenerator.generateAbilities(firstDefinition, secondDefinition, random);
+                    GemDimensions fusionDimensions = FusionGenerator.generateDimensions(firstDefinition, firstInstance, secondDefinition, secondInstance, random);
+
+                    System.out.println("FUSION STATS: " + fusionStats.getHealth() + ", " + fusionStats.getStrength() + ", " + fusionStats.getSpeed());
+                    System.out.println("FUSION DIMS: " + fusionDimensions.getHeight() + ", " + fusionDimensions.getWidth());
+
                     EntityFusion fusion = ModEntities.FUSION.get().create(level(), EntitySpawnReason.SPAWN_ITEM_USE
                     );
 
@@ -372,6 +467,9 @@ public class EntityGem extends Monster implements GeoAnimatable {
                     }
 
                     fusion.setComponents(firstGemData, secondGemData);
+                    fusion.setFusionStats(fusionStats);
+                    fusion.setFusionAbilities(fusionAbilities);
+                    fusion.setFusionDimensions(fusionDimensions);
 
                     fusion.setPos(getX(), getY(), getZ());
 
@@ -447,13 +545,9 @@ public class EntityGem extends Monster implements GeoAnimatable {
         }
 
         ItemStack stack = new ItemStack(item);
-        UUID ownerUUID = getOwnerUUID();
 
-        if (ownerUUID != null) {
-            CompoundTag tag = new CompoundTag();
-            tag.putString("Owner", ownerUUID.toString());
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-        }
+        CompoundTag tag = createGemData();
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 
         return stack;
     }

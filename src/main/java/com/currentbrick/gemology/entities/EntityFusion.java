@@ -1,5 +1,8 @@
 package com.currentbrick.gemology.entities;
 
+import com.currentbrick.gemology.entities.fusion.FusionGenerator;
+import com.currentbrick.gemology.entities.gem.GemDimensions;
+import com.currentbrick.gemology.entities.gem.GemStats;
 import com.currentbrick.gemology.init.ModEntities;
 import com.currentbrick.gemology.items.FusionItem;
 import com.geckolib.animatable.GeoAnimatable;
@@ -7,24 +10,52 @@ import com.geckolib.animatable.instance.AnimatableInstanceCache;
 import com.geckolib.animatable.manager.AnimatableManager;
 import com.geckolib.util.GeckoLibUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityFusion extends Monster implements GeoAnimatable {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private CompoundTag firstGemData;
     private CompoundTag secondGemData;
 
+    private GemStats fusionStats;
+    private GemDimensions fusionDimensions;
+
+    private List<Identifier> fusionAbilities = new ArrayList<>();
+
+    private static final EntityDataAccessor<Float> FUSION_WIDTH = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> FUSION_HEIGHT = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
+
     public EntityFusion(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+
+        builder.define(FUSION_WIDTH, 1F);
+        builder.define(FUSION_HEIGHT, 2F);
     }
 
     public void setComponents(CompoundTag first, CompoundTag second) {
@@ -38,6 +69,85 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
     public CompoundTag getSecondGemData() {
         return secondGemData;
+    }
+
+    public GemStats getFusionStats() {
+        return fusionStats;
+    }
+
+    public void setFusionStats(GemStats fusionStats) {
+        this.fusionStats = fusionStats;
+        applyStats();
+    }
+
+    public List<Identifier> getFusionAbilities() {
+        return fusionAbilities;
+    }
+
+    public void setFusionAbilities(List<Identifier> fusionAbilities) {
+        this.fusionAbilities = new ArrayList<>(fusionAbilities);
+    }
+
+    public GemDimensions getFusionDimensions() {
+        return new GemDimensions(
+                entityData.get(FUSION_WIDTH),
+                entityData.get(FUSION_HEIGHT)
+        );
+    }
+
+    public void setFusionDimensions(GemDimensions fusionDimensions) {
+        this.fusionDimensions = fusionDimensions;
+
+        this.entityData.set(FUSION_WIDTH, fusionDimensions.getWidth());
+        this.entityData.set(FUSION_HEIGHT, fusionDimensions.getHeight());
+
+        refreshDimensions();
+
+        System.out.println(
+                (level().isClientSide() ? "CLIENT" : "SERVER") +
+                        " BOUNDING BOX: " +
+                        getBoundingBox().getXsize() + " x " +
+                        getBoundingBox().getYsize()
+        );
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+
+        if (key.equals(FUSION_WIDTH) || key.equals(FUSION_HEIGHT)) {
+            refreshDimensions();
+        }
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+
+        if (fusionStats != null) {
+            output.putFloat("Health", fusionStats.getHealth());
+            output.putFloat("Strength", fusionStats.getStrength());
+            output.putFloat("Speed", fusionStats.getSpeed());
+        }
+        applyStats();
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        float health = input.getFloatOr("Health", 0.0F);
+        float strength = input.getFloatOr("Strength", 0.0F);
+        float speed = input.getFloatOr("Speed", 0.0F);
+
+        if (health != 0.0F || strength != 0.0F || speed != 0.0F) {
+            fusionStats = new GemStats(health, strength, speed);
+        }
+    }
+
+    public void applyStats() {
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(fusionStats.getHealth());
+        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(fusionStats.getSpeed());
+        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(fusionStats.getStrength());
     }
 
     @Override
@@ -93,5 +203,24 @@ public class EntityFusion extends Monster implements GeoAnimatable {
         gem.setPos(getX() + offsetX, getY() + offsetY, getZ() + offsetZ);
 
         level().addFreshEntity(gem);
+    }
+
+    @Override
+    public EntityDimensions getDefaultDimensions(Pose pose) {
+        return EntityDimensions.scalable(
+                entityData.get(FUSION_WIDTH),
+                entityData.get(FUSION_HEIGHT)
+        );
+    }
+
+    @Override
+    public boolean isPickable() {
+        System.out.println(
+                "PICKABLE BOX: " +
+                        getBoundingBox().getXsize() + " x " +
+                        getBoundingBox().getYsize()
+        );
+
+        return super.isPickable();
     }
 }

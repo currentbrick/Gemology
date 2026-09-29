@@ -25,7 +25,7 @@ public class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<EntityFusion>> FUSION =
             ENTITY_TYPES.register("fusion", () ->
                     EntityType.Builder.of(EntityFusion::new, MobCategory.CREATURE)
-                            .sized(1F, 3.0F)
+                            .sized(1.0F, 2.0F)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     Identifier.fromNamespaceAndPath(Gemology.MODID, "fusion")))
             );
