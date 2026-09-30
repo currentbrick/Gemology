@@ -72,6 +72,7 @@ public class ModTabs {
                 output.accept(ModItems.FUSION.get());
 
                 addGemVariants(output, ModItems.JASPER.get(), 16);
+                addGemVariants(output, ModItems.QUARTZ.get(), 17);
             }).build());
 
 

@@ -52,6 +52,7 @@ public class ModItems {
 
     public static final DeferredItem<Item> RUBY = registerGemItem("ruby", Identifier.fromNamespaceAndPath(Gemology.MODID, "ruby"));
     public static final DeferredItem<Item> JASPER = registerGemItem("jasper", Identifier.fromNamespaceAndPath(Gemology.MODID, "jasper"));
+    public static final DeferredItem<Item> QUARTZ = registerGemItem("quartz", Identifier.fromNamespaceAndPath(Gemology.MODID, "quartz"));
 
 
     // ----------- BLOCK ITEMS -----------
