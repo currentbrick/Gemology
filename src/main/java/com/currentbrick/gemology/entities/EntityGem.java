@@ -1,6 +1,7 @@
 package com.currentbrick.gemology.entities;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.container.GemUIContainer;
 import com.currentbrick.gemology.entities.ai.GemFollowOwnerGoal;
 import com.currentbrick.gemology.entities.ai.GemWanderGoal;
 import com.currentbrick.gemology.entities.ai.MovementMode;
@@ -17,6 +18,7 @@ import com.geckolib.animatable.GeoAnimatable;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
 import com.geckolib.animatable.manager.AnimatableManager;
 import com.geckolib.util.GeckoLibUtil;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -26,31 +28,40 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.extensions.IMenuProviderExtension;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
 
-public class EntityGem extends Monster implements GeoAnimatable {
+public class EntityGem extends Monster implements GeoAnimatable, Container, MenuProvider, IMenuProviderExtension, ContainerListener {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private static final int ABILITY_CHECK_INTERVAL = 10;
 
     private MovementMode movementMode = MovementMode.WANDER;
     private GemInstanceData instanceData;
+    private int pendingVariant = -1;
+
+    private static final int INVENTORY_SIZE = 16;
+
+    private final NonNullList<ItemStack> gemInventory = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
     private static final EntityDataAccessor<String> GEM_ID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> OWNER_UUID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
@@ -64,7 +75,21 @@ public class EntityGem extends Monster implements GeoAnimatable {
             return;
         }
 
-        instanceData = new GemInstanceData(UUID.randomUUID(), 1.0F, generateRandomVariant());
+        int variant = pendingVariant;
+
+        if (variant == -1) {
+            variant = generateRandomVariant();
+        }
+
+        instanceData = new GemInstanceData(
+                UUID.randomUUID(),
+                1.0F,
+                variant
+        );
+    }
+
+    public void setPendingVariant(int variant) {
+        this.pendingVariant = variant;
     }
 
 
@@ -174,6 +199,8 @@ public class EntityGem extends Monster implements GeoAnimatable {
             );
         });
 
+        ContainerHelper.loadAllItems(input, gemInventory);
+
         applyGemStats();
         refreshDimensions();
     }
@@ -201,6 +228,8 @@ public class EntityGem extends Monster implements GeoAnimatable {
         output.putString("InstanceId", instance.getInstanceId().toString());
         output.putFloat("Quality", instance.getQuality());
         output.putInt("Variant", instance.getVariant());
+
+        ContainerHelper.saveAllItems(output, gemInventory);
     }
 
     public CompoundTag createGemData() {
@@ -228,23 +257,24 @@ public class EntityGem extends Monster implements GeoAnimatable {
     }
 
     public void applyGemData(CompoundTag tag) {
-        tag.getString("GemType").ifPresent(value ->
-                setGemId(Identifier.parse(value))
-        );
-        tag.getString("Owner").ifPresent(value ->
-                setOwnerUUID(UUID.fromString(value))
-        );
+        tag.getString("GemType").ifPresent(value -> setGemId(Identifier.parse(value)));
+        tag.getString("Owner").ifPresent(value -> setOwnerUUID(UUID.fromString(value)));
         tag.getString("InstanceId").ifPresent(value -> {
+
             UUID instanceId = UUID.fromString(value);
             float quality = tag.getFloat("Quality").orElse(1.0F);
             int variant = tag.getInt("Variant").orElse(-1);
 
-            instanceData = new GemInstanceData(
-                    instanceId,
-                    quality,
-                    variant
-            );
+            instanceData = new GemInstanceData(instanceId, quality, variant);
         });
+
+        if (instanceData == null) {
+            int variant = tag.getInt("Variant").orElse(-1);
+
+            if (variant != -1) {
+                pendingVariant = variant;
+            }
+        }
 
         applyGemStats();
         refreshDimensions();
@@ -496,6 +526,10 @@ public class EntityGem extends Monster implements GeoAnimatable {
             return InteractionResult.SUCCESS;
         }
 
+        if (hasOwner() && player.getUUID().equals(getOwnerUUID())) {
+            player.openMenu(this);
+        }
+
         if (hasOwner()) {
             return InteractionResult.PASS;
         }
@@ -550,5 +584,111 @@ public class EntityGem extends Monster implements GeoAnimatable {
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 
         return stack;
+    }
+
+    public void poof(Player player) {
+        if (!hasOwner() || !player.getUUID().equals(getOwnerUUID())) {
+            return;
+        }
+
+        ItemStack stack = createGemItem();
+
+        if (!stack.isEmpty()) {
+            spawnAtLocation((ServerLevel) level(), stack);
+        }
+
+        discard();
+    }
+
+    @Override
+    public int getContainerSize() {
+        return INVENTORY_SIZE;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        for (ItemStack stack : gemInventory) {
+            if (!stack.isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public ItemStack getItem(int index) {
+        return gemInventory.get(index);
+    }
+
+    @Override
+    public ItemStack removeItem(int index, int count) {
+        ItemStack stack = ContainerHelper.removeItem(gemInventory, index, count);
+
+        if (!stack.isEmpty()) {
+            setChanged();
+        }
+
+        return stack;
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int index) {
+        ItemStack stack = gemInventory.get(index);
+        gemInventory.set(index, ItemStack.EMPTY);
+        return stack;
+    }
+
+    @Override
+    public void setItem(int index, ItemStack stack) {
+        gemInventory.set(index, stack);
+
+        if (stack.getCount() > getMaxStackSize()) {
+            stack.setCount(getMaxStackSize());
+        }
+
+        setChanged();
+    }
+
+    @Override
+    public void setChanged() {
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        return isAlive()
+                && getOwnerUUID() != null
+                && getOwnerUUID().equals(player.getUUID())
+                && player.distanceToSqr(this) <= 64.0;
+    }
+
+    @Override
+    public void clearContent() {
+        gemInventory.clear();
+    }
+
+    @Override
+    public void slotChanged(AbstractContainerMenu abstractContainerMenu, int i, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void dataChanged(AbstractContainerMenu abstractContainerMenu, int i, int i1) {
+
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+        return new GemUIContainer(id, inventory, this);
+    }
+
+    @Override
+    public void writeClientSideData(AbstractContainerMenu menu, net.minecraft.network.RegistryFriendlyByteBuf buffer) {
+        buffer.writeInt(getId());
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.literal(getGemName());
     }
 }

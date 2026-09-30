@@ -55,6 +55,7 @@ public class Gemology {
         ModTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModFeatures.FEATURE_TYPES.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
+        ModContainers.MENUS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
 
