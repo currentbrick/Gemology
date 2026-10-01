@@ -33,6 +33,8 @@ public class ModTabs {
                 output.accept(ModItems.TUNGSTEN_ORE.get());
                 output.accept(ModItems.DEEPSLATE_TUNGSTEN_ORE.get());
 
+                output.accept(ModItems.INCUBATOR.get());
+
                 output.accept(ModItems.WHITE_CHROMA.get());
                 output.accept(ModItems.LIGHT_GRAY_CHROMA.get());
                 output.accept(ModItems.GRAY_CHROMA.get());
@@ -68,8 +70,16 @@ public class ModTabs {
                 output.accept(ModBlocks.MAGENTA_CHROMA_CRYSTAL.get());
                 output.accept(ModBlocks.PINK_CHROMA_CRYSTAL.get());
 
-                output.accept(ModItems.RUBY.get());
+                output.accept(ModItems.WHITE_ESSENCE.get());
+                output.accept(ModItems.YELLOW_ESSENCE.get());
+                output.accept(ModItems.BLUE_ESSENCE.get());
+                output.accept(ModItems.PINK_ESSENCE.get());
                 output.accept(ModItems.FUSION.get());
+
+                output.accept(ModItems.INACTIVE_RUBY_BASE.get());
+                output.accept(ModItems.INACTIVE_JASPER_BASE.get());
+
+                output.accept(ModItems.RUBY.get());
 
                 addGemVariants(output, ModItems.JASPER.get(), 16);
                 addGemVariants(output, ModItems.QUARTZ.get(), 17);

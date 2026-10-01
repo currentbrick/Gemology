@@ -112,9 +112,9 @@
     },
     {
       "id": 14,
-      "name": "Carnelion",
+      "name": "Carnelian",
       "chroma": "gemology:red",
-      "item_texture": "gemology:item/quartz/carnelion"
+      "item_texture": "gemology:item/quartz/carnelian"
     },
     {
       "id": 15,

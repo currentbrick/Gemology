@@ -1,6 +1,6 @@
 package com.currentbrick.gemology.container;
 
-import com.currentbrick.gemology.entities.EntityGem;
+import com.currentbrick.gemology.entity.EntityGem;
 import com.currentbrick.gemology.init.ModContainers;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.Entity;

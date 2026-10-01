@@ -4,7 +4,7 @@ import com.currentbrick.gemology.client.entity.layer.GemLayer;
 import com.currentbrick.gemology.client.entity.layer.HairLayer;
 import com.currentbrick.gemology.client.entity.layer.OutfitLayer;
 import com.currentbrick.gemology.client.entity.layer.SkinLayer;
-import com.currentbrick.gemology.entities.EntityGem;
+import com.currentbrick.gemology.entity.EntityGem;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.layer.GeoRenderLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

@@ -1,0 +1,120 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/milky"
+        },
+        "when": 0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/chert"
+        },
+        "when": 1
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/cherry"
+        },
+        "when": 2
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/blue_aventurine"
+        },
+        "when": 3
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/citrine"
+        },
+        "when": 4
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/prasiolite"
+        },
+        "when": 5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/rose"
+        },
+        "when": 6
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/flint"
+        },
+        "when": 7
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/smoky"
+        },
+        "when": 8
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/chalcedony"
+        },
+        "when": 9
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/amethyst"
+        },
+        "when": 10
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/dumortierite"
+        },
+        "when": 11
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/tigers_eye"
+        },
+        "when": 12
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/heliotrope"
+        },
+        "when": 13
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/carnelian"
+        },
+        "when": 14
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/onyx"
+        },
+        "when": 15
+      }
+    ],
+    "property": "gemology:gem_variant"
+  }
+}

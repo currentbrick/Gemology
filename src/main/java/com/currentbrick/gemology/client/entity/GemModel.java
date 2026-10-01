@@ -1,6 +1,6 @@
 package com.currentbrick.gemology.client.entity;
 
-import com.currentbrick.gemology.entities.EntityGem;
+import com.currentbrick.gemology.entity.EntityGem;
 import com.geckolib.model.GeoModel;
 import com.geckolib.renderer.base.GeoRenderState;
 import net.minecraft.resources.Identifier;

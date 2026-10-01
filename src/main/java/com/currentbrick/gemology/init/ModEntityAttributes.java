@@ -1,7 +1,7 @@
 package com.currentbrick.gemology.init;
 
-import com.currentbrick.gemology.entities.EntityFusion;
-import com.currentbrick.gemology.entities.EntityGem;
+import com.currentbrick.gemology.entity.EntityFusion;
+import com.currentbrick.gemology.entity.EntityGem;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 

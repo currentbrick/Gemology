@@ -1,8 +1,8 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
-import com.currentbrick.gemology.entities.EntityFusion;
-import com.currentbrick.gemology.entities.EntityGem;
+import com.currentbrick.gemology.entity.EntityFusion;
+import com.currentbrick.gemology.entity.EntityGem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;

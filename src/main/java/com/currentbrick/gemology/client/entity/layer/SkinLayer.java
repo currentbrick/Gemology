@@ -1,8 +1,7 @@
 package com.currentbrick.gemology.client.entity.layer;
 
 import com.currentbrick.gemology.client.entity.GemRenderState;
-import com.currentbrick.gemology.entities.EntityGem;
-import com.geckolib.cache.model.BakedGeoModel;
+import com.currentbrick.gemology.entity.EntityGem;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.base.RenderPassInfo;
 import com.geckolib.renderer.layer.GeoRenderLayer;

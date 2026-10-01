@@ -1,23 +1,22 @@
 package com.currentbrick.gemology;
 
-import com.currentbrick.gemology.entities.EntityGem;
-import com.currentbrick.gemology.entities.gem.GemDefinitionLoader;
-import com.currentbrick.gemology.entities.gem.GemDefinitionManager;
-import com.currentbrick.gemology.entities.gem.abilities.AbilityDefinitionLoader;
-import com.currentbrick.gemology.entities.gem.abilities.AbilityManager;
-import com.currentbrick.gemology.entities.gem.abilities.AbilityTypeRegistry;
-import com.currentbrick.gemology.entities.gem.abilities.EffectAbility;
+import com.currentbrick.gemology.entity.EntityGem;
+import com.currentbrick.gemology.entity.gem.GemDefinitionLoader;
+import com.currentbrick.gemology.entity.gem.GemDefinitionManager;
+import com.currentbrick.gemology.entity.gem.abilities.AbilityDefinitionLoader;
+import com.currentbrick.gemology.entity.gem.abilities.AbilityManager;
+import com.currentbrick.gemology.entity.gem.abilities.AbilityTypeRegistry;
+import com.currentbrick.gemology.entity.gem.abilities.EffectAbility;
 import com.currentbrick.gemology.init.*;
-import com.currentbrick.gemology.items.ItemGem;
+import com.currentbrick.gemology.item.ItemGem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.slf4j.Logger;
@@ -56,6 +55,10 @@ public class Gemology {
         ModFeatures.FEATURE_TYPES.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModContainers.MENUS.register(modEventBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+
+        ModRecipeTypes.register(modEventBus);
+        ModRecipeSerializers.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -151,5 +154,10 @@ public class Gemology {
             }
             itemEntity.discard();
         }
+    }
+
+    @SubscribeEvent
+    public void onDatapackSync(OnDatapackSyncEvent event) {
+        event.sendRecipes(ModRecipeTypes.INCUBATION.get());
     }
 }

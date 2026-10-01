@@ -3,13 +3,16 @@ package com.currentbrick.gemology;
 import com.currentbrick.gemology.client.entity.FusionRenderer;
 import com.currentbrick.gemology.client.entity.GemRenderer;
 import com.currentbrick.gemology.client.item.GemVariantProperty;
+import com.currentbrick.gemology.client.jei.IncubationJEIRecipes;
 import com.currentbrick.gemology.client.screen.GemUIScreen;
+import com.currentbrick.gemology.client.screen.IncubatorScreen;
 import com.currentbrick.gemology.datagen.ModBlockLootProvider;
 import com.currentbrick.gemology.datagen.ModBlockTagsProvider;
 import com.currentbrick.gemology.datagen.ModModelProvider;
 import com.currentbrick.gemology.datagen.ModRecipeProvider;
 import com.currentbrick.gemology.init.ModContainers;
 import com.currentbrick.gemology.init.ModEntities;
+import com.currentbrick.gemology.init.ModRecipeTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -22,9 +25,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -82,6 +83,19 @@ public class GemologyClient {
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModContainers.GEM_UI_CONTAINER.get(), GemUIScreen::new);
+        event.register(ModContainers.INCUBATOR_CONTAINER.get(), IncubatorScreen::new);
     }
 
+    @SubscribeEvent
+    public static void onRecipesReceived(RecipesReceivedEvent event) {
+        IncubationJEIRecipes.update(
+                event.getRecipeMap()
+                        .byType(ModRecipeTypes.INCUBATION.get())
+        );
+    }
+
+    @SubscribeEvent
+    public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        IncubationJEIRecipes.clear();
+    }
 }

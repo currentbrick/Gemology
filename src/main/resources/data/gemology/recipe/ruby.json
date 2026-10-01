@@ -1,0 +1,16 @@
+{
+  "type": "gemology:incubation",
+  "gem": "gemology:ruby",
+  "gemBase": "gemology:inactive_ruby_base",
+  "chroma": "gemology:red_chroma",
+  "cruxes": [
+    {
+      "ingredient": "minecraft:redstone_block",
+      "quality": 0.1,
+      "chance": 1.0
+    }
+  ],
+  "essence1": "gemology:yellow_essence",
+  "essence2": "gemology:pink_essence",
+  "incubationTime": 60
+}

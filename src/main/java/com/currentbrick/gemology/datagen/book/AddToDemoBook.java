@@ -1,0 +1,30 @@
+package com.currentbrick.gemology.datagen.book;
+
+import com.klikli_dev.modonomicon.api.datagen.AddToBookSubProvider;
+import com.klikli_dev.modonomicon.datagen.book.addtodemo.AddToGettingStartedCategory;
+import com.klikli_dev.modonomicon.datagen.book.addtodemo.NewCategory;
+import net.minecraft.resources.Identifier;
+
+public class AddToDemoBook extends AddToBookSubProvider {
+
+    public static final Identifier TARGET_BOOK_ID = Identifier.fromNamespaceAndPath("theurgy", "the_hermetica");
+
+    public AddToDemoBook() {
+        super(TARGET_BOOK_ID);
+    }
+
+    @Override
+    protected void registerDefaultMacros() {
+        //currently no macros
+    }
+
+    @Override
+    protected void generateCategories() {
+        //add stuff to an existing category
+        var addToGettingStartedCategory = this.add(new AddToGettingStartedCategory(this).generate());
+
+        //add a new category
+        this.currentSortIndex(50); //ensure the new category is sorted after the existing ones
+        var newCategory = this.add(new NewCategory(this).generate());
+    }
+}

@@ -2,25 +2,31 @@ package com.currentbrick.gemology.datagen;
 
 import com.currentbrick.gemology.Gemology;
 import com.currentbrick.gemology.client.item.GemVariantProperty;
-import com.currentbrick.gemology.entities.gem.GemDefinition;
-import com.currentbrick.gemology.entities.gem.GemVariant;
 import com.currentbrick.gemology.init.ModBlocks;
 import com.currentbrick.gemology.init.ModItems;
+import com.mojang.math.Quadrant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -32,6 +38,16 @@ public class ModModelProvider extends ModelProvider {
 
     @Override
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+
+        TextureMapping incubatorTextures = new TextureMapping()
+                .put(TextureSlot.TOP, new Material(
+                        Identifier.fromNamespaceAndPath(Gemology.MODID, "block/incubator_top")))
+                .put(TextureSlot.BOTTOM, new Material(
+                        Identifier.fromNamespaceAndPath(Gemology.MODID, "block/incubator_bottom")))
+                .put(TextureSlot.SIDE, new Material(
+                        Identifier.fromNamespaceAndPath(Gemology.MODID, "block/incubator_side")))
+                .put(TextureSlot.FRONT, new Material(
+                        Identifier.fromNamespaceAndPath(Gemology.MODID, "block/incubator_front")));
 
         blockModels.createTrivialCube(ModBlocks.TUNGSTEN_ORE.get());
         blockModels.createTrivialCube(ModBlocks.DEEPSLATE_TUNGSTEN_ORE.get());
@@ -77,6 +93,14 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.PURPLE_CHROMA.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.PRISMATIC_CHROMA.get(), ModelTemplates.FLAT_ITEM);
 
+        itemModels.generateFlatItem(ModItems.WHITE_ESSENCE.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.YELLOW_ESSENCE.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.BLUE_ESSENCE.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.PINK_ESSENCE.get(), ModelTemplates.FLAT_ITEM);
+
+        itemModels.generateFlatItem(ModItems.INACTIVE_JASPER_BASE.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.INACTIVE_RUBY_BASE.get(), ModelTemplates.FLAT_ITEM);
+
 
         itemModels.generateFlatItem(ModItems.FUSION.get(), ModelTemplates.FLAT_ITEM);
 
@@ -109,23 +133,41 @@ public class ModModelProvider extends ModelProvider {
                 itemModels,
                 ModItems.QUARTZ.get(),
                 List.of(
-                        new GemItemVariant(0, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/milky")),
-                        new GemItemVariant(1, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/chert")),
-                        new GemItemVariant(2, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/cherry")),
-                        new GemItemVariant(3, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/blue_aventurine")),
-                        new GemItemVariant(4, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/citrine")),
-                        new GemItemVariant(5, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/prasiolite")),
-                        new GemItemVariant(6, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/rose")),
-                        new GemItemVariant(7, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/flint")),
-                        new GemItemVariant(8, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/smoky")),
-                        new GemItemVariant(9, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/chalcedony")),
-                        new GemItemVariant(10, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/amethyst")),
-                        new GemItemVariant(11, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/dumortierite")),
-                        new GemItemVariant(12, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/tigers_eye")),
-                        new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/heliotrope")),
-                        new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/carnelion")),
-                        new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/onyx"))
+                        new GemItemVariant(0, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/milky")),
+                        new GemItemVariant(1, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/chert")),
+                        new GemItemVariant(2, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/cherry")),
+                        new GemItemVariant(3, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/blue_aventurine")),
+                        new GemItemVariant(4, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/citrine")),
+                        new GemItemVariant(5, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/prasiolite")),
+                        new GemItemVariant(6, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/rose")),
+                        new GemItemVariant(7, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/flint")),
+                        new GemItemVariant(8, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/smoky")),
+                        new GemItemVariant(9, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/chalcedony")),
+                        new GemItemVariant(10, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/amethyst")),
+                        new GemItemVariant(11, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/dumortierite")),
+                        new GemItemVariant(12, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/tigers_eye")),
+                        new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/heliotrope")),
+                        new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/carnelian")),
+                        new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/onyx"))
                 )
+        );
+
+        ModelTemplates.CUBE_ORIENTABLE_TOP_BOTTOM.create(ModBlocks.INCUBATOR.get(), incubatorTextures, blockModels.modelOutput);
+
+        Identifier incubatorModel = Identifier.fromNamespaceAndPath(
+                Gemology.MODID,
+                "block/incubator"
+        );
+
+        MultiVariant incubatorVariant = new MultiVariant(WeightedList.of(new Variant(incubatorModel)));
+
+        blockModels.blockStateOutput.accept(
+                MultiVariantGenerator.dispatch(ModBlocks.INCUBATOR.get())
+                        .with(PropertyDispatch.initial(BlockStateProperties.HORIZONTAL_FACING)
+                                .select(Direction.NORTH, incubatorVariant)
+                                .select(Direction.EAST, incubatorVariant.with(VariantMutator.Y_ROT.withValue(Quadrant.R90)))
+                                .select(Direction.SOUTH, incubatorVariant.with(VariantMutator.Y_ROT.withValue(Quadrant.R180)))
+                                .select(Direction.WEST, incubatorVariant.with(VariantMutator.Y_ROT.withValue(Quadrant.R270))))
         );
     }
 

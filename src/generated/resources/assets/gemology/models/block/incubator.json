@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "gemology:block/incubator_bottom",
+    "front": "gemology:block/incubator_front",
+    "side": "gemology:block/incubator_side",
+    "top": "gemology:block/incubator_top"
+  }
+}

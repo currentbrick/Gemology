@@ -1,11 +1,11 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
-import com.currentbrick.gemology.blocks.ChromaBlock;
+import com.currentbrick.gemology.block.ChromaBlock;
+import com.currentbrick.gemology.block.IncubatorBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -20,6 +20,10 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> TUNGSTEN_BLOCK = BLOCKS.registerSimpleBlock("tungsten_block",
             p -> p.ofFullCopy(Blocks.IRON_BLOCK));
+
+
+    public static final DeferredBlock<Block> INCUBATOR = BLOCKS.registerBlock("incubator",
+            p -> new IncubatorBlock(p.strength(5.0F, 6.0F).sound(SoundType.ANVIL).requiresCorrectToolForDrops()));
 
 
     public static final DeferredBlock<Block> WHITE_CHROMA_CRYSTAL = BLOCKS.registerBlock("white_chroma_crystal", p ->

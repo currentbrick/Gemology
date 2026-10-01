@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "gemology:block/incubator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "gemology:block/incubator"
+    },
+    "facing=south": {
+      "model": "gemology:block/incubator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gemology:block/incubator",
+      "y": 270
+    }
+  }
+}

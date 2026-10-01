@@ -1,8 +1,7 @@
 package com.currentbrick.gemology.client.entity;
 
-import com.currentbrick.gemology.entities.EntityFusion;
-import com.currentbrick.gemology.entities.EntityGem;
-import com.currentbrick.gemology.entities.gem.GemDimensions;
+import com.currentbrick.gemology.entity.EntityFusion;
+import com.currentbrick.gemology.entity.gem.GemDimensions;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.base.RenderPassInfo;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

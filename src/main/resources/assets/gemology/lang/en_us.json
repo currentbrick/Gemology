@@ -5,6 +5,8 @@
   "block.gemology.tungsten_ore": "Tungsten Ore",
   "block.gemology.tungsten_block": "Tungsten Block",
 
+  "block.gemology.incubator": "Incubator",
+
   "block.gemology.white_chroma_crystal": "White Chroma Crystal",
   "block.gemology.orange_chroma_crystal": "Orange Chroma Crystal",
   "block.gemology.magenta_chroma_crystal": "Magenta Chroma Crystal",
@@ -40,11 +42,21 @@
   "item.gemology.black_chroma": "Black Chroma",
   "item.gemology.prismatic_chroma": "Prismatic Chroma",
 
+  "item.gemology.white_essence": "White Essence",
+  "item.gemology.yellow_essence": "Yellow Essence",
+  "item.gemology.blue_essence": "Blue Essence",
+  "item.gemology.pink_essence": "Pink Essence",
+
+  "item.gemology.inactive_ruby_base": "Inactive Ruby Base",
+  "item.gemology.inactive_jasper_base": "Inactive Jasper Base",
+
   "item.gemology.ruby": "Ruby",
   "item.gemology.jasper": "Jasper",
+  "item.gemology.quartz": "Quartz",
 
   "entity.gemology.ruby": "Ruby",
   "entity.gemology.jasper": "Jasper",
+  "entity.gemology.quartz": "Quartz",
 
   "item.gemology.raw_tungsten": "Raw Tungsten",
   "item.gemology.tungsten_ingot": "Tungsten Ingot",

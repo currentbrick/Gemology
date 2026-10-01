@@ -1,10 +1,9 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
-import com.currentbrick.gemology.items.FusionItem;
-import com.currentbrick.gemology.items.ItemGem;
+import com.currentbrick.gemology.item.FusionItem;
+import com.currentbrick.gemology.item.ItemGem;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -47,6 +46,14 @@ public class ModItems {
 
     public static final DeferredHolder<Item, FusionItem> FUSION = ITEMS.registerItem("fusion", FusionItem::new);
 
+    public static final DeferredItem<Item> WHITE_ESSENCE = ITEMS.registerSimpleItem("white_essence");
+    public static final DeferredItem<Item> YELLOW_ESSENCE = ITEMS.registerSimpleItem("yellow_essence");
+    public static final DeferredItem<Item> BLUE_ESSENCE = ITEMS.registerSimpleItem("blue_essence");
+    public static final DeferredItem<Item> PINK_ESSENCE = ITEMS.registerSimpleItem("pink_essence");
+
+    public static final DeferredItem<Item> INACTIVE_RUBY_BASE = ITEMS.registerSimpleItem("inactive_ruby_base");
+    public static final DeferredItem<Item> INACTIVE_JASPER_BASE = ITEMS.registerSimpleItem("inactive_jasper_base");
+
 
     // ----------- GEMS ------------
 
@@ -61,6 +68,8 @@ public class ModItems {
     public static final DeferredItem<BlockItem> TUNGSTEN_ORE= ITEMS.registerSimpleBlockItem("tungsten_ore", ModBlocks.TUNGSTEN_ORE);
     public static final DeferredItem<BlockItem> DEEPSLATE_TUNGSTEN_ORE = ITEMS.registerSimpleBlockItem("deepslate_tungsten_ore", ModBlocks.DEEPSLATE_TUNGSTEN_ORE);
     public static final DeferredItem<BlockItem> TUNGSTEN_BLOCK = ITEMS.registerSimpleBlockItem("tungsten_block", ModBlocks.TUNGSTEN_BLOCK);
+
+    public static final DeferredItem<BlockItem> INCUBATOR = ITEMS.registerSimpleBlockItem("incubator", ModBlocks.INCUBATOR);
 
 
     public static final DeferredItem<BlockItem> WHITE_CHROMA_CRYSTAL = ITEMS.registerSimpleBlockItem("white_chroma_crystal", ModBlocks.WHITE_CHROMA_CRYSTAL);

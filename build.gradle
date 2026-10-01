@@ -35,6 +35,12 @@ repositories {
         name = 'Jared'
         url = 'https://maven.blamejared.com/'
     }
+    maven {
+        url "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
+        content {
+            includeGroup "com.klikli_dev"
+        }
+    }
     // Add here additional repositories if required by some of the dependencies below.
 }
 
@@ -127,7 +133,7 @@ dependencies {
     localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
     implementation "com.geckolib:geckolib-neoforge-26.3:${geckolib_version}"
-
+    implementation ("com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}"){transitive=false}
     //compileOnly "vazkii.patchouli:patchouli-neoforge:${patchouli_version}:api"
     //runtimeOnly "vazkii.patchouli:patchouli-neoforge:${patchouli_version}"
 
