@@ -197,7 +197,15 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
     private ItemStack createGemItem(IncubationRecipe recipe) {
         Identifier gemId = recipe.gem();
 
-        int variant = EntityGem.generateRandomVariant(gemId, RandomSource.create());
+        ItemStack chromaStack = getItem(CHROMA_SLOT);
+
+        int variant = recipe.getVariantId(chromaStack);
+
+        if (variant == -1) {
+
+            return ItemStack.EMPTY;
+
+        }
 
         GemInstanceData instance = new GemInstanceData(UUID.randomUUID(), calculateQuality(recipe), variant);
 

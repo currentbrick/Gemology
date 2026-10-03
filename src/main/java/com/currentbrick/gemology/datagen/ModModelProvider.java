@@ -100,6 +100,7 @@ public class ModModelProvider extends ModelProvider {
 
         itemModels.generateFlatItem(ModItems.INACTIVE_JASPER_BASE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.INACTIVE_QUARTZ_BASE.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.INACTIVE_AGATE_BASE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.INACTIVE_RUBY_BASE.get(), ModelTemplates.FLAT_ITEM);
 
 
@@ -151,6 +152,29 @@ public class ModModelProvider extends ModelProvider {
                         new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/heliotrope")),
                         new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/carnelian")),
                         new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/onyx"))
+                )
+        );
+        createGemItemModel(
+                itemModels,
+                ModItems.AGATE.get(),
+                List.of(
+                        new GemItemVariant(0, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/dendritic")),
+                        new GemItemVariant(1, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/wingate_pass_plume")),
+                        new GemItemVariant(2, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/rose")),
+                        new GemItemVariant(3, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/holly_blue")),
+                        new GemItemVariant(4, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/tawny")),
+                        new GemItemVariant(5, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/dragons_vein")),
+                        new GemItemVariant(6, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/sakura")),
+                        new GemItemVariant(7, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/botswana")),
+                        new GemItemVariant(8, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/water")),
+                        new GemItemVariant(9, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/blue_lace")),
+                        new GemItemVariant(10, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/grape")),
+                        new GemItemVariant(11, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/ellensburg_blue")),
+                        new GemItemVariant(12, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/turritella")),
+                        new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/tree")),
+                        new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/lake_superior")),
+                        new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/orca")),
+                        new GemItemVariant(16, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/iris"))
                 )
         );
 

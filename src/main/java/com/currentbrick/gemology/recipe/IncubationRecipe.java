@@ -1,10 +1,14 @@
 package com.currentbrick.gemology.recipe;
 
+import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.entity.gem.GemDefinition;
+import com.currentbrick.gemology.entity.gem.GemVariant;
 import com.currentbrick.gemology.init.ModRecipeSerializers;
 import com.currentbrick.gemology.init.ModRecipeTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -21,7 +25,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public record IncubationRecipe(Identifier gem, Ingredient gemBase, Ingredient chroma, List<CruxRequirement> cruxes, Ingredient essence1, Ingredient essence2, int incubationTime) implements Recipe<RecipeInput> {
+public record IncubationRecipe(Identifier gem, Ingredient gemBase, ChromaRequirement chroma, List<CruxRequirement> cruxes, Ingredient essence1, Ingredient essence2, int incubationTime) implements Recipe<RecipeInput> {
 
     @Override
     public boolean matches(RecipeInput input, Level level) {
@@ -34,8 +38,10 @@ public record IncubationRecipe(Identifier gem, Ingredient gemBase, Ingredient ch
             return false;
         }
 
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gem);
+
         // Chroma
-        if (!chroma.test(incubationInput.chroma())) {
+        if (!chroma.matches(incubationInput.chroma(), definition)) {
             return false;
         }
 
@@ -69,8 +75,7 @@ public record IncubationRecipe(Identifier gem, Ingredient gemBase, Ingredient ch
                 return false;
             }
 
-            boolean matchesCrux = cruxes.stream()
-                    .anyMatch(requirement -> requirement.ingredient().test(stack));
+            boolean matchesCrux = cruxes.stream().anyMatch(requirement -> requirement.ingredient().test(stack));
 
             if (!matchesCrux) {
                 return false;
@@ -115,6 +120,24 @@ public record IncubationRecipe(Identifier gem, Ingredient gemBase, Ingredient ch
         return new RecipeBookCategory();
     }
 
+    public int getVariantId(ItemStack chromaStack) {
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gem);
+
+        if (definition == null) {
+            return -1;
+        }
+
+        Identifier chromaId = BuiltInRegistries.ITEM.getKey(chromaStack.getItem());
+
+        for (GemVariant variant : definition.getVariants()) {
+            if (variant.getChromaId().equals(chromaId)) {
+                return variant.getId();
+            }
+        }
+
+        return -1;
+    }
+
     public static final MapCodec<IncubationRecipe> CODEC =
             RecordCodecBuilder.mapCodec(instance -> instance.group(
                     Identifier.CODEC
@@ -125,7 +148,7 @@ public record IncubationRecipe(Identifier gem, Ingredient gemBase, Ingredient ch
                             .fieldOf("gemBase")
                             .forGetter(IncubationRecipe::gemBase),
 
-                    Ingredient.CODEC
+                    ChromaRequirement.CODEC
                             .fieldOf("chroma")
                             .forGetter(IncubationRecipe::chroma),
 
@@ -154,7 +177,7 @@ public record IncubationRecipe(Identifier gem, Ingredient gemBase, Ingredient ch
                     Ingredient.CONTENTS_STREAM_CODEC,
                     IncubationRecipe::gemBase,
 
-                    Ingredient.CONTENTS_STREAM_CODEC,
+                    ChromaRequirement.STREAM_CODEC,
                     IncubationRecipe::chroma,
 
                     ByteBufCodecs.collection(

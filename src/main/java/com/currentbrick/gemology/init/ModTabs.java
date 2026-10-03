@@ -83,6 +83,7 @@ public class ModTabs {
                 output.accept(ModItems.INACTIVE_RUBY_BASE.get());
                 output.accept(ModItems.INACTIVE_JASPER_BASE.get());
                 output.accept(ModItems.INACTIVE_QUARTZ_BASE.get());
+                output.accept(ModItems.INACTIVE_AGATE_BASE.get());
 
                 LocalDate today = LocalDate.now();
 
@@ -91,6 +92,7 @@ public class ModTabs {
 
                 addGemVariants(output, ModItems.JASPER.get(), 16);
                 addGemVariants(output, ModItems.QUARTZ.get(), 17);
+                addGemVariants(output, ModItems.AGATE.get(), 16);
             }).build());
 
 

@@ -1,0 +1,127 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/dendritic"
+        },
+        "when": 0
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/wingate_pass_plume"
+        },
+        "when": 1
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/rose"
+        },
+        "when": 2
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/holly_blue"
+        },
+        "when": 3
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/tawny"
+        },
+        "when": 4
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/dragons_vein"
+        },
+        "when": 5
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/sakura"
+        },
+        "when": 6
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/botswana"
+        },
+        "when": 7
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/water"
+        },
+        "when": 8
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/blue_lace"
+        },
+        "when": 9
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/grape"
+        },
+        "when": 10
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/ellensburg_blue"
+        },
+        "when": 11
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/turritella"
+        },
+        "when": 12
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/tree"
+        },
+        "when": 13
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/lake_superior"
+        },
+        "when": 14
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/orca"
+        },
+        "when": 15
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/agate/iris"
+        },
+        "when": 16
+      }
+    ],
+    "property": "gemology:gem_variant"
+  }
+}

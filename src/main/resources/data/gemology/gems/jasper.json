@@ -26,103 +26,103 @@
     {
       "id": 0,
       "name": "Zebra",
-      "chroma": "gemology:white",
+      "chroma": "gemology:white_chroma",
       "item_texture": "gemology:item/jasper/zebra"
     },
     {
       "id": 1,
       "name": "Red Striped",
-      "chroma": "gemology:orange",
+      "chroma": "gemology:orange_chroma",
       "item_texture": "gemology:item/jasper/red_striped"
     },
     {
       "id": 2,
       "name": "Ripple",
-      "chroma": "gemology:magenta",
+      "chroma": "gemology:magenta_chroma",
       "item_texture": "gemology:item/jasper/ripple"
     },
     {
       "id": 3,
       "name": "Imperial",
-      "chroma": "gemology:light_blue",
+      "chroma": "gemology:light_blue_chroma",
       "item_texture": "gemology:item/jasper/imperial"
     },
     {
       "id": 4,
       "name": "Golden",
-      "chroma": "gemology:yellow",
+      "chroma": "gemology:yellow_chroma",
       "item_texture": "gemology:item/jasper/golden"
     },
     {
       "id": 5,
       "name": "Rainforest",
-      "chroma": "gemology:lime",
+      "chroma": "gemology:lime_chroma",
       "item_texture": "gemology:item/jasper/rainforest"
     },
     {
       "id": 6,
       "name": "Mookaite",
-      "chroma": "gemology:pink",
+      "chroma": "gemology:pink_chroma",
       "item_texture": "gemology:item/jasper/mookaite"
     },
     {
       "id": 7,
       "name": "Matrix",
-      "chroma": "gemology:gray",
+      "chroma": "gemology:gray_chroma",
       "item_texture": "gemology:item/jasper/matrix"
     },
     {
       "id": 8,
       "name": "Picasso",
-      "chroma": "gemology:light_gray",
+      "chroma": "gemology:light_gray_chroma",
       "item_texture": "gemology:item/jasper/picasso"
     },
     {
       "id": 9,
       "name": "Ocean",
-      "chroma": "gemology:cyan",
+      "chroma": "gemology:cyan_chroma",
       "item_texture": "gemology:item/jasper/ocean"
     },
     {
       "id": 10,
       "name": "Royal Plume",
-      "chroma": "gemology:purple",
+      "chroma": "gemology:purple_chroma",
       "item_texture": "gemology:item/jasper/royal_plume"
     },
     {
       "id": 11,
       "name": "Blue Snakeskin",
-      "chroma": "gemology:blue",
+      "chroma": "gemology:blue_chroma",
       "item_texture": "gemology:item/jasper/blue_snakeskin"
     },
     {
       "id": 12,
       "name": "Biggs",
-      "chroma": "gemology:brown",
+      "chroma": "gemology:brown_chroma",
       "item_texture": "gemology:item/jasper/biggs"
     },
     {
       "id": 13,
       "name": "Kambaba",
-      "chroma": "gemology:green",
+      "chroma": "gemology:green_chroma",
       "item_texture": "gemology:item/jasper/kambaba"
     },
     {
       "id": 14,
       "name": "Flame",
-      "chroma": "gemology:red",
+      "chroma": "gemology:red_chroma",
       "item_texture": "gemology:item/jasper/flame"
     },
     {
       "id": 15,
       "name": "Black",
-      "chroma": "gemology:black",
+      "chroma": "gemology:black_chroma",
       "item_texture": "gemology:item/jasper/black"
     },
     {
       "id": 16,
       "name": "Butterfly",
-      "chroma": "gemology:white",
+      "chroma": "gemology:white_chroma",
       "item_texture": "gemology:item/jasper/butterfly"
     }
   ]

@@ -51,18 +51,19 @@ public class ModItems {
     public static final DeferredItem<Item> BLUE_ESSENCE = ITEMS.registerSimpleItem("blue_essence");
     public static final DeferredItem<Item> PINK_ESSENCE = ITEMS.registerSimpleItem("pink_essence");
 
+
+    // ----------- GEMS ------------
+
     public static final DeferredItem<Item> INACTIVE_RUBY_BASE = ITEMS.registerSimpleItem("inactive_ruby_base");
     public static final DeferredItem<Item> INACTIVE_JASPER_BASE = ITEMS.registerSimpleItem("inactive_jasper_base");
     public static final DeferredItem<Item> INACTIVE_QUARTZ_BASE = ITEMS.registerSimpleItem("inactive_quartz_base");
-
-
-    // ----------- GEMS ------------
+    public static final DeferredItem<Item> INACTIVE_AGATE_BASE = ITEMS.registerSimpleItem("inactive_agate_base");
 
     public static final DeferredItem<Item> RUBY = registerGemItem("ruby", Identifier.fromNamespaceAndPath(Gemology.MODID, "ruby"));
     public static final DeferredItem<Item> BLUE_RUBY = registerGemItem("blue_ruby", Identifier.fromNamespaceAndPath(Gemology.MODID, "blue_ruby"));
     public static final DeferredItem<Item> JASPER = registerGemItem("jasper", Identifier.fromNamespaceAndPath(Gemology.MODID, "jasper"));
     public static final DeferredItem<Item> QUARTZ = registerGemItem("quartz", Identifier.fromNamespaceAndPath(Gemology.MODID, "quartz"));
-
+    public static final DeferredItem<Item> AGATE = registerGemItem("agate", Identifier.fromNamespaceAndPath(Gemology.MODID, "agate"));
 
     // ----------- BLOCK ITEMS -----------
 

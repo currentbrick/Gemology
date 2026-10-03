@@ -50,11 +50,13 @@
   "item.gemology.inactive_ruby_base": "Inactive Ruby Base",
   "item.gemology.inactive_jasper_base": "Inactive Jasper Base",
   "item.gemology.inactive_quartz_base": "Inactive Quartz Base",
+  "item.gemology.inactive_agate_base": "Inactive Agate Base",
 
   "item.gemology.ruby": "Ruby",
   "item.gemology.blue_ruby": "Blue Ruby",
   "item.gemology.jasper": "Jasper",
   "item.gemology.quartz": "Quartz",
+  "item.gemology.agate": "Agate",
 
   "entity.gemology.gem": "Gem",
 

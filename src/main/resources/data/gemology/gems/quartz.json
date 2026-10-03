@@ -26,109 +26,109 @@
     {
       "id": 0,
       "name": "Milky",
-      "chroma": "gemology:white",
+      "chroma": "gemology:white_chroma",
       "item_texture": "gemology:item/quartz/milky"
     },
     {
       "id": 1,
       "name": "Chert",
-      "chroma": "gemology:orange",
+      "chroma": "gemology:orange_chroma",
       "item_texture": "gemology:item/quartz/chert"
     },
     {
       "id": 2,
       "name": "Cherry",
-      "chroma": "gemology:magenta",
+      "chroma": "gemology:magenta_chroma",
       "item_texture": "gemology:item/quartz/cherry"
     },
     {
       "id": 3,
       "name": "Blue Aventurine",
-      "chroma": "gemology:light_blue",
+      "chroma": "gemology:light_blue_chroma",
       "item_texture": "gemology:item/quartz/blue_aventurine"
     },
     {
       "id": 4,
       "name": "Citrine",
-      "chroma": "gemology:yellow",
+      "chroma": "gemology:yellow_chroma",
       "item_texture": "gemology:item/quartz/citrine"
     },
     {
       "id": 5,
       "name": "prasiolite",
-      "chroma": "gemology:lime",
+      "chroma": "gemology:lime_chroma",
       "item_texture": "gemology:item/quartz/prasiolite"
     },
     {
       "id": 6,
       "name": "Rose",
-      "chroma": "gemology:pink",
+      "chroma": "gemology:pink_chroma",
       "item_texture": "gemology:item/quartz/rose"
     },
     {
       "id": 7,
       "name": "Flint",
-      "chroma": "gemology:gray",
+      "chroma": "gemology:gray_chroma",
       "item_texture": "gemology:item/quartz/flint"
     },
     {
       "id": 8,
       "name": "Smoky",
-      "chroma": "gemology:light_gray",
+      "chroma": "gemology:light_gray_chroma",
       "item_texture": "gemology:item/quartz/smoky"
     },
     {
       "id": 9,
       "name": "Chalcedony",
-      "chroma": "gemology:cyan",
+      "chroma": "gemology:cyan_chroma",
       "item_texture": "gemology:item/quartz/chalcedony"
     },
     {
       "id": 10,
       "name": "Amethyst",
-      "chroma": "gemology:purple",
+      "chroma": "gemology:purple_chroma",
       "item_texture": "gemology:item/quartz/amethyst"
     },
     {
       "id": 11,
       "name": "Dumortierite",
-      "chroma": "gemology:blue",
+      "chroma": "gemology:blue_chroma",
       "item_texture": "gemology:item/quartz/dumortierite"
     },
     {
       "id": 12,
       "name": "Tiger's Eye",
-      "chroma": "gemology:brown",
+      "chroma": "gemology:brown_chroma",
       "item_texture": "gemology:item/quartz/tigers_eye"
     },
     {
       "id": 13,
       "name": "Heliotrope",
-      "chroma": "gemology:green",
+      "chroma": "gemology:green_chroma",
       "item_texture": "gemology:item/quartz/heliotrope"
     },
     {
       "id": 14,
       "name": "Carnelian",
-      "chroma": "gemology:red",
+      "chroma": "gemology:red_chroma",
       "item_texture": "gemology:item/quartz/carnelian"
     },
     {
       "id": 15,
       "name": "Onyx",
-      "chroma": "gemology:black",
+      "chroma": "gemology:black_chroma",
       "item_texture": "gemology:item/quartz/onyx"
     },
     {
       "id": 16,
       "name": "Angel Aura",
-      "chroma": "gemology:white",
+      "chroma": "gemology:white_chroma",
       "item_texture": "gemology:item/quartz/angel_aura"
     },
     {
       "id": 17,
       "name": "Lace Amethyst",
-      "chroma": "gemology:white",
+      "chroma": "gemology:white_chroma",
       "item_texture": "gemology:item/quartz/lace_amethyst"
     }
   ]

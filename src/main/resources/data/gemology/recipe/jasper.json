@@ -1,0 +1,51 @@
+{
+  "type": "gemology:incubation",
+  "gem": "gemology:jasper",
+  "gemBase": "gemology:inactive_jasper_base",
+  "chroma": "all",
+  "cruxes": [
+    {
+      "ingredient": "minecraft:blaze_rod",
+      "quality": 0.25,
+      "chance": 0.95
+    },
+    {
+      "ingredient": "minecraft:quartz",
+      "quality": 0.25,
+      "chance": 0.9
+    },
+    {
+      "ingredient": "minecraft:basalt",
+      "quality": 0.25,
+      "chance": 0.85
+    },
+    {
+      "ingredient": "minecraft:amethyst_block",
+      "quality": 0.25,
+      "chance": 0.8
+    },
+    {
+      "ingredient": "minecraft:iron_ore",
+      "quality": 0.25,
+      "chance": 0.75
+    },
+    {
+      "ingredient": "minecraft:gold_nugget",
+      "quality": 0.25,
+      "chance": 0.7
+    },
+    {
+      "ingredient": "minecraft:calcite",
+      "quality": 0.25,
+      "chance": 0.65
+    },
+    {
+      "ingredient": "minecraft:cobbled_deepslate",
+      "quality": 0.25,
+      "chance": 0.6
+    }
+  ],
+  "essence1": "gemology:white_essence",
+  "essence2": "gemology:yellow_essence",
+  "incubationTime": 60
+}

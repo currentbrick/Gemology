@@ -1,0 +1,7 @@
+{
+  "type": "gemology:effect",
+  "effect": "minecraft:night_vision",
+  "duration": 200,
+  "amplifier": 1,
+  "trigger": "gemology:passive"
+}

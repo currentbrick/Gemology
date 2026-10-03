@@ -231,23 +231,6 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
                 palettes.put(type, palette);
 
-                System.out.println(
-                        "PALETTE LOADED: "
-                                + paletteId
-                                + " rows="
-                                + palette.getRowCount()
-                );
-
-                System.out.println(
-                        "PALETTE PIXEL "
-                                + type
-                                + ": "
-                                + String.format(
-                                "%08X",
-                                palette.getRow(0).get(0)
-                        )
-                );
-
             } catch (IOException e) {
                 System.out.println(
                     "PALETTE LOAD FAILED: " + paletteId
@@ -271,12 +254,6 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
         int variantId = instanceData.getVariant();
 
-        System.out.println(
-                "PALETTE DEBUG: type=" + type
-                        + " | instanceVariant=" + variantId
-                        + " | instanceId=" + instanceData.getInstanceId()
-                        + " | rows=" + palette.getRowCount()
-        );
 
         if (variantId == -1) {
             variantId = 0;

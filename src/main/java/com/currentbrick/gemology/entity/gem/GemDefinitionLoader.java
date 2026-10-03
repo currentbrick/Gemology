@@ -66,9 +66,17 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
                         int id = variantJson.get("id").getAsInt();
                         String name = variantJson.get("name").getAsString();
 
-                        Identifier chromaId = Identifier.parse(
-                                variantJson.get("chroma").getAsString()
-                        );
+                        Identifier chromaId = null;
+
+                        if (variantJson.has("chroma")
+                                && !variantJson.get("chroma").isJsonNull()
+                                && !variantJson.get("chroma").getAsString().isEmpty()) {
+
+                            chromaId = Identifier.parse(
+                                    variantJson.get("chroma").getAsString()
+                            );
+                        }
+
                         Identifier itemTexture = Identifier.parse(
                                 variantJson.get("item_texture").getAsString()
                         );

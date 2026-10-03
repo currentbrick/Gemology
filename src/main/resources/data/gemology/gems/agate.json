@@ -1,0 +1,129 @@
+{
+  "stats": {
+    "health": 120.0,
+    "strength": 10.0,
+    "speed": 0.3
+  },
+
+  "dimensions": {
+    "width": 0.7,
+    "height": 1.99
+  },
+
+  "abilities": [
+    "gemology:night_vision"
+  ],
+
+  "visual_variants": {
+    "skin": 1,
+    "hair": 4,
+    "gem": 18,
+    "outfit": 9,
+    "insignia": 9
+  },
+
+  "variants": [
+    {
+      "id": 0,
+      "name": "Dendritic",
+      "chroma": "gemology:white_chroma",
+      "item_texture": "gemology:item/agate/dendritic"
+    },
+    {
+      "id": 1,
+      "name": "Wingate Pass Plume",
+      "chroma": "gemology:orange_chroma",
+      "item_texture": "gemology:item/agate/wingate_pass_plume"
+    },
+    {
+      "id": 2,
+      "name": "Rose",
+      "chroma": "gemology:magenta_chroma",
+      "item_texture": "gemology:item/agate/rose"
+    },
+    {
+      "id": 3,
+      "name": "Holly Blue",
+      "chroma": "gemology:light_blue_chroma",
+      "item_texture": "gemology:item/agate/holly_blue"
+    },
+    {
+      "id": 4,
+      "name": "Tawny",
+      "chroma": "gemology:yellow_chroma",
+      "item_texture": "gemology:item/agate/tawny"
+    },
+    {
+      "id": 5,
+      "name": "Dragons Vein",
+      "chroma": "gemology:lime_chroma",
+      "item_texture": "gemology:item/agate/dragons_vein"
+    },
+    {
+      "id": 6,
+      "name": "Sakura",
+      "chroma": "gemology:pink_chroma",
+      "item_texture": "gemology:item/agate/sakura"
+    },
+    {
+      "id": 7,
+      "name": "Botswana",
+      "chroma": "gemology:gray_chroma",
+      "item_texture": "gemology:item/agate/botswana"
+    },
+    {
+      "id": 8,
+      "name": "Water",
+      "chroma": "gemology:light_gray_chroma",
+      "item_texture": "gemology:item/agate/water"
+    },
+    {
+      "id": 9,
+      "name": "Blue Lace",
+      "chroma": "gemology:cyan_chroma",
+      "item_texture": "gemology:item/agate/blue_lace"
+    },
+    {
+      "id": 10,
+      "name": "Grape",
+      "chroma": "gemology:purple_chroma",
+      "item_texture": "gemology:item/agate/grape"
+    },
+    {
+      "id": 11,
+      "name": "Ellensburg Blue",
+      "chroma": "gemology:blue_chroma",
+      "item_texture": "gemology:item/agate/ellensburg_blue"
+    },
+    {
+      "id": 12,
+      "name": "Turritella",
+      "chroma": "gemology:brown_chroma",
+      "item_texture": "gemology:item/agate/turritella"
+    },
+    {
+      "id": 13,
+      "name": "Tree",
+      "chroma": "gemology:green_chroma",
+      "item_texture": "gemology:item/agate/tree"
+    },
+    {
+      "id": 14,
+      "name": "Lake Superior",
+      "chroma": "gemology:red_chroma",
+      "item_texture": "gemology:item/agate/lake_superior"
+    },
+    {
+      "id": 15,
+      "name": "Orca",
+      "chroma": "gemology:black_chroma",
+      "item_texture": "gemology:item/agate/orca"
+    },
+    {
+      "id": 16,
+      "name": "Iris",
+      "chroma": "gemology:white_chroma",
+      "item_texture": "gemology:item/agate/iris"
+    }
+  ]
+}

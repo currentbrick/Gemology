@@ -42,11 +42,6 @@ public class GemPalette {
         int lower = colours.get(lowerIndex);
         int upper = colours.get(upperIndex);
 
-        System.out.println(
-                "PALETTE ROW " + row
-                        + " RAW = " + Integer.toHexString(colours.get(0))
-                        + " CONVERTED = " + Integer.toHexString(convertABGR(colours.get(0)))
-        );
 
         return interpolateABGR(lower, upper, interpolation);
     }
