@@ -39,16 +39,21 @@ public class IncubatorContainer extends AbstractContainerMenu {
         };
 
         for (int i = 0; i < 8; i++) {
-            addSlot(new Slot(
-                    incubator,
-                    i,
-                    cruxPositions[i][0],
-                    cruxPositions[i][1]
-            ));
+            addSlot(new Slot(incubator, i, cruxPositions[i][0], cruxPositions[i][1]) {
+                @Override
+                public int getMaxStackSize() {
+                    return 1;
+                }
+            });
         }
 
         // Gem base
-        addSlot(new Slot(incubator, 8, 76, 65));
+        addSlot(new Slot(incubator, 8, 76, 65) {
+            @Override
+            public int getMaxStackSize() {
+                return 1;
+            }
+        });
 
         // Essences
         addSlot(new Slot(incubator, 9, 168, 35));
@@ -107,7 +112,48 @@ public class IncubatorContainer extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        return ItemStack.EMPTY;
+        Slot slot = slots.get(index);
+
+        if (!slot.hasItem()) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack sourceStack = slot.getItem();
+        ItemStack originalStack = sourceStack.copy();
+
+        if (index < 13) {
+
+            if (!moveItemStackTo(sourceStack, 13, slots.size(), true)) {
+                return ItemStack.EMPTY;
+            }
+
+        } else {
+            if (!moveItemStackTo(sourceStack, 0, 12, false)) {
+                if (index < 40) {
+                    if (!moveItemStackTo(sourceStack, 40, 49, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else {
+                    if (!moveItemStackTo(sourceStack, 13, 40, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            }
+        }
+
+        if (sourceStack.isEmpty()) {
+            slot.setByPlayer(ItemStack.EMPTY);
+        } else {
+            slot.setChanged();
+        }
+
+        if (sourceStack.getCount() == originalStack.getCount()) {
+            return ItemStack.EMPTY;
+        }
+
+        slot.onTake(player, sourceStack);
+
+        return originalStack;
     }
 
     public BlockPos getBlockPos() {

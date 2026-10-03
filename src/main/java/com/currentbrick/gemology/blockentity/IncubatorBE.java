@@ -3,9 +3,11 @@ package com.currentbrick.gemology.blockentity;
 import com.currentbrick.gemology.Gemology;
 import com.currentbrick.gemology.container.IncubatorContainer;
 import com.currentbrick.gemology.entity.EntityGem;
+import com.currentbrick.gemology.entity.gem.GemDefinition;
 import com.currentbrick.gemology.entity.gem.GemInstanceData;
 import com.currentbrick.gemology.init.ModBlockEntities;
 import com.currentbrick.gemology.init.ModRecipeTypes;
+import com.currentbrick.gemology.recipe.CruxRequirement;
 import com.currentbrick.gemology.recipe.IncubationInput;
 import com.currentbrick.gemology.recipe.IncubationRecipe;
 import net.minecraft.core.BlockPos;
@@ -34,6 +36,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.common.extensions.IMenuProviderExtension;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -91,6 +94,9 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
 
 
     public void startIncubation() {
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
+        }
         if (incubating) {
             return;
         }
@@ -98,6 +104,12 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
         Optional<RecipeHolder<IncubationRecipe>> matchingRecipe = getMatchingRecipe();
 
         if (matchingRecipe.isEmpty()) {
+            return;
+        }
+
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(matchingRecipe.get().value().gem());
+
+        if (!isGemAvailable(definition, serverLevel)) {
             return;
         }
 
@@ -113,6 +125,11 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
         incubating = true;
 
         setChanged();
+    }
+
+    public static boolean isGemAvailable(GemDefinition definition, ServerLevel level) {
+        LocalDate date = LocalDate.now();
+        return definition.isAvailable(date);
     }
 
 
@@ -182,7 +199,7 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
 
         int variant = EntityGem.generateRandomVariant(gemId, RandomSource.create());
 
-        GemInstanceData instance = new GemInstanceData(UUID.randomUUID(), 1.0F, variant);
+        GemInstanceData instance = new GemInstanceData(UUID.randomUUID(), calculateQuality(recipe), variant);
 
         return EntityGem.createGemItem(gemId, instance.getInstanceId(), instance.getQuality(), instance.getVariant());
     }
@@ -358,5 +375,40 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
                 input,
                 serverLevel
         );
+    }
+
+
+    public float calculateQuality(IncubationRecipe recipe) {
+        RandomSource random = RandomSource.create();
+
+        float totalQuality = 0.0F;
+        int successfulCruxes = 0;
+
+        for (int slot = CRUX_START; slot <= CRUX_END; slot++) {
+            ItemStack crux = getItem(slot);
+
+            if (crux.isEmpty()) {
+                continue;
+            }
+
+            for (CruxRequirement requirement : recipe.cruxes()) {
+                if (!requirement.ingredient().test(crux)) {
+                    continue;
+                }
+
+                if (random.nextFloat() <= requirement.chance()) {
+                    totalQuality += requirement.quality();
+                    successfulCruxes++;
+                }
+
+                break;
+            }
+        }
+
+        if (successfulCruxes == 0) {
+            return 0.0F;
+        }
+
+        return totalQuality;
     }
 }

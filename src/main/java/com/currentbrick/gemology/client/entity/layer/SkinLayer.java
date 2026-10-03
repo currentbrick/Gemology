@@ -39,7 +39,7 @@ public class SkinLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
                                     vertexConsumer,
                                     renderPassInfo.packedLight(),
                                     renderPassInfo.packedOverlay(),
-                                    renderPassInfo.renderColor()
+                                    renderPassInfo.renderState().skinColour
                             )
                     );
 

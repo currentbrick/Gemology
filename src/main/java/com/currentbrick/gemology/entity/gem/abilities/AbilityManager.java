@@ -2,6 +2,7 @@ package com.currentbrick.gemology.entity.gem.abilities;
 
 import net.minecraft.resources.Identifier;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,10 @@ public class AbilityManager {
 
     public void clear() {
         definitions.clear();
+    }
+
+    public Collection<AbilityDefinition> getAll() {
+        return definitions.values();
     }
 
 }

@@ -31,12 +31,6 @@ public class IncubatorScreen extends AbstractContainerScreen<IncubatorContainer>
         int progress = menu.getIncubationProgress();
         int time = menu.getIncubationTime();
 
-        Gemology.LOGGER.info(
-                "PROGRESS: {} / {}",
-                menu.getIncubationProgress(),
-                menu.getIncubationTime()
-        );
-
         if (time > 0) {
             int barWidth = (int) (37.0F * progress / time);
             barWidth = Math.clamp(barWidth, 0, 37);

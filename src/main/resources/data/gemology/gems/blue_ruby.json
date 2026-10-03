@@ -1,0 +1,29 @@
+{
+  "stats": {
+    "health": 30.0,
+    "strength": 10.0,
+    "speed": 0.4
+  },
+
+  "dimensions": {
+    "width": 0.75,
+    "height": 1.5
+  },
+
+  "visual_variants": {
+    "skin": 1,
+    "hair": 4,
+    "gem": 18,
+    "outfit": 9,
+    "insignia": 9
+  },
+
+  "availability": [
+    {
+      "start": "04-01",
+      "end": "04-01"
+    }
+  ],
+
+  "abilities": []
+}

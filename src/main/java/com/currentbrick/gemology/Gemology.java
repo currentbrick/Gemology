@@ -5,8 +5,6 @@ import com.currentbrick.gemology.entity.gem.GemDefinitionLoader;
 import com.currentbrick.gemology.entity.gem.GemDefinitionManager;
 import com.currentbrick.gemology.entity.gem.abilities.AbilityDefinitionLoader;
 import com.currentbrick.gemology.entity.gem.abilities.AbilityManager;
-import com.currentbrick.gemology.entity.gem.abilities.AbilityTypeRegistry;
-import com.currentbrick.gemology.entity.gem.abilities.EffectAbility;
 import com.currentbrick.gemology.init.*;
 import com.currentbrick.gemology.item.ItemGem;
 import net.minecraft.core.BlockPos;
@@ -67,7 +65,7 @@ public class Gemology {
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
-        AbilityTypeRegistry.register(Identifier.fromNamespaceAndPath(MODID, "effect"), EffectAbility::new);
+        ModAbilities.register();
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

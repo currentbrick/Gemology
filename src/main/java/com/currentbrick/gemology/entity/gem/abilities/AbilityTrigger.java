@@ -4,8 +4,9 @@ import net.minecraft.resources.Identifier;
 
 public enum AbilityTrigger {
 
-    PASSIVE(Identifier.fromNamespaceAndPath("gemology", "passive"));
-
+    PASSIVE(Identifier.fromNamespaceAndPath("gemology", "passive")),
+    ATTACK(Identifier.fromNamespaceAndPath("gemology", "attack")),
+    SECONDARY_ATTACK(Identifier.fromNamespaceAndPath("gemology", "secondary_attack"));
     private final Identifier id;
 
     AbilityTrigger(Identifier id) {

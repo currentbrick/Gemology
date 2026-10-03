@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:blaze_rod",
+    "D": "minecraft:diamond",
+    "I": "minecraft:iron_ingot",
+    "T": "gemology:tungsten_block"
+  },
+  "pattern": [
+    "TIT",
+    "DBD",
+    "TIT"
+  ],
+  "result": {
+    "id": "gemology:incubator"
+  }
+}

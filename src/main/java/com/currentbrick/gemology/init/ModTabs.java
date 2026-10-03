@@ -1,10 +1,12 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.entity.gem.GemDefinition;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -12,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.time.LocalDate;
 
 public class ModTabs {
 
@@ -78,8 +82,12 @@ public class ModTabs {
 
                 output.accept(ModItems.INACTIVE_RUBY_BASE.get());
                 output.accept(ModItems.INACTIVE_JASPER_BASE.get());
+                output.accept(ModItems.INACTIVE_QUARTZ_BASE.get());
+
+                LocalDate today = LocalDate.now();
 
                 output.accept(ModItems.RUBY.get());
+                if (Gemology.GEM_DEFINITION_MANAGER.get(Identifier.fromNamespaceAndPath("gemology", "blue_ruby")).isAvailable(today)) output.accept(ModItems.BLUE_RUBY.get());
 
                 addGemVariants(output, ModItems.JASPER.get(), 16);
                 addGemVariants(output, ModItems.QUARTZ.get(), 17);

@@ -10,15 +10,12 @@
     "height": 1.99
   },
 
-  "appearance": {
-    "model": "gemology:jasper",
-    "texture": "gemology:entity/jasper/jasper.png",
-
-    "palettes": {
-      "skin": "gemology:entity/jasper/palettes/skin_palette.png",
-      "hair": "gemology:entity/jasper/palettes/hair_palette.png",
-      "markings": "gemology:entity/jasper/palettes/markings_palette.png"
-    }
+  "visual_variants": {
+    "skin": 1,
+    "hair": 4,
+    "gem": 18,
+    "outfit": 9,
+    "insignia": 9
   },
 
   "abilities": [

@@ -99,6 +99,7 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.PINK_ESSENCE.get(), ModelTemplates.FLAT_ITEM);
 
         itemModels.generateFlatItem(ModItems.INACTIVE_JASPER_BASE.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.INACTIVE_QUARTZ_BASE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.INACTIVE_RUBY_BASE.get(), ModelTemplates.FLAT_ITEM);
 
 
@@ -106,6 +107,7 @@ public class ModModelProvider extends ModelProvider {
 
 
         itemModels.generateFlatItem(ModItems.RUBY.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.BLUE_RUBY.get(), ModelTemplates.FLAT_ITEM);
 
         createGemItemModel(
                 itemModels,

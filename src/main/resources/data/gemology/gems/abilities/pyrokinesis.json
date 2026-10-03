@@ -1,0 +1,18 @@
+{
+  "type": "gemology:melee",
+  "trigger": "gemology:attack",
+
+  "effects": [
+    {
+      "type": "minecraft:fire",
+      "duration": 100
+    }
+  ],
+
+  "particles": [
+    {
+      "type": "minecraft:flame",
+      "count": 12
+    }
+  ]
+}

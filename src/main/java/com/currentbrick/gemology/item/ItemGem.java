@@ -80,13 +80,9 @@ public class ItemGem extends Item {
             return;
         }
 
-        int variantId = customData.copyTag()
-                .getInt("Variant")
-                .orElse(-1);
+        int variantId = customData.copyTag().getInt("Variant").orElse(-1);
 
-        String gemIdString = customData.copyTag()
-                .getString("GemType")
-                .orElse(null);
+        String gemIdString = customData.copyTag().getString("GemType").orElse(null);
 
         if (gemIdString == null) {
             return;
@@ -94,8 +90,7 @@ public class ItemGem extends Item {
 
         Identifier gemId = Identifier.parse(gemIdString);
 
-        GemDefinition definition =
-                Gemology.GEM_DEFINITION_MANAGER.get(gemId);
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gemId);
 
         if (definition == null) {
             return;

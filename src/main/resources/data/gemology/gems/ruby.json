@@ -10,16 +10,16 @@
     "height": 1.5
   },
 
-  "appearance": {
-    "model": "gemology:ruby",
-    "texture": "gemology:entity/ruby/ruby.png",
-
-    "palettes": {
-      "skin": "gemology:entity/ruby/palettes/skin_palette.png",
-      "hair": "gemology:entity/ruby/palettes/hair_palette.png",
-      "markings": "gemology:entity/ruby/palettes/markings_palette.png"
-    }
+  "visual_variants": {
+    "skin": 1,
+    "hair": 4,
+    "gem": 18,
+    "outfit": 9,
+    "insignia": 9
   },
 
-  "abilities": []
+  "abilities": [
+    "gemology:pyrokinesis",
+    "gemology:fireball"
+  ]
 }

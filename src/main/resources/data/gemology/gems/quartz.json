@@ -10,20 +10,17 @@
     "height": 1.99
   },
 
-  "appearance": {
-    "model": "gemology:quartz",
-    "texture": "gemology:entity/quartz/quartz.png",
-
-    "palettes": {
-      "skin": "gemology:entity/quartz/palettes/skin_palette.png",
-      "hair": "gemology:entity/quartz/palettes/hair_palette.png",
-      "markings": "gemology:entity/quartz/palettes/markings_palette.png"
-    }
-  },
-
   "abilities": [
     "gemology:speed"
   ],
+
+  "visual_variants": {
+    "skin": 1,
+    "hair": 4,
+    "gem": 18,
+    "outfit": 9,
+    "insignia": 9
+  },
 
   "variants": [
     {

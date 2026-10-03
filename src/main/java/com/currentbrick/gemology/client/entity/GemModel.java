@@ -33,7 +33,7 @@ public class GemModel extends GeoModel<EntityGem> {
         if (texture) {
             return Identifier.fromNamespaceAndPath(
                     gemId.getNamespace(),
-                    folder + "/" + gemId.getPath() + "/" + gemId.getPath() + ".png"
+                    folder + "/" + gemId.getPath() + "/blank.png"
             );
         }
         return Identifier.fromNamespaceAndPath(

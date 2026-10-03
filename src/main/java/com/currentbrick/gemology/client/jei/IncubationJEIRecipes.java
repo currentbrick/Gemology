@@ -15,9 +15,7 @@ public class IncubationJEIRecipes {
         return List.copyOf(RECIPES);
     }
 
-    public static void update(
-            Iterable<RecipeHolder<IncubationRecipe>> recipes
-    ) {
+    public static void update(Iterable<RecipeHolder<IncubationRecipe>> recipes) {
         RECIPES.clear();
 
         for (RecipeHolder<IncubationRecipe> recipe : recipes) {

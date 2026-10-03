@@ -2,12 +2,18 @@ package com.currentbrick.gemology.client.jei;
 
 import com.currentbrick.gemology.Gemology;
 import com.currentbrick.gemology.init.ModItems;
+import com.currentbrick.gemology.recipe.CruxRequirement;
 import com.currentbrick.gemology.recipe.IncubationRecipe;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.AbstractRecipeCategory;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
@@ -15,76 +21,79 @@ import net.minecraft.world.item.ItemStack;
 
 public class IncubationRecipeCategory extends AbstractRecipeCategory<IncubationRecipe> {
 
+    private final IDrawable background;
+
     public IncubationRecipeCategory(IGuiHelper guiHelper) {
         super(
                 GemologyJEIPlugin.INCUBATION_RECIPE_TYPE,
                 Component.translatable("jei.gemology.incubation"),
-                guiHelper.createDrawable(
-                        Identifier.fromNamespaceAndPath(
-                                Gemology.MODID,
-                                "textures/gui/incubator.png"
-                        ),
-                        0,
-                        0,
-                        208,
-                        224
+                guiHelper.createDrawableIngredient(
+                        VanillaTypes.ITEM_STACK,
+                        ModItems.INCUBATOR.get().getDefaultInstance()
                 ),
-                208,
-                224
+                171,
+                117
         );
+
+        background = guiHelper.drawableBuilder(
+                Identifier.fromNamespaceAndPath(
+                        Gemology.MODID,
+                        "textures/gui/incubator_jei.png"
+                ),
+                0,
+                0,
+                171,
+                117
+        ).setTextureSize(171, 117).build();
     }
 
     @Override
-    public void setRecipe(
-            IRecipeLayoutBuilder builder,
-            IncubationRecipe recipe,
-            IFocusGroup focuses
-    ) {
+    public void setRecipe(IRecipeLayoutBuilder builder, IncubationRecipe recipe, IFocusGroup focuses) {
         // Gem base
-        builder.addInputSlot(76, 65)
+        builder.addInputSlot(48, 50)
                 .add(recipe.gemBase());
 
+        // 28, 15
         // Chroma
-        builder.addInputSlot(168, 17)
+        builder.addInputSlot(140, 2)
                 .add(recipe.chroma());
 
         // Essence 1
-        builder.addInputSlot(168, 35)
+        builder.addInputSlot(140, 20)
                 .add(recipe.essence1());
 
         // Essence 2
-        builder.addInputSlot(168, 53)
+        builder.addInputSlot(140, 38)
                 .add(recipe.essence2());
 
         // Cruxes
         int[][] cruxPositions = {
-                {38, 27},
-                {76, 19},
-                {114, 27},
-                {30, 65},
-                {122, 65},
-                {38, 103},
-                {76, 111},
-                {114, 103}
+                {10, 12},
+                {48, 4},
+                {86, 12},
+                {2, 50},
+                {94, 50},
+                {10, 88},
+                {48, 96},
+                {86, 88}
         };
 
-        for (int i = 0; i < recipe.cruxes().size(); i++) {
-            if (i >= cruxPositions.length) {
-                break;
-            }
-
-            builder.addInputSlot(
+        for (int i = 0; i < cruxPositions.length; i++) {
+            IRecipeSlotBuilder slot = builder.addInputSlot(
                     cruxPositions[i][0],
                     cruxPositions[i][1]
-            ).add(recipe.cruxes().get(i).ingredient());
+            );
+
+            for (CruxRequirement crux : recipe.cruxes()) {
+                slot.add(crux.ingredient());
+            }
         }
 
         // Output
         Item gemItem = ModItems.getGemItem(recipe.gem());
 
         if (gemItem != null) {
-            builder.addOutputSlot(163, 110)
-                    .add(new ItemStack(gemItem));
+            builder.addOutputSlot(135, 95).add(new ItemStack(gemItem));
         }
     }
 
@@ -107,5 +116,10 @@ public class IncubationRecipeCategory extends AbstractRecipeCategory<IncubationR
                 "gemology",
                 "incubation/" + recipe.gem().getPath()
         );
+    }
+
+    @Override
+    public void draw(IncubationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+        background.draw(guiGraphics, 0, 0);
     }
 }

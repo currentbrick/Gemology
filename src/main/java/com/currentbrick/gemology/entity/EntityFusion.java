@@ -36,6 +36,9 @@ public class EntityFusion extends Monster implements GeoAnimatable {
     private CompoundTag firstGemData;
     private CompoundTag secondGemData;
 
+    private static final EntityDataAccessor<String> FUSION_GEM_1 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> FUSION_GEM_2 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
+
     private GemStats fusionStats;
     private GemDimensions fusionDimensions;
 
@@ -54,11 +57,32 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
         builder.define(FUSION_WIDTH, 1F);
         builder.define(FUSION_HEIGHT, 2F);
+
+        builder.define(FUSION_GEM_1, "");
+        builder.define(FUSION_GEM_2, "");
     }
 
     public void setComponents(CompoundTag first, CompoundTag second) {
         this.firstGemData = first;
         this.secondGemData = second;
+
+        Identifier gem1 = getGemId(first);
+        Identifier gem2 = getGemId(second);
+
+        entityData.set(FUSION_GEM_1, gem1 != null ? gem1.toString() : "");
+        entityData.set(FUSION_GEM_2, gem2 != null ? gem2.toString() : "");
+    }
+
+    private Identifier getGemId(CompoundTag data) {
+        if (data == null) {
+            return null;
+        }
+
+        String gemType = data.getString("GemType").orElse(null);
+
+        return gemType != null
+                ? Identifier.tryParse(gemType)
+                : null;
     }
 
     public CompoundTag getFirstGemData() {
@@ -71,6 +95,23 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
     public GemStats getFusionStats() {
         return fusionStats;
+    }
+
+
+    public Identifier getGem1ID() {
+        String id = entityData.get(FUSION_GEM_1);
+
+        return id.isEmpty()
+                ? null
+                : Identifier.tryParse(id);
+    }
+
+    public Identifier getGem2ID() {
+        String id = entityData.get(FUSION_GEM_2);
+
+        return id.isEmpty()
+                ? null
+                : Identifier.tryParse(id);
     }
 
     public void setFusionStats(GemStats fusionStats) {
@@ -127,7 +168,17 @@ public class EntityFusion extends Monster implements GeoAnimatable {
             output.putFloat("Strength", fusionStats.getStrength());
             output.putFloat("Speed", fusionStats.getSpeed());
         }
-        applyStats();
+
+        output.putFloat("FusionWidth", entityData.get(FUSION_WIDTH));
+        output.putFloat("FusionHeight", entityData.get(FUSION_HEIGHT));
+
+        if (firstGemData != null) {
+            output.store("FirstGem", CompoundTag.CODEC, firstGemData);
+        }
+
+        if (secondGemData != null) {
+            output.store("SecondGem", CompoundTag.CODEC, secondGemData);
+        }
     }
 
     @Override
@@ -137,9 +188,33 @@ public class EntityFusion extends Monster implements GeoAnimatable {
         float strength = input.getFloatOr("Strength", 0.0F);
         float speed = input.getFloatOr("Speed", 0.0F);
 
+        float width = input.getFloatOr("FusionWidth", 1.0F);
+
+        float height = input.getFloatOr("FusionHeight", 2.0F);
+
+        fusionDimensions = new GemDimensions(width, height);
+
+        entityData.set(FUSION_WIDTH, width);
+
+        entityData.set(FUSION_HEIGHT, height);
+
+        firstGemData = input.read("FirstGem", CompoundTag.CODEC).orElse(null);
+
+        secondGemData = input.read("SecondGem", CompoundTag.CODEC).orElse(null);
+
         if (health != 0.0F || strength != 0.0F || speed != 0.0F) {
             fusionStats = new GemStats(health, strength, speed);
         }
+
+        if (fusionStats != null) {
+            applyStats();
+        }
+
+        Identifier gem1 = getGemId(firstGemData);
+        Identifier gem2 = getGemId(secondGemData);
+
+        entityData.set(FUSION_GEM_1, gem1 != null ? gem1.toString() : "");
+        entityData.set(FUSION_GEM_2, gem2 != null ? gem2.toString() : "");
     }
 
     public void applyStats() {

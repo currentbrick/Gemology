@@ -9,7 +9,14 @@ import com.currentbrick.gemology.entity.fusion.FusionGenerator;
 import com.currentbrick.gemology.entity.gem.*;
 import com.currentbrick.gemology.entity.gem.abilities.Ability;
 import com.currentbrick.gemology.entity.gem.abilities.AbilityDefinition;
+import com.currentbrick.gemology.entity.gem.abilities.AbilityTrigger;
 import com.currentbrick.gemology.entity.gem.abilities.AbilityTypeRegistry;
+import com.currentbrick.gemology.entity.gem.ai.GemMeleeAttackGoal;
+import com.currentbrick.gemology.entity.gem.ai.GemRangedAttackGoal;
+import com.currentbrick.gemology.entity.gem.ai.GemTargetGoal;
+import com.currentbrick.gemology.entity.gem.palette.GemPalette;
+import com.currentbrick.gemology.entity.gem.palette.GemPaletteGenerator;
+import com.currentbrick.gemology.entity.gem.palette.GemPaletteLoader;
 import com.currentbrick.gemology.init.ModEntities;
 import com.currentbrick.gemology.init.ModItems;
 import com.currentbrick.gemology.item.FusionItem;
@@ -27,12 +34,17 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -46,8 +58,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.extensions.IMenuProviderExtension;
 
-import java.util.List;
-import java.util.UUID;
+import java.io.IOException;
+import java.util.*;
 
 public class EntityGem extends Monster implements GeoAnimatable, Container, MenuProvider, IMenuProviderExtension, ContainerListener {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -57,13 +69,18 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
     private MovementMode movementMode = MovementMode.WANDER;
     private GemInstanceData instanceData;
     private int pendingVariant = -1;
+    private int secondaryAttackCooldown = 0;
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.INT);
 
     private static final int INVENTORY_SIZE = 16;
 
     private final NonNullList<ItemStack> gemInventory = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
+    private final Map<GemPaletteGenerator.PaletteType, GemPalette> palettes = new EnumMap<>(GemPaletteGenerator.PaletteType.class);
+
     private static final EntityDataAccessor<String> GEM_ID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> OWNER_UUID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> INSTANCE_ID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
 
     public EntityGem(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -74,23 +91,66 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
             return;
         }
 
+        System.out.println("WARNING: GENERATING/RESTORING INSTANCE DATA");
+
+        Identifier gemId = getGemId();
+
+        if (gemId == null) {
+            return;
+        }
+
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gemId);
+
+        if (definition == null) {
+            return;
+        }
+
+        String syncedId = this.entityData.get(INSTANCE_ID);
+
+        if (!syncedId.isEmpty()) {
+            UUID instanceId = UUID.fromString(syncedId);
+
+            int variant = this.entityData.get(VARIANT);
+
+            if (variant == -1) {
+                variant = generateRandomVariant();
+            }
+
+            instanceData = new GemInstanceData(
+                    instanceId,
+                    1.0F,
+                    variant
+            );
+
+            System.out.println("RESTORED FROM SYNC: " + instanceId);
+
+            return;
+        }
+
         int variant = pendingVariant;
 
         if (variant == -1) {
             variant = generateRandomVariant();
         }
 
-        instanceData = new GemInstanceData(
-                UUID.randomUUID(),
-                1.0F,
-                variant
-        );
+        UUID newId = UUID.randomUUID();
+
+        System.out.println("!!! GENERATED NEW UUID: " + newId);
+
+        setInstanceData(new GemInstanceData(newId, 1.0F, variant));
     }
 
     public void setPendingVariant(int variant) {
         this.pendingVariant = variant;
     }
 
+    private static int randomVariant(int count, RandomSource random) {
+        if (count <= 1) {
+            return 0;
+        }
+
+        return random.nextInt(count);
+    }
 
 
     public GemInstanceData getInstanceData() {
@@ -100,10 +160,138 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
     public void setInstanceData(GemInstanceData instanceData) {
         this.instanceData = instanceData;
+
+        if (instanceData != null) {
+            this.pendingVariant = instanceData.getVariant();
+
+            this.entityData.set(
+                    INSTANCE_ID,
+                    instanceData.getInstanceId().toString()
+            );
+
+            this.entityData.set(
+                    VARIANT,
+                    instanceData.getVariant()
+            );
+        } else {
+            this.pendingVariant = -1;
+
+            this.entityData.set(INSTANCE_ID, "");
+            this.entityData.set(VARIANT, -1);
+        }
     }
 
     private int generateRandomVariant() {
         return generateRandomVariant(getGemId(), random);
+    }
+
+    public void loadPalettes(ResourceManager resourceManager) {
+        Identifier gemId = getGemId();
+
+        if (gemId == null) {
+            return;
+        }
+
+        palettes.clear();
+
+        String gemPath = gemId.getPath();
+
+        for (GemPaletteGenerator.PaletteType type :
+                GemPaletteGenerator.PaletteType.values()) {
+
+            String paletteName = switch (type) {
+                case SKIN -> "skin_palette.png";
+                case HAIR -> "hair_palette.png";
+                case GEM -> "gem_palette.png";
+                case OUTFIT -> "outfit_palette.png";
+                case INSIGNIA -> "insignia_palette.png";
+                case MARKINGS -> "markings_palette.png";
+            };
+
+            Identifier paletteId = Identifier.fromNamespaceAndPath(
+                    gemId.getNamespace(),
+                    "textures/entity/" + gemPath + "/palettes/" + paletteName
+            );
+
+            try {
+                GemPalette palette = GemPaletteLoader.load(
+                        resourceManager,
+                        paletteId
+                );
+
+                System.out.println(
+                        "FIRST PIXEL "
+                                + type
+                                + ": "
+                                + String.format(
+                                "%08X",
+                                palette.getRow(0).get(0)
+                        )
+                );
+
+                palettes.put(type, palette);
+
+                System.out.println(
+                        "PALETTE LOADED: "
+                                + paletteId
+                                + " rows="
+                                + palette.getRowCount()
+                );
+
+                System.out.println(
+                        "PALETTE PIXEL "
+                                + type
+                                + ": "
+                                + String.format(
+                                "%08X",
+                                palette.getRow(0).get(0)
+                        )
+                );
+
+            } catch (IOException e) {
+                System.out.println(
+                    "PALETTE LOAD FAILED: " + paletteId
+                );
+            }
+        }
+    }
+
+    public int getPaletteColour(GemPaletteGenerator.PaletteType type) {
+        ensureInstanceData();
+
+        if (instanceData == null) {
+            return 0xFFFFFFFF;
+        }
+
+        GemPalette palette = palettes.get(type);
+
+        if (palette == null) {
+            return 0xFFFFFFFF;
+        }
+
+        int variantId = instanceData.getVariant();
+
+        System.out.println(
+                "PALETTE DEBUG: type=" + type
+                        + " | instanceVariant=" + variantId
+                        + " | instanceId=" + instanceData.getInstanceId()
+                        + " | rows=" + palette.getRowCount()
+        );
+
+        if (variantId == -1) {
+            variantId = 0;
+        }
+
+        return GemPaletteGenerator.generate(
+                palette,
+                variantId,
+                instanceData.getInstanceId(),
+                type
+        );
+    }
+
+    public boolean arePalettesLoaded() {
+        return !palettes.isEmpty();
     }
 
     @Override
@@ -112,6 +300,25 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         goalSelector.addGoal(5, new GemWanderGoal(this, 1.0));
         goalSelector.addGoal(5, new GemFollowOwnerGoal(this, 1.0, 2, 6));
         goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        targetSelector.addGoal(1, new GemTargetGoal(this));
+        goalSelector.addGoal(2, new GemMeleeAttackGoal(this, 1.0D, true));
+        goalSelector.addGoal(3, new GemRangedAttackGoal(this, 1.0D));
+    }
+
+    public boolean canTarget(LivingEntity target) {
+        if (target == null || !target.isAlive()) {
+            return false;
+        }
+
+        if (target == this) {
+            return false;
+        }
+
+        if (target instanceof EntityGem) {
+            return false;
+        }
+
+        return target instanceof Monster;
     }
 
     public void setGemId(Identifier gemId) {
@@ -152,6 +359,8 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
         builder.define(GEM_ID, "");
         builder.define(OWNER_UUID, "");
+        builder.define(INSTANCE_ID, "");
+        builder.define(VARIANT, 0);
     }
 
     @Override
@@ -176,11 +385,13 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
             float quality = input.getFloatOr("Quality", 1.0F);
             int variant = input.getIntOr("Variant", -1);
-            instanceData = new GemInstanceData(
+            setInstanceData(new GemInstanceData(
                     instanceId,
                     quality,
                     variant
-            );
+            ));
+
+            System.out.println("LOADED INSTANCE UUID: " + instanceData.getInstanceId());
         });
 
         ContainerHelper.loadAllItems(input, gemInventory);
@@ -216,6 +427,16 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         ContainerHelper.saveAllItems(output, gemInventory);
     }
 
+    @Override
+    public boolean fireImmune() {
+        return true;
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
     public CompoundTag createGemData() {
         CompoundTag tag = new CompoundTag();
 
@@ -241,15 +462,27 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
     }
 
     public void applyGemData(CompoundTag tag) {
-        tag.getString("GemType").ifPresent(value -> setGemId(Identifier.parse(value)));
-        tag.getString("Owner").ifPresent(value -> setOwnerUUID(UUID.fromString(value)));
-        tag.getString("InstanceId").ifPresent(value -> {
+        tag.getString("GemType").ifPresent(value ->
+                setGemId(Identifier.parse(value))
+        );
 
+        tag.getString("Owner").ifPresent(value ->
+                setOwnerUUID(UUID.fromString(value))
+        );
+
+        tag.getString("InstanceId").ifPresent(value -> {
             UUID instanceId = UUID.fromString(value);
             float quality = tag.getFloat("Quality").orElse(1.0F);
             int variant = tag.getInt("Variant").orElse(-1);
 
-            instanceData = new GemInstanceData(instanceId, quality, variant);
+            System.out.println(
+                    "APPLY GEM DATA | instance="
+                            + instanceId
+                            + " | variant="
+                            + variant
+            );
+
+            setInstanceData(new GemInstanceData(instanceId, quality, variant));
         });
 
         if (instanceData == null) {
@@ -262,6 +495,60 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
         applyGemStats();
         refreshDimensions();
+    }
+
+    private int getVisualVariant(int count, String category) {
+        if (count <= 1 || instanceData == null) {
+            return 0;
+        }
+
+        UUID uuid = instanceData.getInstanceId();
+
+        long seed =
+                uuid.getMostSignificantBits()
+                        ^ uuid.getLeastSignificantBits()
+                        ^ category.hashCode();
+
+        RandomSource random = RandomSource.create(seed);
+
+        return random.nextInt(count);
+    }
+
+    public GemVisualVariant getVisualVariant() {
+        ensureInstanceData();
+
+        if (instanceData == null) {
+            return new GemVisualVariant(0, 0, 0, 0, 0);
+        }
+
+        GemDefinition definition = getGemDefinition();
+
+        if (definition == null) {
+            return new GemVisualVariant(0, 0, 0, 0, 0);
+        }
+
+        int skin = getVisualVariant(definition.getSkinVariants(), "skin");
+        int hair = getVisualVariant(definition.getHairVariants(), "hair");
+        int gem = getVisualVariant(definition.getGemVariants(), "gem");
+        int outfit = getVisualVariant(definition.getOutfitVariants(), "outfit");
+        int insignia = getVisualVariant(definition.getInsigniaVariants(), "insignia");
+
+        /*System.out.println(
+                "UUID: " + instanceData.getInstanceId()
+                        + " | skin=" + skin
+                        + " hair=" + hair
+                        + " gem=" + gem
+                        + " outfit=" + outfit
+                        + " insignia=" + insignia
+        );*/
+
+        return new GemVisualVariant(
+                skin,
+                hair,
+                gem,
+                outfit,
+                insignia
+        );
     }
 
     public MovementMode getMovementMode() {
@@ -404,8 +691,120 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
                 continue;
             }
 
-            ability.execute(this, abilityDefinition);
+            ability.execute(this, abilityDefinition, null);
         }
+    }
+
+    private void executeAbilities(AbilityTrigger trigger, LivingEntity target) {
+        Identifier gemId = getGemId();
+
+        if (gemId == null) {
+            return;
+        }
+
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gemId);
+
+        if (definition == null) {
+            return;
+        }
+
+        for (Identifier abilityId : definition.getAbilities()) {
+
+            AbilityDefinition abilityDefinition = Gemology.ABILITY_MANAGER.get(abilityId);
+
+            if (abilityDefinition == null) {
+                continue;
+            }
+
+            if (!abilityDefinition.getTrigger().equals(trigger.getId())) {
+                continue;
+            }
+
+            Ability ability = AbilityTypeRegistry.create(abilityDefinition.getType());
+
+            if (ability == null) {
+                System.err.println("Unknown ability type: " + abilityDefinition.getType());
+                continue;
+            }
+
+            ability.execute(this, abilityDefinition, target);
+        }
+    }
+
+    @Override
+    public boolean doHurtTarget(ServerLevel level, Entity target) {
+        boolean successful = super.doHurtTarget(level, target);
+
+        if (successful && target instanceof LivingEntity livingTarget) {
+            executeAbilities(AbilityTrigger.ATTACK, livingTarget);
+        }
+
+        return successful;
+    }
+
+    public void performSecondaryAttack(LivingEntity target) {
+
+        if (!(level() instanceof ServerLevel)) {
+            return;
+        }
+
+        if (secondaryAttackCooldown > 0) {
+            return;
+        }
+
+        if (target == null || !target.isAlive()) {
+            return;
+        }
+
+        executeAbilities(
+                AbilityTrigger.SECONDARY_ATTACK,
+                target
+        );
+
+        secondaryAttackCooldown = 60;
+    }
+
+    private boolean hasAbilityForTrigger(AbilityTrigger trigger) {
+        Identifier gemId = getGemId();
+
+        if (gemId == null) {
+            return false;
+        }
+
+        GemDefinition gemDefinition = Gemology.GEM_DEFINITION_MANAGER.get(gemId);
+
+        if (gemDefinition == null) {
+            return false;
+        }
+
+        for (Identifier abilityId : gemDefinition.getAbilities()) {
+
+            AbilityDefinition ability = Gemology.ABILITY_MANAGER.get(abilityId);
+
+            if (ability == null) {
+                continue;
+            }
+
+            if (ability.getTrigger().equals(trigger.getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasMeleeAbility() {
+        return hasAbilityForTrigger(AbilityTrigger.ATTACK);
+    }
+
+    public boolean hasRangedAbility() {
+        return hasAbilityForTrigger(
+                AbilityTrigger.SECONDARY_ATTACK
+        );
+    }
+
+    public boolean hasCombatAbility() {
+        return hasMeleeAbility() || hasRangedAbility();
     }
 
     @Override
@@ -530,7 +929,19 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
     public String getGemName() {
         String gemName = getGemId().getPath();
 
-        return gemName.substring(0, 1).toUpperCase() + gemName.substring(1);
+        String[] words = gemName.split("_");
+
+        StringBuilder result = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                result.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1))
+                        .append(" ");
+            }
+        }
+
+        return result.toString().trim();
     }
 
     @Override
@@ -706,4 +1117,5 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
     public Component getDisplayName() {
         return Component.literal(getGemName());
     }
+
 }

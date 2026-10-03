@@ -6,13 +6,11 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.MultiRegistryBootstrap;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 
 import java.util.Set;
@@ -98,6 +96,17 @@ public class ModRecipeProvider extends RecipeProvider {
                         100)
                 .unlockedBy("has_deepslate_tungsten_ore", has(ModItems.DEEPSLATE_TUNGSTEN_ORE.get()))
                 .save(output, "gemology:deepslate_tungsten_ore_blasting");
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, ModItems.INCUBATOR.get())
+                .pattern("TIT")
+                .pattern("DBD")
+                .pattern("TIT")
+                .define('T', ModItems.TUNGSTEN_BLOCK.get())
+                .define('I', Items.IRON_INGOT)
+                .define('B', Items.BLAZE_ROD)
+                .define('D', Items.DIAMOND)
+                .unlockedBy("has_tungsten_ingot", has(ModItems.TUNGSTEN_INGOT.get()))
+                .save(output);
     }
 
     public static MultiRegistryBootstrap create() {

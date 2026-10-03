@@ -13,6 +13,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,7 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
                 JsonObject dimensions = json.getAsJsonObject("dimensions");
                 JsonArray abilitiesJson = json.getAsJsonArray("abilities");
                 JsonArray variantsJson = json.getAsJsonArray("variants");
+                JsonObject visualVariants = json.getAsJsonObject("visual_variants");
 
                 List<Identifier> abilities = new ArrayList<>();
                 List<GemVariant> variants = new ArrayList<>();
@@ -80,10 +82,36 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
                     }
                 }
 
+                List<GemAvailability> availability = new ArrayList<>();
+
+                JsonArray availabilityArray = json.has("availability") ? json.getAsJsonArray("availability") : new JsonArray();
+
+                for (JsonElement element : availabilityArray) {
+                    JsonObject period = element.getAsJsonObject();
+
+                    MonthDay start = MonthDay.parse(
+                            "--" + period.get("start").getAsString()
+                    );
+
+                    MonthDay end = MonthDay.parse(
+                            "--" + period.get("end").getAsString()
+                    );
+
+                    availability.add(
+                            new GemAvailability(start, end)
+                    );
+                }
+
+                int skinVariants = visualVariants.get("skin").getAsInt();
+                int hairVariants = visualVariants.get("hair").getAsInt();
+                int gemVariants = visualVariants.get("gem").getAsInt();
+                int outfitVariants = visualVariants.get("outfit").getAsInt();
+                int insigniaVariants = visualVariants.get("insignia").getAsInt();
+
                 GemDimensions defDimensions = new GemDimensions(dimensions.get("width").getAsFloat(), dimensions.get("height").getAsFloat());
                 GemStats defStats = new GemStats(stats.get("health").getAsFloat(), stats.get("strength").getAsFloat(), stats.get("speed").getAsFloat());
 
-                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions, abilities, variants);
+                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions, abilities, variants, skinVariants, hairVariants, gemVariants, outfitVariants, insigniaVariants, availability);
 
                 definitions.put(gemId, definition);
                 Gemology.LOGGER.info("Loaded gem {} with abilities: {}", gemId, abilities);

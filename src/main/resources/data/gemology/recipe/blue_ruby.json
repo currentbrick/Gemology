@@ -1,0 +1,36 @@
+{
+  "type": "gemology:incubation",
+  "gem": "gemology:blue_ruby",
+  "gemBase": "gemology:inactive_ruby_base",
+  "chroma": "gemology:blue_chroma",
+  "cruxes": [
+    {
+      "ingredient": "minecraft:ice",
+      "quality": 0.15,
+      "chance": 0.95
+    },
+    {
+      "ingredient": "minecraft:iron_nugget",
+      "quality": 0.1,
+      "chance": 0.9
+    },
+    {
+      "ingredient": "minecraft:snow_block",
+      "quality": 0.25,
+      "chance": 0.8
+    },
+    {
+      "ingredient": "minecraft:cinnabar",
+      "quality": 0.15,
+      "chance": 0.85
+    },
+    {
+      "ingredient": "minecraft:snowball",
+      "quality": 0.08,
+      "chance": 0.95
+    }
+  ],
+  "essence1": "gemology:yellow_essence",
+  "essence2": "gemology:pink_essence",
+  "incubationTime": 80
+}

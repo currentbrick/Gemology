@@ -23,7 +23,7 @@ public class HairLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
         if (texture == null) {
             return;
         }
-        RenderType renderType = RenderTypes.entityCutout(texture);
+        RenderType renderType = RenderTypes.entityCutoutZOffset(texture);
 
         renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), renderType,
                 (pose, vertexConsumer) -> {
@@ -39,7 +39,7 @@ public class HairLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
                                     vertexConsumer,
                                     renderPassInfo.packedLight(),
                                     renderPassInfo.packedOverlay(),
-                                    renderPassInfo.renderColor()
+                                    renderPassInfo.renderState().hairColour
                             )
                     );
 

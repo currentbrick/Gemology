@@ -5,9 +5,34 @@
   "chroma": "gemology:red_chroma",
   "cruxes": [
     {
-      "ingredient": "minecraft:redstone_block",
+      "ingredient": "minecraft:magma_block",
+      "quality": 0.15,
+      "chance": 0.95
+    },
+    {
+      "ingredient": "minecraft:iron_nugget",
       "quality": 0.1,
-      "chance": 1.0
+      "chance": 0.9
+    },
+    {
+      "ingredient": "minecraft:blaze_powder",
+      "quality": 0.25,
+      "chance": 0.8
+    },
+    {
+      "ingredient": "minecraft:cinnabar",
+      "quality": 0.15,
+      "chance": 0.85
+    },
+    {
+      "ingredient": "minecraft:charcoal",
+      "quality": 0.08,
+      "chance": 0.95
+    },
+    {
+      "ingredient": "minecraft:coal",
+      "quality": 0.08,
+      "chance": 1
     }
   ],
   "essence1": "gemology:yellow_essence",
