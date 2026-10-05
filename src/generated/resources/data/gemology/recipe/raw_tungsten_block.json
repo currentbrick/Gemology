@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "gemology:raw_tungsten",
+    "gemology:raw_tungsten",
+    "gemology:raw_tungsten",
+    "gemology:raw_tungsten",
+    "gemology:raw_tungsten",
+    "gemology:raw_tungsten",
+    "gemology:raw_tungsten",
+    "gemology:raw_tungsten",
+    "gemology:raw_tungsten"
+  ],
+  "result": {
+    "id": "gemology:raw_tungsten_block"
+  }
+}

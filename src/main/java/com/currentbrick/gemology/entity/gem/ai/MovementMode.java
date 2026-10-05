@@ -1,4 +1,4 @@
-package com.currentbrick.gemology.entity.ai;
+package com.currentbrick.gemology.entity.gem.ai;
 
 public enum MovementMode {
     WANDER,

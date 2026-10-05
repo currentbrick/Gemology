@@ -74,6 +74,8 @@ public class ModTabs {
                 output.accept(ModBlocks.MAGENTA_CHROMA_CRYSTAL.get());
                 output.accept(ModBlocks.PINK_CHROMA_CRYSTAL.get());
 
+                output.accept(ModItems.CHROMA_CATALYST.get());
+
                 output.accept(ModItems.WHITE_ESSENCE.get());
                 output.accept(ModItems.YELLOW_ESSENCE.get());
                 output.accept(ModItems.BLUE_ESSENCE.get());

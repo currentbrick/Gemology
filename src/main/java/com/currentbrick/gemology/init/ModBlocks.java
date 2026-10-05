@@ -2,6 +2,7 @@ package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
 import com.currentbrick.gemology.block.ChromaBlock;
+import com.currentbrick.gemology.block.ChromaClusterBlock;
 import com.currentbrick.gemology.block.IncubatorBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -21,9 +22,15 @@ public class ModBlocks {
     public static final DeferredBlock<Block> TUNGSTEN_BLOCK = BLOCKS.registerSimpleBlock("tungsten_block",
             p -> p.ofFullCopy(Blocks.IRON_BLOCK));
 
+    public static final DeferredBlock<Block> RAW_TUNGSTEN_BLOCK = BLOCKS.registerSimpleBlock("raw_tungsten_block",
+            p -> p.ofFullCopy(Blocks.RAW_IRON_BLOCK));
+
 
     public static final DeferredBlock<Block> INCUBATOR = BLOCKS.registerBlock("incubator",
             p -> new IncubatorBlock(p.strength(5.0F, 6.0F).sound(SoundType.ANVIL).requiresCorrectToolForDrops()));
+
+    public static final DeferredBlock<Block> CHROMA_CLUSTER_CROP = BLOCKS.registerBlock("chroma_cluster_crop",
+            ChromaClusterBlock::new, p -> p.randomTicks().noOcclusion().instabreak().sound(SoundType.AMETHYST));
 
 
     public static final DeferredBlock<Block> WHITE_CHROMA_CRYSTAL = BLOCKS.registerBlock("white_chroma_crystal", p ->

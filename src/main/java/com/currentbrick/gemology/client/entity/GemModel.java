@@ -18,8 +18,10 @@ public class GemModel extends GeoModel<EntityGem> {
     }
 
     @Override
-    public Identifier getAnimationResource(EntityGem animatable) {
-        return getGemResource(animatable.getGemId(), "animations", false);
+    public Identifier getAnimationResource(EntityGem gem) {
+        Identifier gemId = gem.getGemId();
+
+        return Identifier.fromNamespaceAndPath("gemology", "entity/" + gemId.getPath() /* + ".animation"*/);
     }
 
     private Identifier getGemResource(Identifier gemId, String folder, boolean texture) {

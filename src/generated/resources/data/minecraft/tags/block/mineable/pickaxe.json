@@ -2,6 +2,24 @@
   "values": [
     "gemology:tungsten_ore",
     "gemology:deepslate_tungsten_ore",
-    "gemology:tungsten_block"
+    "gemology:tungsten_block",
+    "gemology:raw_tungsten_block",
+    "gemology:incubator",
+    "gemology:white_chroma_crystal",
+    "gemology:orange_chroma_crystal",
+    "gemology:magenta_chroma_crystal",
+    "gemology:light_blue_chroma_crystal",
+    "gemology:yellow_chroma_crystal",
+    "gemology:lime_chroma_crystal",
+    "gemology:pink_chroma_crystal",
+    "gemology:gray_chroma_crystal",
+    "gemology:light_gray_chroma_crystal",
+    "gemology:cyan_chroma_crystal",
+    "gemology:purple_chroma_crystal",
+    "gemology:blue_chroma_crystal",
+    "gemology:brown_chroma_crystal",
+    "gemology:green_chroma_crystal",
+    "gemology:red_chroma_crystal",
+    "gemology:black_chroma_crystal"
   ]
 }

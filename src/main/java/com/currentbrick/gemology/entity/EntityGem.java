@@ -2,9 +2,9 @@ package com.currentbrick.gemology.entity;
 
 import com.currentbrick.gemology.Gemology;
 import com.currentbrick.gemology.container.GemUIContainer;
-import com.currentbrick.gemology.entity.ai.GemFollowOwnerGoal;
-import com.currentbrick.gemology.entity.ai.GemWanderGoal;
-import com.currentbrick.gemology.entity.ai.MovementMode;
+import com.currentbrick.gemology.entity.gem.ai.GemFollowOwnerGoal;
+import com.currentbrick.gemology.entity.gem.ai.GemWanderGoal;
+import com.currentbrick.gemology.entity.gem.ai.MovementMode;
 import com.currentbrick.gemology.entity.fusion.FusionGenerator;
 import com.currentbrick.gemology.entity.gem.*;
 import com.currentbrick.gemology.entity.gem.abilities.Ability;
@@ -24,6 +24,9 @@ import com.currentbrick.gemology.item.ItemGem;
 import com.geckolib.animatable.GeoAnimatable;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
 import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.AnimationController;
+import com.geckolib.animation.RawAnimation;
+import com.geckolib.constant.DefaultAnimations;
 import com.geckolib.util.GeckoLibUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
@@ -38,13 +41,10 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -280,6 +280,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         targetSelector.addGoal(1, new GemTargetGoal(this));
         goalSelector.addGoal(2, new GemMeleeAttackGoal(this, 1.0D, true));
         goalSelector.addGoal(3, new GemRangedAttackGoal(this, 1.0D));
+        targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
     public boolean canTarget(LivingEntity target) {
@@ -570,7 +571,20 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        /*controllers.add(new AnimationController<>("movement", 5, state -> {
+                            if (state.isMoving()) {
+                                return state.setAndContinue(RawAnimation.begin().thenLoop("walk"));
+                            }
+                            return state.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+                        }
+                )
+        );*/
+        controllers.add(new AnimationController<>(test -> {
+            if (test.isMoving())
+                return test.setAndContinue(DefaultAnimations.WALK);
 
+            return test.setAndContinue(DefaultAnimations.IDLE);
+        }));
     }
 
     @Override

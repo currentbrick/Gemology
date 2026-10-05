@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "gemology:white_essence",
+    "gemology:yellow_essence",
+    "gemology:pink_essence",
+    "gemology:blue_essence"
+  ]
+}

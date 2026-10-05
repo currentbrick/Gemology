@@ -1,0 +1,119 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 3,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:tungsten_ingot",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:red_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:orange_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:yellow_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:lime_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:green_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:cyan_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:light_blue_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:blue_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:purple_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:magenta_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:pink_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:brown_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:black_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:gray_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:light_gray_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:white_chroma",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:pink_essence",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:white_essence",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:blue_essence",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:yellow_essence",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

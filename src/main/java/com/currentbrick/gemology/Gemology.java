@@ -54,6 +54,7 @@ public class Gemology {
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModContainers.MENUS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
 
         ModRecipeTypes.register(modEventBus);
         ModRecipeSerializers.register(modEventBus);

@@ -4,6 +4,7 @@
   "block.gemology.deepslate_tungsten_ore": "Deepslate Tungsten Ore",
   "block.gemology.tungsten_ore": "Tungsten Ore",
   "block.gemology.tungsten_block": "Tungsten Block",
+  "block.gemology.raw_tungsten_block": "Raw Tungsten Block",
 
   "block.gemology.incubator": "Incubator",
 
@@ -23,6 +24,11 @@
   "block.gemology.green_chroma_crystal": "Green Chroma Crystal",
   "block.gemology.red_chroma_crystal": "Red Chroma Crystal",
   "block.gemology.black_chroma_crystal": "Black Chroma Crystal",
+  "block.gemology.chroma_cluster_crop": "Chroma Cluster",
+
+  "item.gemology.raw_tungsten": "Raw Tungsten",
+  "item.gemology.tungsten_ingot": "Tungsten Ingot",
+  "item.gemology.tungsten_nugget": "Tungsten Nugget",
 
   "item.gemology.white_chroma": "White Chroma",
   "item.gemology.orange_chroma": "Orange Chroma",
@@ -41,6 +47,9 @@
   "item.gemology.red_chroma": "Red Chroma",
   "item.gemology.black_chroma": "Black Chroma",
   "item.gemology.prismatic_chroma": "Prismatic Chroma",
+  "item.gemology.chroma_catalyst": "Chroma Catalyst",
+
+  "item.gemology.fusion": "Heart Drive",
 
   "item.gemology.white_essence": "White Essence",
   "item.gemology.yellow_essence": "Yellow Essence",
@@ -59,11 +68,6 @@
   "item.gemology.agate": "Agate",
 
   "entity.gemology.gem": "Gem",
-
-  "item.gemology.raw_tungsten": "Raw Tungsten",
-  "item.gemology.tungsten_ingot": "Tungsten Ingot",
-  "item.gemology.tungsten_nugget": "Tungsten Nugget",
-
 
   "jei.gemology.incubation": "Gem Incubation",
 

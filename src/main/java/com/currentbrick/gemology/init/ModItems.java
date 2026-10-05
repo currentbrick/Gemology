@@ -1,6 +1,7 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.item.ChromaCatalystItem;
 import com.currentbrick.gemology.item.FusionItem;
 import com.currentbrick.gemology.item.ItemGem;
 import net.minecraft.resources.Identifier;
@@ -43,6 +44,7 @@ public class ModItems {
     public static final DeferredItem<Item> BROWN_CHROMA = ITEMS.registerSimpleItem("brown_chroma");
     public static final DeferredItem<Item> PRISMATIC_CHROMA = ITEMS.registerSimpleItem("prismatic_chroma");
 
+    public static final DeferredItem<Item> CHROMA_CATALYST = ITEMS.registerItem("chroma_catalyst", ChromaCatalystItem::new);
 
     public static final DeferredHolder<Item, FusionItem> FUSION = ITEMS.registerItem("fusion", FusionItem::new);
 
@@ -71,6 +73,7 @@ public class ModItems {
     public static final DeferredItem<BlockItem> TUNGSTEN_ORE= ITEMS.registerSimpleBlockItem("tungsten_ore", ModBlocks.TUNGSTEN_ORE);
     public static final DeferredItem<BlockItem> DEEPSLATE_TUNGSTEN_ORE = ITEMS.registerSimpleBlockItem("deepslate_tungsten_ore", ModBlocks.DEEPSLATE_TUNGSTEN_ORE);
     public static final DeferredItem<BlockItem> TUNGSTEN_BLOCK = ITEMS.registerSimpleBlockItem("tungsten_block", ModBlocks.TUNGSTEN_BLOCK);
+    public static final DeferredItem<BlockItem> RAW_TUNGSTEN_BLOCK = ITEMS.registerSimpleBlockItem("raw_tungsten_block", ModBlocks.RAW_TUNGSTEN_BLOCK);
 
     public static final DeferredItem<BlockItem> INCUBATOR = ITEMS.registerSimpleBlockItem("incubator", ModBlocks.INCUBATOR);
 

@@ -34,11 +34,13 @@ public class ModBlockLootProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(ModBlocks.TUNGSTEN_BLOCK.get());
+        dropSelf(ModBlocks.RAW_TUNGSTEN_BLOCK.get());
         add(ModBlocks.TUNGSTEN_ORE.get(),
                 block -> createOreDrop(ModBlocks.TUNGSTEN_ORE.get(), ModItems.RAW_TUNGSTEN.get()));
         add(ModBlocks.DEEPSLATE_TUNGSTEN_ORE.get(),
                 block -> createOreDrop(ModBlocks.DEEPSLATE_TUNGSTEN_ORE.get(), ModItems.RAW_TUNGSTEN.get()));
         dropSelf(ModBlocks.INCUBATOR.get());
+        add(ModBlocks.CHROMA_CLUSTER_CROP.get(), noDrop());
     }
 
     @Override

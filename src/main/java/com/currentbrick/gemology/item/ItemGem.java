@@ -67,6 +67,9 @@ public class ItemGem extends Item {
         if (customData != null) {
             gem.applyGemData(customData.copyTag());
         }
+
+        System.out.println("CREATIVE/ITEM GEM | type=" + gem.getGemId() + " | instance=" + (gem.getInstanceData() == null ? "NULL" : gem.getInstanceData().getInstanceId()) + " | variant=" + (gem.getInstanceData() == null ? "NULL" : gem.getInstanceData().getVariant()));
+
         return gem;
     }
 

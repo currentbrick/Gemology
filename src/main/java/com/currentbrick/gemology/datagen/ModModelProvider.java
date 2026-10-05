@@ -52,24 +52,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.createTrivialCube(ModBlocks.TUNGSTEN_ORE.get());
         blockModels.createTrivialCube(ModBlocks.DEEPSLATE_TUNGSTEN_ORE.get());
         blockModels.createTrivialCube(ModBlocks.TUNGSTEN_BLOCK.get());
-/*
-        blockModels.createTrivialCube(ModBlocks.WHITE_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.LIGHT_GRAY_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.GRAY_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.BLACK_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.BROWN_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.RED_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.ORANGE_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.YELLOW_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.LIME_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.GREEN_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.CYAN_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.LIGHT_BLUE_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.BLUE_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.PURPLE_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.MAGENTA_CHROMA_CRYSTAL.get());
-        blockModels.createTrivialCube(ModBlocks.PINK_CHROMA_CRYSTAL.get());
-*/
+        blockModels.createTrivialCube(ModBlocks.RAW_TUNGSTEN_BLOCK.get());
 
         itemModels.generateFlatItem(ModItems.RAW_TUNGSTEN.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.TUNGSTEN_INGOT.get(), ModelTemplates.FLAT_ITEM);
@@ -93,6 +76,8 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.PURPLE_CHROMA.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.PRISMATIC_CHROMA.get(), ModelTemplates.FLAT_ITEM);
 
+        itemModels.generateFlatItem(ModItems.CHROMA_CATALYST.get(), ModelTemplates.FLAT_ITEM);
+
         itemModels.generateFlatItem(ModItems.WHITE_ESSENCE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.YELLOW_ESSENCE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.BLUE_ESSENCE.get(), ModelTemplates.FLAT_ITEM);
@@ -106,13 +91,10 @@ public class ModModelProvider extends ModelProvider {
 
         itemModels.generateFlatItem(ModItems.FUSION.get(), ModelTemplates.FLAT_ITEM);
 
-
         itemModels.generateFlatItem(ModItems.RUBY.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.BLUE_RUBY.get(), ModelTemplates.FLAT_ITEM);
 
-        createGemItemModel(
-                itemModels,
-                ModItems.JASPER.get(),
+        createGemItemModel(itemModels, ModItems.JASPER.get(),
                 List.of(
                         new GemItemVariant(0, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/zebra")),
                         new GemItemVariant(1, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/red_striped")),
@@ -132,9 +114,7 @@ public class ModModelProvider extends ModelProvider {
                         new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/black"))
                 )
         );
-        createGemItemModel(
-                itemModels,
-                ModItems.QUARTZ.get(),
+        createGemItemModel(itemModels, ModItems.QUARTZ.get(),
                 List.of(
                         new GemItemVariant(0, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/milky")),
                         new GemItemVariant(1, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/chert")),
@@ -154,9 +134,7 @@ public class ModModelProvider extends ModelProvider {
                         new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/onyx"))
                 )
         );
-        createGemItemModel(
-                itemModels,
-                ModItems.AGATE.get(),
+        createGemItemModel(itemModels, ModItems.AGATE.get(),
                 List.of(
                         new GemItemVariant(0, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/dendritic")),
                         new GemItemVariant(1, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/wingate_pass_plume")),
@@ -236,7 +214,9 @@ public class ModModelProvider extends ModelProvider {
                 .filter(holder -> !holder.is(ModBlocks.BLUE_CHROMA_CRYSTAL.getKey()))
                 .filter(holder -> !holder.is(ModBlocks.PURPLE_CHROMA_CRYSTAL.getKey()))
                 .filter(holder -> !holder.is(ModBlocks.MAGENTA_CHROMA_CRYSTAL.getKey()))
-                .filter(holder -> !holder.is(ModBlocks.PINK_CHROMA_CRYSTAL.getKey())
+                .filter(holder -> !holder.is(ModBlocks.PINK_CHROMA_CRYSTAL.getKey()))
+                .filter(holder -> !holder.is(ModBlocks.CHROMA_CLUSTER_CROP.getKey())
+
 
         );
     }

@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "gemology:white_chroma",
+    "gemology:orange_chroma",
+    "gemology:magenta_chroma",
+    "gemology:light_blue_chroma",
+    "gemology:yellow_chroma",
+    "gemology:lime_chroma",
+    "gemology:pink_chroma",
+    "gemology:gray_chroma",
+    "gemology:light_gray_chroma",
+    "gemology:cyan_chroma",
+    "gemology:purple_chroma",
+    "gemology:blue_chroma",
+    "gemology:brown_chroma",
+    "gemology:green_chroma",
+    "gemology:red_chroma",
+    "gemology:black_chroma",
+    "gemology:prismatic_chroma"
+  ]
+}
