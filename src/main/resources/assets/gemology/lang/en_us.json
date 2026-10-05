@@ -6,6 +6,9 @@
   "block.gemology.tungsten_block": "Tungsten Block",
   "block.gemology.raw_tungsten_block": "Raw Tungsten Block",
 
+  "block.gemology.drained_soil": "Drained Soil",
+  "block.gemology.drained_stone": "Drained Stone",
+
   "block.gemology.incubator": "Incubator",
 
   "block.gemology.white_chroma_crystal": "White Chroma Crystal",

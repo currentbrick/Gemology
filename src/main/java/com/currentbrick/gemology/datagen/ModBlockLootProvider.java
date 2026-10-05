@@ -39,6 +39,8 @@ public class ModBlockLootProvider extends BlockLootSubProvider {
                 block -> createOreDrop(ModBlocks.TUNGSTEN_ORE.get(), ModItems.RAW_TUNGSTEN.get()));
         add(ModBlocks.DEEPSLATE_TUNGSTEN_ORE.get(),
                 block -> createOreDrop(ModBlocks.DEEPSLATE_TUNGSTEN_ORE.get(), ModItems.RAW_TUNGSTEN.get()));
+        dropSelf(ModBlocks.DRAINED_STONE.get());
+        dropSelf(ModBlocks.DRAINED_SOIL.get());
         dropSelf(ModBlocks.INCUBATOR.get());
         add(ModBlocks.CHROMA_CLUSTER_CROP.get(), noDrop());
     }

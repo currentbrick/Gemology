@@ -127,10 +127,15 @@ public record IncubationRecipe(Identifier gem, Ingredient gemBase, ChromaRequire
             return -1;
         }
 
+        if (definition.getVariants().isEmpty()) {
+            return -1;
+        }
+
         Identifier chromaId = BuiltInRegistries.ITEM.getKey(chromaStack.getItem());
 
         for (GemVariant variant : definition.getVariants()) {
-            if (variant.getChromaId().equals(chromaId)) {
+            if (variant.getChromaId() != null
+                    && variant.getChromaId().equals(chromaId)) {
                 return variant.getId();
             }
         }

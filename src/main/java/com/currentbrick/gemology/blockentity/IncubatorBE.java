@@ -1,6 +1,7 @@
 package com.currentbrick.gemology.blockentity;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.bio.BioPoison;
 import com.currentbrick.gemology.container.IncubatorContainer;
 import com.currentbrick.gemology.entity.EntityGem;
 import com.currentbrick.gemology.entity.gem.GemDefinition;
@@ -94,22 +95,26 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
 
 
     public void startIncubation() {
+        System.out.println("start incubation");
         if (!(level instanceof ServerLevel serverLevel)) {
             return;
         }
         if (incubating) {
+            System.out.println("already incubating");
             return;
         }
 
         Optional<RecipeHolder<IncubationRecipe>> matchingRecipe = getMatchingRecipe();
 
         if (matchingRecipe.isEmpty()) {
+            System.out.println("no matching recipe found");
             return;
         }
 
         GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(matchingRecipe.get().value().gem());
 
         if (!isGemAvailable(definition, serverLevel)) {
+            System.out.println("gem not available");
             return;
         }
 
@@ -157,11 +162,7 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
             return;
         }
 
-        ResourceKey<Recipe<?>> recipeKey =
-                ResourceKey.create(
-                        Registries.RECIPE,
-                        currentRecipeId
-                );
+        ResourceKey<Recipe<?>> recipeKey = ResourceKey.create(Registries.RECIPE, currentRecipeId);
 
         Optional<RecipeHolder<IncubationRecipe>> recipeHolder =
                 serverLevel.recipeAccess()
@@ -185,6 +186,8 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
 
         setItem(OUTPUT_SLOT, result);
 
+        BioPoison.createInitialInfection(serverLevel, worldPosition.below(), serverLevel.getRandom());
+
         incubating = false;
         incubationProgress = 0;
         incubationTime = 0;
@@ -196,15 +199,18 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
 
     private ItemStack createGemItem(IncubationRecipe recipe) {
         Identifier gemId = recipe.gem();
-
         ItemStack chromaStack = getItem(CHROMA_SLOT);
+
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gemId);
+
+        if (definition == null) {
+            return ItemStack.EMPTY;
+        }
 
         int variant = recipe.getVariantId(chromaStack);
 
-        if (variant == -1) {
-
+        if (variant == -1 && !definition.getVariants().isEmpty()) {
             return ItemStack.EMPTY;
-
         }
 
         GemInstanceData instance = new GemInstanceData(UUID.randomUUID(), calculateQuality(recipe), variant);
@@ -378,11 +384,7 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
 
         IncubationInput input = createRecipeInput();
 
-        return serverLevel.recipeAccess().getRecipeFor(
-                ModRecipeTypes.INCUBATION.get(),
-                input,
-                serverLevel
-        );
+        return serverLevel.recipeAccess().getRecipeFor(ModRecipeTypes.INCUBATION.get(), input, serverLevel);
     }
 
 

@@ -33,9 +33,13 @@ public class ModTabs {
                 output.accept(ModItems.RAW_TUNGSTEN.get());
                 output.accept(ModItems.TUNGSTEN_INGOT.get());
                 output.accept(ModItems.TUNGSTEN_NUGGET.get());
+                output.accept(ModItems.RAW_TUNGSTEN_BLOCK.get());
                 output.accept(ModItems.TUNGSTEN_BLOCK.get());
                 output.accept(ModItems.TUNGSTEN_ORE.get());
                 output.accept(ModItems.DEEPSLATE_TUNGSTEN_ORE.get());
+
+                output.accept(ModItems.DRAINED_SOIL.get());
+                output.accept(ModItems.DRAINED_STONE.get());
 
                 output.accept(ModItems.INCUBATOR.get());
 

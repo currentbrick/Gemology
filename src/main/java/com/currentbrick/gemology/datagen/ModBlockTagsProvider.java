@@ -43,7 +43,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.BROWN_CHROMA_CRYSTAL.getKey())
                 .add(ModBlocks.GREEN_CHROMA_CRYSTAL.getKey())
                 .add(ModBlocks.RED_CHROMA_CRYSTAL.getKey())
-                .add(ModBlocks.BLACK_CHROMA_CRYSTAL.getKey());
+                .add(ModBlocks.BLACK_CHROMA_CRYSTAL.getKey())
+                .add(ModBlocks.DRAINED_STONE.getKey());
 
         tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(ModBlocks.TUNGSTEN_ORE.getKey())

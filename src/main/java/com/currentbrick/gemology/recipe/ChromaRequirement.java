@@ -31,6 +31,10 @@ public record ChromaRequirement(boolean acceptsAll, Ingredient ingredient) {
             return false;
         }
 
+        if (definition.getVariants().isEmpty()) {
+            return true;
+        }
+
         Identifier chromaId =
                 BuiltInRegistries.ITEM.getKey(stack.getItem());
 

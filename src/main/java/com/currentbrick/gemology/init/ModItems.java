@@ -75,6 +75,9 @@ public class ModItems {
     public static final DeferredItem<BlockItem> TUNGSTEN_BLOCK = ITEMS.registerSimpleBlockItem("tungsten_block", ModBlocks.TUNGSTEN_BLOCK);
     public static final DeferredItem<BlockItem> RAW_TUNGSTEN_BLOCK = ITEMS.registerSimpleBlockItem("raw_tungsten_block", ModBlocks.RAW_TUNGSTEN_BLOCK);
 
+    public static final DeferredItem<BlockItem> DRAINED_STONE = ITEMS.registerSimpleBlockItem("drained_stone", ModBlocks.DRAINED_STONE);
+    public static final DeferredItem<BlockItem> DRAINED_SOIL = ITEMS.registerSimpleBlockItem("drained_soil", ModBlocks.DRAINED_SOIL);
+
     public static final DeferredItem<BlockItem> INCUBATOR = ITEMS.registerSimpleBlockItem("incubator", ModBlocks.INCUBATOR);
 
 

@@ -54,6 +54,9 @@ public class ModModelProvider extends ModelProvider {
         blockModels.createTrivialCube(ModBlocks.TUNGSTEN_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.RAW_TUNGSTEN_BLOCK.get());
 
+        blockModels.createTrivialCube(ModBlocks.DRAINED_SOIL.get());
+        blockModels.createTrivialCube(ModBlocks.DRAINED_STONE.get());
+
         itemModels.generateFlatItem(ModItems.RAW_TUNGSTEN.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.TUNGSTEN_INGOT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.TUNGSTEN_NUGGET.get(), ModelTemplates.FLAT_ITEM);

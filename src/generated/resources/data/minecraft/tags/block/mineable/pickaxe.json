@@ -20,6 +20,7 @@
     "gemology:brown_chroma_crystal",
     "gemology:green_chroma_crystal",
     "gemology:red_chroma_crystal",
-    "gemology:black_chroma_crystal"
+    "gemology:black_chroma_crystal",
+    "gemology:drained_stone"
   ]
 }
