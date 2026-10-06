@@ -296,17 +296,6 @@ public class EntityFusion extends Monster implements GeoAnimatable {
     }
 
     @Override
-    public boolean isPickable() {
-        System.out.println(
-                "PICKABLE BOX: " +
-                        getBoundingBox().getXsize() + " x " +
-                        getBoundingBox().getYsize()
-        );
-
-        return super.isPickable();
-    }
-
-    @Override
     public Component getDisplayName() {
         return Component.literal(Gemology.FUSION_NAME_MANAGER.getName(getFusionId()));
     }

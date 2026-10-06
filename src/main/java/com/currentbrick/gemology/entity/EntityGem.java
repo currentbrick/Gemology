@@ -76,6 +76,11 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
     private final NonNullList<ItemStack> gemInventory = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
+    private UUID fusionTargetUUID;
+    private CompoundTag pendingFusionGemData;
+    private boolean fusionPending = false;
+    private boolean completingFusion = false;
+
     private final Map<GemPaletteGenerator.PaletteType, GemPalette> palettes = new EnumMap<>(GemPaletteGenerator.PaletteType.class);
 
     private static final EntityDataAccessor<String> GEM_ID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
@@ -296,6 +301,10 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
             return false;
         }
 
+        if (target instanceof EntityFusion) {
+            return false;
+        }
+
         return target instanceof Monster;
     }
 
@@ -317,8 +326,14 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
     public void tick() {
         super.tick();
 
-        if (!level().isClientSide() && tickCount % ABILITY_CHECK_INTERVAL == 0) {
-            executePassiveAbilities();
+        if (!level().isClientSide()) {
+            if (fusionPending) {
+                handleFusionApproach();
+            }
+
+            if (tickCount % ABILITY_CHECK_INTERVAL == 0) {
+                executePassiveAbilities();
+            }
         }
     }
 
@@ -592,6 +607,97 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         return cache;
     }
 
+    public void startFusionApproach(EntityGem target, CompoundTag targetGemData) {
+        if (target == null) {
+            return;
+        }
+
+        this.fusionTargetUUID = target.getUUID();
+        this.pendingFusionGemData = targetGemData.copy();
+        this.fusionPending = true;
+    }
+
+    private void handleFusionApproach() {
+        if (fusionTargetUUID == null) {
+            fusionPending = false;
+            return;
+        }
+
+        Entity target = level().getEntity(fusionTargetUUID);
+
+        if (!(target instanceof EntityGem fusionTarget) || !fusionTarget.isAlive()) {
+            fusionPending = false;
+            fusionTargetUUID = null;
+            pendingFusionGemData = null;
+            return;
+        }
+
+        double distance = distanceTo(fusionTarget);
+
+        if (distance <= 0.5D) {
+            completeFusion(fusionTarget);
+            return;
+        }
+
+        getNavigation().moveTo(fusionTarget, 1.5D);
+    }
+
+    private void completeFusion(EntityGem target) {
+        if (completingFusion || target.completingFusion) {
+            return;
+        }
+
+        completingFusion = true;
+        target.completingFusion = true;
+
+        CompoundTag firstGemData = createGemData();
+
+        CompoundTag secondGemData = target.createGemData();
+
+        GemInstanceData firstInstance = FusionGenerator.getInstanceData(firstGemData);
+
+        GemInstanceData secondInstance = FusionGenerator.getInstanceData(secondGemData);
+
+        long seed = FusionGenerator.getFusionSeed(firstInstance, secondInstance);
+        System.out.println("FUSION SEED: " + seed);
+
+        RandomSource random = FusionGenerator.createRandom(seed);
+
+        GemDefinition firstDefinition = Gemology.GEM_DEFINITION_MANAGER.get(Identifier.parse(firstGemData.getString("GemType").orElseThrow()));
+        GemDefinition secondDefinition = Gemology.GEM_DEFINITION_MANAGER.get(Identifier.parse(secondGemData.getString("GemType").orElseThrow()));
+
+        GemStats fusionStats = FusionGenerator.generateStats(firstDefinition, firstInstance, secondDefinition, secondInstance, random);
+        List<Identifier> fusionAbilities = FusionGenerator.generateAbilities(firstDefinition, secondDefinition, random);
+        GemDimensions fusionDimensions = FusionGenerator.generateDimensions(firstDefinition, firstInstance, secondDefinition, secondInstance, random);
+
+        System.out.println("FUSION STATS: " + fusionStats.getHealth() + ", " + fusionStats.getStrength() + ", " + fusionStats.getSpeed());
+        System.out.println("FUSION DIMS: " + fusionDimensions.getHeight() + ", " + fusionDimensions.getWidth());
+
+        EntityFusion fusion = ModEntities.FUSION.get().create(level(), EntitySpawnReason.SPAWN_ITEM_USE);
+
+        if (fusion == null) {
+            return;
+        }
+
+        fusion.setComponents(firstGemData, secondGemData);
+        fusion.setFusionStats(fusionStats);
+        fusion.setFusionAbilities(fusionAbilities);
+        fusion.setFusionDimensions(fusionDimensions);
+
+        fusion.setPos(getX(), getY(), getZ());
+
+        level().addFreshEntity(fusion);
+
+        discard();
+        target.discard();
+
+        getOwner().sendSystemMessage(Component.literal("Fused " + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(0, 1).toUpperCase() + Identifier.parse(secondGemData.getString("GemType").orElse("unknown")).getPath().substring(1) + " + " + getGemName()));
+    }
+
+    public boolean isFusionPending() {
+        return fusionPending;
+    }
+
 
     private void applyGemStats() {
         Identifier gemId = getGemId();
@@ -818,8 +924,6 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
                     stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 
-                    stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-
                     player.sendSystemMessage(Component.literal(getGemName() + " selected"));
 
                     return InteractionResult.SUCCESS;
@@ -842,51 +946,13 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
                     CompoundTag secondGemData = createGemData();
 
-                    GemInstanceData firstInstance =
-                            FusionGenerator.getInstanceData(firstGemData);
-
-                    GemInstanceData secondInstance =
-                            FusionGenerator.getInstanceData(secondGemData);
-
-                    long seed = FusionGenerator.getFusionSeed(firstInstance, secondInstance);
-                    System.out.println("FUSION SEED: " + seed);
-
-                    RandomSource random = FusionGenerator.createRandom(seed);
-
-                    GemDefinition firstDefinition = Gemology.GEM_DEFINITION_MANAGER.get(Identifier.parse(firstGemData.getString("GemType").orElseThrow()));
-                    GemDefinition secondDefinition = Gemology.GEM_DEFINITION_MANAGER.get(Identifier.parse(secondGemData.getString("GemType").orElseThrow()));
-
-                    GemStats fusionStats = FusionGenerator.generateStats(firstDefinition, firstInstance, secondDefinition, secondInstance, random);
-                    List<Identifier> fusionAbilities = FusionGenerator.generateAbilities(firstDefinition, secondDefinition, random);
-                    GemDimensions fusionDimensions = FusionGenerator.generateDimensions(firstDefinition, firstInstance, secondDefinition, secondInstance, random);
-
-                    System.out.println("FUSION STATS: " + fusionStats.getHealth() + ", " + fusionStats.getStrength() + ", " + fusionStats.getSpeed());
-                    System.out.println("FUSION DIMS: " + fusionDimensions.getHeight() + ", " + fusionDimensions.getWidth());
-
-                    EntityFusion fusion = ModEntities.FUSION.get().create(level(), EntitySpawnReason.SPAWN_ITEM_USE);
-
-                    if (fusion == null) {
-                        return;
-                    }
-
-                    fusion.setComponents(firstGemData, secondGemData);
-                    fusion.setFusionStats(fusionStats);
-                    fusion.setFusionAbilities(fusionAbilities);
-                    fusion.setFusionDimensions(fusionDimensions);
-
-                    fusion.setPos(getX(), getY(), getZ());
-
-                    level().addFreshEntity(fusion);
-
                     if (firstGem != null) {
-                        firstGem.discard();
-                    }
+                        firstGem.startFusionApproach(this, secondGemData);
 
-                    discard();
+                        startFusionApproach(firstGem, firstGemData);
+                    }
 
                     stack.remove(DataComponents.CUSTOM_DATA);
-
-                    player.sendSystemMessage(Component.literal("Fused " + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(0, 1).toUpperCase() + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(1) + " + " + getGemName()));
                 });
 
                 return InteractionResult.SUCCESS;
