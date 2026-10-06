@@ -7,7 +7,9 @@ import com.currentbrick.gemology.entity.gem.GemDefinition;
 import com.currentbrick.gemology.entity.gem.GemDimensions;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.base.RenderPassInfo;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
 public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRenderState> {
@@ -64,5 +66,17 @@ public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRender
         //state.hairTexture = Identifier.fromNamespaceAndPath(entity.getGemId().getNamespace(), "textures/entity/"+entity.getGemId().getPath()+"/hair_0.png");
         //state.outfitTexture = Identifier.fromNamespaceAndPath(entity.getGemId().getNamespace(), "textures/entity/"+entity.getGemId().getPath()+"/outfit_0.png");
         //state.gemTexture = Identifier.fromNamespaceAndPath(entity.getGemId().getNamespace(), "textures/entity/"+entity.getGemId().getPath()+"/gemstones/gem_0.png");
+    }
+
+    @Override
+    protected Component getNameTag(EntityFusion entity) {
+        return entity.getDisplayName();
+    }
+
+    @Override
+    public boolean shouldShowName(EntityFusion entity, double distance) {
+        Minecraft minecraft = Minecraft.getInstance();
+
+        return minecraft.crosshairPickEntity == entity;
     }
 }

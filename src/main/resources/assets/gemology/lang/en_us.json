@@ -74,6 +74,8 @@
 
   "jei.gemology.incubation": "Gem Incubation",
 
+  "death.attack.bio_poison": "%1$s was consumed by toxins",
+
   "gemology.configuration.title": "Gemology Configs",
   "gemology.configuration.section.gemology.common.toml": "Gemology Configs",
   "gemology.configuration.section.gemology.common.toml.title": "Gemology Configs",

@@ -863,8 +863,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
                     System.out.println("FUSION STATS: " + fusionStats.getHealth() + ", " + fusionStats.getStrength() + ", " + fusionStats.getSpeed());
                     System.out.println("FUSION DIMS: " + fusionDimensions.getHeight() + ", " + fusionDimensions.getWidth());
 
-                    EntityFusion fusion = ModEntities.FUSION.get().create(level(), EntitySpawnReason.SPAWN_ITEM_USE
-                    );
+                    EntityFusion fusion = ModEntities.FUSION.get().create(level(), EntitySpawnReason.SPAWN_ITEM_USE);
 
                     if (fusion == null) {
                         return;

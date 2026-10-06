@@ -1,5 +1,6 @@
 package com.currentbrick.gemology.entity;
 
+import com.currentbrick.gemology.Gemology;
 import com.currentbrick.gemology.entity.gem.GemDimensions;
 import com.currentbrick.gemology.entity.gem.GemStats;
 import com.currentbrick.gemology.init.ModEntities;
@@ -8,7 +9,9 @@ import com.geckolib.animatable.GeoAnimatable;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
 import com.geckolib.animatable.manager.AnimatableManager;
 import com.geckolib.util.GeckoLibUtil;
+import com.sun.jna.platform.win32.WinDef;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class EntityFusion extends Monster implements GeoAnimatable {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -38,6 +42,8 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
     private static final EntityDataAccessor<String> FUSION_GEM_1 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> FUSION_GEM_2 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
+
+    private static final EntityDataAccessor<Long> FUSION_ID = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.LONG);
 
     private GemStats fusionStats;
     private GemDimensions fusionDimensions;
@@ -60,6 +66,7 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
         builder.define(FUSION_GEM_1, "");
         builder.define(FUSION_GEM_2, "");
+        builder.define(FUSION_ID, 0L);
     }
 
     public void setComponents(CompoundTag first, CompoundTag second) {
@@ -80,9 +87,7 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
         String gemType = data.getString("GemType").orElse(null);
 
-        return gemType != null
-                ? Identifier.tryParse(gemType)
-                : null;
+        return gemType != null ? Identifier.tryParse(gemType) : null;
     }
 
     public CompoundTag getFirstGemData() {
@@ -101,17 +106,13 @@ public class EntityFusion extends Monster implements GeoAnimatable {
     public Identifier getGem1ID() {
         String id = entityData.get(FUSION_GEM_1);
 
-        return id.isEmpty()
-                ? null
-                : Identifier.tryParse(id);
+        return id.isEmpty() ? null : Identifier.tryParse(id);
     }
 
     public Identifier getGem2ID() {
         String id = entityData.get(FUSION_GEM_2);
 
-        return id.isEmpty()
-                ? null
-                : Identifier.tryParse(id);
+        return id.isEmpty() ? null : Identifier.tryParse(id);
     }
 
     public void setFusionStats(GemStats fusionStats) {
@@ -128,10 +129,7 @@ public class EntityFusion extends Monster implements GeoAnimatable {
     }
 
     public GemDimensions getFusionDimensions() {
-        return new GemDimensions(
-                entityData.get(FUSION_WIDTH),
-                entityData.get(FUSION_HEIGHT)
-        );
+        return new GemDimensions(entityData.get(FUSION_WIDTH), entityData.get(FUSION_HEIGHT));
     }
 
     public void setFusionDimensions(GemDimensions fusionDimensions) {
@@ -179,6 +177,8 @@ public class EntityFusion extends Monster implements GeoAnimatable {
         if (secondGemData != null) {
             output.store("SecondGem", CompoundTag.CODEC, secondGemData);
         }
+
+        output.putLong("FusionID", entityData.get(FUSION_ID));
     }
 
     @Override
@@ -215,6 +215,7 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
         entityData.set(FUSION_GEM_1, gem1 != null ? gem1.toString() : "");
         entityData.set(FUSION_GEM_2, gem2 != null ? gem2.toString() : "");
+        entityData.set(FUSION_ID, entityData.get(FUSION_ID));
     }
 
     public void applyStats() {
@@ -278,6 +279,14 @@ public class EntityFusion extends Monster implements GeoAnimatable {
         level().addFreshEntity(gem);
     }
 
+    public void setFusionId(Long id) {
+        entityData.set(FUSION_ID, id);
+    }
+
+    public Long getFusionId() {
+        return entityData.get(FUSION_ID);
+    }
+
     @Override
     public EntityDimensions getDefaultDimensions(Pose pose) {
         return EntityDimensions.scalable(
@@ -295,5 +304,10 @@ public class EntityFusion extends Monster implements GeoAnimatable {
         );
 
         return super.isPickable();
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.literal(Gemology.FUSION_NAME_MANAGER.getName(getFusionId()));
     }
 }

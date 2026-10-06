@@ -1,6 +1,8 @@
 package com.currentbrick.gemology;
 
 import com.currentbrick.gemology.entity.EntityGem;
+import com.currentbrick.gemology.entity.fusion.FusionNameLoader;
+import com.currentbrick.gemology.entity.fusion.FusionNameManager;
 import com.currentbrick.gemology.entity.gem.GemDefinitionLoader;
 import com.currentbrick.gemology.entity.gem.GemDefinitionManager;
 import com.currentbrick.gemology.entity.gem.abilities.AbilityDefinitionLoader;
@@ -43,6 +45,7 @@ public class Gemology {
 
     public static final GemDefinitionManager GEM_DEFINITION_MANAGER = new GemDefinitionManager();
     public static final AbilityManager ABILITY_MANAGER = new AbilityManager();
+    public static final FusionNameManager FUSION_NAME_MANAGER = new FusionNameManager();
 
     public Gemology(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
@@ -92,6 +95,7 @@ public class Gemology {
     public void addReloadListeners(AddServerReloadListenersEvent event) {
         event.addListener(Identifier.fromNamespaceAndPath(MODID, "gem_definitions"), new GemDefinitionLoader(GEM_DEFINITION_MANAGER));
         event.addListener(Identifier.fromNamespaceAndPath(MODID, "ability_definitions"), new AbilityDefinitionLoader(ABILITY_MANAGER));
+        event.addListener(Identifier.fromNamespaceAndPath(MODID, "fusion_names"), new FusionNameLoader(FUSION_NAME_MANAGER));
     }
 
     public void createAttributes(EntityAttributeCreationEvent event) {
