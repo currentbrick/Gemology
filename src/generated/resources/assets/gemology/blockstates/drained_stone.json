@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "gemology:block/drained_stone"
+    }
+  }
+}
