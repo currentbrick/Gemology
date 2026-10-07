@@ -10,45 +10,31 @@ public class FusionModel extends GeoModel<EntityFusion> {
     @Override
     public Identifier getModelResource(GeoRenderState state) {
         FusionRenderState fusionState = (FusionRenderState) state;
-        if (fusionState.gem1 != null && fusionState.gem1.equals(fusionState.gem2)) {
 
-            return Identifier.fromNamespaceAndPath(
-                    "gemology",
-                    "entity/" + fusionState.gem1.getPath()
-            );
+        if (fusionState.gem1Id != null && fusionState.gem1Id.equals(fusionState.gem2Id)) {
+
+            return Identifier.fromNamespaceAndPath("gemology", "entity/" + fusionState.gem1Id.getPath());
         }
 
-        return Identifier.fromNamespaceAndPath(
-                "gemology",
-                "entity/fusion"
-        );
+        return Identifier.fromNamespaceAndPath("gemology", "entity/fusion");
     }
 
     @Override
     public Identifier getTextureResource(GeoRenderState state) {
         FusionRenderState fusionState = (FusionRenderState) state;
 
-        if (fusionState.gem1 != null
-                && fusionState.gem1.equals(fusionState.gem2)) {
+        if (fusionState.gem1Id != null
+                && fusionState.gem1Id.equals(fusionState.gem2Id)) {
 
-            return Identifier.fromNamespaceAndPath(
-                    "gemology",
-                    "textures/entity/" + fusionState.gem1.getPath()
-                            + "/" + /*fusionState.gem1.getPath() + */"skin_0.png"
-            );
+            return Identifier.fromNamespaceAndPath(fusionState.gem1Id.getNamespace(), "textures/entity/" + fusionState.gem1Id.getPath() + "/skin_0.png");
         }
 
-        return Identifier.fromNamespaceAndPath(
-                "gemology",
-                "textures/entity/fusion/fusion.png"
+        return Identifier.fromNamespaceAndPath("gemology", "textures/entity/fusion/fusion.png"
         );
     }
 
     @Override
     public Identifier getAnimationResource(EntityFusion animatable) {
-        return Identifier.fromNamespaceAndPath(
-                "gemology",
-                "animations/fusion"
-        );
+        return Identifier.fromNamespaceAndPath("gemology", "entity/fusion");
     }
 }

@@ -12,6 +12,7 @@ public class GemRenderState extends EntityRenderState implements GeoRenderState 
     public Identifier skinTexture;
     public Identifier hairTexture;
     public Identifier outfitTexture;
+    public Identifier insigniaTexture;
     public Identifier gemTexture;
     public Identifier faceTexture;
     public int skinColour = 0xFFFFFFFF;

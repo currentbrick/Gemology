@@ -1,21 +1,29 @@
 package com.currentbrick.gemology.entity;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.entity.gem.FusionVisualVariant;
 import com.currentbrick.gemology.entity.gem.GemDimensions;
 import com.currentbrick.gemology.entity.gem.GemStats;
+import com.currentbrick.gemology.entity.gem.palette.GemPalette;
+import com.currentbrick.gemology.entity.gem.palette.GemPaletteGenerator;
+import com.currentbrick.gemology.entity.gem.palette.GemPaletteLoader;
 import com.currentbrick.gemology.init.ModEntities;
 import com.currentbrick.gemology.item.FusionItem;
 import com.geckolib.animatable.GeoAnimatable;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
 import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.AnimationController;
+import com.geckolib.constant.DefaultAnimations;
 import com.geckolib.util.GeckoLibUtil;
 import com.sun.jna.platform.win32.WinDef;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityDimensions;
@@ -31,6 +39,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -42,8 +51,13 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
     private static final EntityDataAccessor<String> FUSION_GEM_1 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> FUSION_GEM_2 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
-
+    private static final EntityDataAccessor<String> FUSION_INSTANCE_1 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> FUSION_INSTANCE_2 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> FUSION_VARIANT_1 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> FUSION_VARIANT_2 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Long> FUSION_ID = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.LONG);
+
+
 
     private GemStats fusionStats;
     private GemDimensions fusionDimensions;
@@ -67,6 +81,12 @@ public class EntityFusion extends Monster implements GeoAnimatable {
         builder.define(FUSION_GEM_1, "");
         builder.define(FUSION_GEM_2, "");
         builder.define(FUSION_ID, 0L);
+
+        builder.define(FUSION_INSTANCE_1, "");
+        builder.define(FUSION_INSTANCE_2, "");
+
+        builder.define(FUSION_VARIANT_1, -1);
+        builder.define(FUSION_VARIANT_2, -1);
     }
 
     public void setComponents(CompoundTag first, CompoundTag second) {
@@ -78,9 +98,58 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
         entityData.set(FUSION_GEM_1, gem1 != null ? gem1.toString() : "");
         entityData.set(FUSION_GEM_2, gem2 != null ? gem2.toString() : "");
+        entityData.set(FUSION_INSTANCE_1, first.getString("InstanceId").orElse(""));
+        entityData.set(FUSION_INSTANCE_2, second.getString("InstanceId").orElse(""));
+        entityData.set(FUSION_VARIANT_1, first.getInt("Variant").orElse(-1));
+        entityData.set(FUSION_VARIANT_2, second.getInt("Variant").orElse(-1));
+
+
+        System.out.println(
+                "FUSION SET COMPONENTS: " +
+                        entityData.get(FUSION_GEM_1) + " | " +
+                        entityData.get(FUSION_INSTANCE_1) + " | " +
+                        entityData.get(FUSION_VARIANT_1)
+        );
     }
 
-    private Identifier getGemId(CompoundTag data) {
+    public UUID getGem1InstanceId() {
+        String id = entityData.get(FUSION_INSTANCE_1);
+
+        if (id.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public UUID getGem2InstanceId() {
+        String id = entityData.get(FUSION_INSTANCE_2);
+
+        if (id.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public int getGem1Variant() {
+        return entityData.get(FUSION_VARIANT_1);
+    }
+
+    public int getGem2Variant() {
+        return entityData.get(FUSION_VARIANT_2);
+    }
+
+
+    public static Identifier getGemId(CompoundTag data) {
         if (data == null) {
             return null;
         }
@@ -215,7 +284,29 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
         entityData.set(FUSION_GEM_1, gem1 != null ? gem1.toString() : "");
         entityData.set(FUSION_GEM_2, gem2 != null ? gem2.toString() : "");
-        entityData.set(FUSION_ID, entityData.get(FUSION_ID));
+        entityData.set(FUSION_ID, input.getLongOr("FusionID", 0L));
+
+        if (firstGemData != null) {
+            entityData.set(
+                    FUSION_INSTANCE_1,
+                    firstGemData.getString("InstanceId").orElse("")
+            );
+            entityData.set(
+                    FUSION_VARIANT_1,
+                    firstGemData.getInt("Variant").orElse(-1)
+            );
+        }
+
+        if (secondGemData != null) {
+            entityData.set(
+                    FUSION_INSTANCE_2,
+                    secondGemData.getString("InstanceId").orElse("")
+            );
+            entityData.set(
+                    FUSION_VARIANT_2,
+                    secondGemData.getInt("Variant").orElse(-1)
+            );
+        }
     }
 
     public void applyStats() {
@@ -226,7 +317,12 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(test -> {
+            if (test.isMoving())
+                return test.setAndContinue(DefaultAnimations.WALK);
 
+            return test.setAndContinue(DefaultAnimations.IDLE);
+        }));
     }
 
     @Override
@@ -285,6 +381,53 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
     public Long getFusionId() {
         return entityData.get(FUSION_ID);
+    }
+
+    private int getVisualVariant(int count, String category) {
+        if (count <= 1) {
+            return 0;
+        }
+
+        long seed = getFusionId() ^ category.hashCode();
+
+        RandomSource random = RandomSource.create(seed);
+
+        return random.nextInt(count);
+    }
+
+    public FusionVisualVariant getVisualVariant() {
+        return new FusionVisualVariant(
+                getVisualVariant(1, "skin"),
+                getVisualVariant(1, "hair"),
+                getVisualVariant(1, "outfit"),
+                getVisualVariant(1, "insignia"),
+                getVisualVariant(8, "eyes")
+        );
+    }
+
+    public int getCombinedPaletteColour(GemPaletteGenerator.PaletteType type) {
+        int colour1 = getComponentPaletteColour(getGem1ID(), getGem1InstanceId(), getGem1Variant(), type);
+
+        int colour2 = getComponentPaletteColour(getGem2ID(), getGem2InstanceId(), getGem2Variant(), type);
+
+        return GemPaletteGenerator.combineColours(colour1, colour2);
+    }
+
+    private int getComponentPaletteColour(Identifier gemId, UUID instanceId, int variant, GemPaletteGenerator.PaletteType type) {
+        if (gemId == null || instanceId == null) {
+            return 0xFFFFFFFF;
+        }
+
+        Identifier paletteTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/" + gemId.getPath() + "/palettes/" + type.name().toLowerCase() + "_palette.png");
+
+        try {
+            GemPalette palette = GemPaletteLoader.load(Minecraft.getInstance().getResourceManager(), paletteTexture);
+
+            return GemPaletteGenerator.generate(palette, variant, instanceId, type);
+
+        } catch (IOException e) {
+            return 0xFFFFFFFF;
+        }
     }
 
     @Override

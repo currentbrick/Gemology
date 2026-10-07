@@ -119,6 +119,6 @@ public class FusionGenerator {
         float quality = (firstQuality + secondQuality) / 2.0F;
         float randomVariation = random.nextFloat() * 0.10F - 0.05F;
         float qualityModifier = (quality - 1.0F) * 0.25F;
-        return average * (1.0F + randomVariation + qualityModifier);
+        return average * (1.0F + randomVariation + qualityModifier) * 1.5f;
     }
 }

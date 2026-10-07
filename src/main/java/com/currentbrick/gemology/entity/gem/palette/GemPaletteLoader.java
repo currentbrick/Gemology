@@ -13,10 +13,7 @@ import java.util.Optional;
 
 public class GemPaletteLoader {
 
-    public static GemPalette load(
-            ResourceManager resourceManager,
-            Identifier texture
-    ) throws IOException {
+    public static GemPalette load(ResourceManager resourceManager, Identifier texture) throws IOException {
 
         Optional<Resource> resource = resourceManager.getResource(texture);
 

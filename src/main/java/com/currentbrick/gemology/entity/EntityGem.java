@@ -507,6 +507,16 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         return random.nextInt(count);
     }
 
+    public static int getVisualVariant(UUID instanceId, int count, String category) {
+        if (instanceId == null || count <= 1) return 0;
+
+        long seed = instanceId.getMostSignificantBits() ^ instanceId.getLeastSignificantBits() ^ category.hashCode();
+
+        RandomSource random = RandomSource.create(seed);
+
+        return random.nextInt(count);
+    }
+
     public GemVisualVariant getVisualVariant() {
         ensureInstanceData();
 
@@ -680,6 +690,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         }
 
         fusion.setComponents(firstGemData, secondGemData);
+        fusion.setFusionId(seed);
         fusion.setFusionStats(fusionStats);
         fusion.setFusionAbilities(fusionAbilities);
         fusion.setFusionDimensions(fusionDimensions);

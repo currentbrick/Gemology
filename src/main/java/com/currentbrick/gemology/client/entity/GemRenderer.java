@@ -41,9 +41,10 @@ public class GemRenderer extends GeoEntityRenderer<EntityGem, GemRenderState> {
 
         this.withRenderLayer(new SkinLayer(this));
         this.withRenderLayer(new HairLayer(this));
-        this.withRenderLayer(new GemLayer(this));
         this.withRenderLayer(new OutfitLayer(this));
+        this.withRenderLayer(new InsigniaLayer(this));
         this.withRenderLayer(new FaceLayer(this));
+        this.withRenderLayer(new GemLayer(this));
         this.withRenderLayer(new GemEquipmentLayer(this, context));
         this.withRenderLayer(new GemHeldItemLayer(this, this.itemModelResolver));
     }
@@ -84,9 +85,16 @@ public class GemRenderer extends GeoEntityRenderer<EntityGem, GemRenderState> {
 
         state.skinTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/skin_"+visualVariant.skin()+".png");
         state.hairTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/hair_"+visualVariant.hair()+".png");
-        state.outfitTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/outfit_"+visualVariant.outfit()+".png");
+        state.outfitTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/outfits/outfit_"+visualVariant.outfit()+".png");
+        state.insigniaTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/outfits/insignia_"+visualVariant.insignia()+".png");
         state.gemTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/gemstones/gem_"+visualVariant.gem()+".png");
         state.faceTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/"+gemId.getPath()+".png");
+
+        System.out.println(
+                "GEM: " + gemId +
+                        " | OUTFIT VARIANT: " + visualVariant.outfit() +
+                        " | TEXTURE: " + gemId.getPath() + "/outfits/outfit_" + visualVariant.outfit() + ".png"
+        );
 
         state.skinColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.SKIN);
         state.hairColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.HAIR);
