@@ -10,9 +10,7 @@ import com.currentbrick.gemology.datagen.ModBlockLootProvider;
 import com.currentbrick.gemology.datagen.ModBlockTagsProvider;
 import com.currentbrick.gemology.datagen.ModModelProvider;
 import com.currentbrick.gemology.datagen.ModRecipeProvider;
-import com.currentbrick.gemology.init.ModContainers;
-import com.currentbrick.gemology.init.ModEntities;
-import com.currentbrick.gemology.init.ModRecipeTypes;
+import com.currentbrick.gemology.init.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -29,6 +27,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
 import java.util.Set;
@@ -60,13 +59,18 @@ public class GemologyClient {
         event.createProvider(ModBlockTagsProvider::new);
 
         event.createReloadableRegistryObjects(
-                new RegistrySetBuilder().add(Registries.LOOT_TABLE, new LootTableProvider(
-                                        Set.of(), List.of(
-                                                new LootTableProvider.SubProviderEntry(ModBlockLootProvider::new,
-                                                        LootContextParamSets.BLOCK
-                                                ))))
+                new RegistrySetBuilder()
+                        .add(Registries.LOOT_TABLE, new LootTableProvider(
+                                Set.of(),
+                                List.of(
+                                        new LootTableProvider.SubProviderEntry(
+                                                ModBlockLootProvider::new,
+                                                LootContextParamSets.BLOCK
+                                        )
+                                )
+                        ))
                         .add(ModRecipeProvider.create())
-                        );
+        );
     }
 
     @SubscribeEvent

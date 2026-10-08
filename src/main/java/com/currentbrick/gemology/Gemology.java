@@ -1,5 +1,9 @@
 package com.currentbrick.gemology;
 
+import com.currentbrick.gemology.datagen.ModBlockLootProvider;
+import com.currentbrick.gemology.datagen.ModBlockTagsProvider;
+import com.currentbrick.gemology.datagen.ModModelProvider;
+import com.currentbrick.gemology.datagen.ModRecipeProvider;
 import com.currentbrick.gemology.entity.EntityGem;
 import com.currentbrick.gemology.entity.fusion.FusionNameLoader;
 import com.currentbrick.gemology.entity.fusion.FusionNameManager;
@@ -10,15 +14,21 @@ import com.currentbrick.gemology.entity.gem.abilities.AbilityManager;
 import com.currentbrick.gemology.init.*;
 import com.currentbrick.gemology.item.ItemGem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -35,6 +45,9 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
+import java.util.List;
+import java.util.Set;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Gemology.MODID)
@@ -139,7 +152,7 @@ public class Gemology {
 
         data.putInt("ReformationTimer", timer);
 
-        if (timer > 40 && timer < 80) {
+        if (timer > 80 && timer < 100) {
             itemEntity.setNoGravity(true);
             itemEntity.setDeltaMovement(0, 0.075, 0);
 
@@ -148,7 +161,7 @@ public class Gemology {
                 serverLevel.sendParticles(ParticleTypes.END_ROD, itemEntity.getX(), itemEntity.getY() + 0.3, itemEntity.getZ(), 3, 0.25, 0.25, 0.25, 0.02);
             }
             itemEntity.setGlowingTag(true);
-        } else if (timer > 80) {
+        } else if (timer > 120) {
             EntityGem gem = gemItem.createGem(event.getEntity().level(), itemEntity.getItem());
             if (gem != null) {
                 BlockPos pos = event.getEntity().getOnPos();
