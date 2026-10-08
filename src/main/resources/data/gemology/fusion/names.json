@@ -48,7 +48,7 @@
   "Heliodor",
   "Peridot",
   "Pezzottaite",
-  "Maxixe",
+  "Emery",
   "Obsidian",
   "Jade",
   "Spinel",
@@ -77,7 +77,7 @@
   "Nephrite",
   "Maw Sit Sit",
   "Olivine",
-  "Rhodocrosite",
+  "Rhodochrosite",
   "Sphene",
   "Selenite",
   "Schist",
@@ -98,7 +98,7 @@
   "Fossil",
   "Clam",
   "Tropical Fish",
-  "Slag",
+  "Pepo",
   "Sculk",
   "Bamboo",
   "Pond Water",
@@ -135,5 +135,6 @@
   "Fruit Punch",
   "Anatase",
   "Disaster Zone",
-  "Clod"
+  "Clod",
+  "Bob"
 ]
