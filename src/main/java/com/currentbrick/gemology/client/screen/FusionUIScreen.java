@@ -1,11 +1,14 @@
 package com.currentbrick.gemology.client.screen;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.container.FusionUIContainer;
 import com.currentbrick.gemology.container.GemUIContainer;
+import com.currentbrick.gemology.entity.EntityFusion;
 import com.currentbrick.gemology.entity.EntityGem;
 import com.currentbrick.gemology.entity.gem.GemDefinition;
 import com.currentbrick.gemology.network.PoofPayload;
 import com.currentbrick.gemology.network.SetGemTabPayload;
+import com.currentbrick.gemology.network.UnfusePayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -24,7 +27,7 @@ import org.joml.Vector3f;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class GemUIScreen extends AbstractContainerScreen<GemUIContainer> {
+public class FusionUIScreen extends AbstractContainerScreen<FusionUIContainer> {
 
     private static final int GUI_WIDTH = 208;
     private static final int GUI_HEIGHT = 224;
@@ -35,7 +38,7 @@ public class GemUIScreen extends AbstractContainerScreen<GemUIContainer> {
     private static final int TAB_Y_OFFSET = 4;
 
     private static final Identifier APPEARANCE_TEXTURE = Identifier.fromNamespaceAndPath("gemology", "textures/gui/gem_appearance.png");
-    private static final Identifier INVENTORY_TEXTURE = Identifier.fromNamespaceAndPath("gemology", "textures/gui/gem_inventory.png");
+    private static final Identifier INVENTORY_TEXTURE = Identifier.fromNamespaceAndPath("gemology", "textures/gui/fusion_inventory.png");
     private static final Identifier STATS_TEXTURE = Identifier.fromNamespaceAndPath("gemology", "textures/gui/gem_stats.png");
 
     private static final Identifier APPEARANCE_TAB = Identifier.fromNamespaceAndPath("gemology", "textures/gui/tabs/appearance.png");
@@ -46,7 +49,7 @@ public class GemUIScreen extends AbstractContainerScreen<GemUIContainer> {
     private static final Identifier STATS_TAB_SELECTED = Identifier.fromNamespaceAndPath("gemology", "textures/gui/tabs/stats_selected.png");
     private static final Identifier POOF_BUTTON = Identifier.fromNamespaceAndPath("gemology", "textures/gui/tabs/poof_l.png");
 
-    public GemUIScreen(GemUIContainer menu, Inventory playerInventory, Component title) {
+    public FusionUIScreen(FusionUIContainer menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title, GUI_WIDTH, GUI_HEIGHT);
     }
 
@@ -140,7 +143,7 @@ public class GemUIScreen extends AbstractContainerScreen<GemUIContainer> {
             }
 
             if (isMouseOverPoof(event.x(), event.y())) {
-                ClientPacketDistributor.sendToServer(new PoofPayload());
+                ClientPacketDistributor.sendToServer(new UnfusePayload());
                 return true;
             }
         }
@@ -152,9 +155,9 @@ public class GemUIScreen extends AbstractContainerScreen<GemUIContainer> {
 
         EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
 
-        EntityRenderer<? super EntityGem, ?> renderer = dispatcher.getRenderer(menu.gem);
+        EntityRenderer<? super EntityFusion, ?> renderer = dispatcher.getRenderer(menu.fusion);
 
-        EntityRenderState renderState = renderer.createRenderState(menu.gem, minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true));
+        EntityRenderState renderState = renderer.createRenderState(menu.fusion, minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true));
         float previewCenterY = topPos + 81.0f;
 
         float previewCenterX = leftPos + 47.5f;
@@ -178,36 +181,28 @@ public class GemUIScreen extends AbstractContainerScreen<GemUIContainer> {
     }
 
     private void renderStats(GuiGraphicsExtractor graphics) {
-        if (menu.gem == null) {
-            return;
-        }
-
-        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(menu.gem.getGemId());
-
-        menu.gem.getInstanceData();
-
-        if (definition == null) {
+        if (menu.fusion == null) {
             return;
         }
 
         int x = leftPos + 28;
         int y = topPos + 22;
 
-        graphics.text(Minecraft.getInstance().font, "HP: " + definition.getStats().getHealth(), x, y, 0xFF6E7070, false);
+        graphics.text(Minecraft.getInstance().font, "HP: " + (Math.round(menu.fusion.getFusionHealth() * 10) / 10.0f), x, y, 0xFF6E7070, false);
 
 
         y += 12;
 
-        graphics.text(Minecraft.getInstance().font, "Attack: " + definition.getStats().getStrength(), x, y, 0xFF6E7070, false);
+        graphics.text(Minecraft.getInstance().font, "Attack: " + (Math.round(menu.fusion.getFusionStrength() * 10) / 10.0f), x, y, 0xFF6E7070, false);
 
         y += 12;
 
-        graphics.text(Minecraft.getInstance().font, "Speed: " + definition.getStats().getSpeed(), x, y, 0xFF6E7070, false);
+        graphics.text(Minecraft.getInstance().font, "Speed: " + (Math.round(menu.fusion.getFusionSpeed() * 10) / 10.0f), x, y, 0xFF6E7070, false);
 
         x = leftPos + 120;
         y = topPos + 22;
 
-        for (var ability : definition.getAbilities()) {
+        for (var ability : menu.fusion.getFusionAbilities()) {
             String abilityName = Arrays.stream(ability.getPath().split("_"))
                     .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
                     .collect(Collectors.joining(" "));

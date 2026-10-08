@@ -1,6 +1,8 @@
 package com.currentbrick.gemology.entity;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.container.FusionUIContainer;
+import com.currentbrick.gemology.container.GemUIContainer;
 import com.currentbrick.gemology.entity.gem.FusionVisualVariant;
 import com.currentbrick.gemology.entity.gem.GemDimensions;
 import com.currentbrick.gemology.entity.gem.GemStats;
@@ -17,6 +19,7 @@ import com.geckolib.constant.DefaultAnimations;
 import com.geckolib.util.GeckoLibUtil;
 import com.sun.jna.platform.win32.WinDef;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -24,27 +27,29 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.extensions.IMenuProviderExtension;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class EntityFusion extends Monster implements GeoAnimatable {
+public class EntityFusion extends Monster implements GeoAnimatable, Container, MenuProvider, IMenuProviderExtension, ContainerListener {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private CompoundTag firstGemData;
     private CompoundTag secondGemData;
@@ -56,13 +61,18 @@ public class EntityFusion extends Monster implements GeoAnimatable {
     private static final EntityDataAccessor<Integer> FUSION_VARIANT_1 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> FUSION_VARIANT_2 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Long> FUSION_ID = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.LONG);
+    private static final EntityDataAccessor<Float> FUSION_HEALTH = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> FUSION_STRENGTH = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> FUSION_SPEED = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<String> FUSION_ABILITIES = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
 
+    private static final int INVENTORY_SIZE = 32;
+
+    private final NonNullList<ItemStack> fusionInventory = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
 
     private GemStats fusionStats;
     private GemDimensions fusionDimensions;
-
-    private List<Identifier> fusionAbilities = new ArrayList<>();
 
     private static final EntityDataAccessor<Float> FUSION_WIDTH = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> FUSION_HEIGHT = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
@@ -87,6 +97,12 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
         builder.define(FUSION_VARIANT_1, -1);
         builder.define(FUSION_VARIANT_2, -1);
+
+        builder.define(FUSION_HEALTH, 0F);
+        builder.define(FUSION_STRENGTH, 0F);
+        builder.define(FUSION_SPEED, 0F);
+
+        builder.define(FUSION_ABILITIES, "");
     }
 
     public void setComponents(CompoundTag first, CompoundTag second) {
@@ -187,14 +203,31 @@ public class EntityFusion extends Monster implements GeoAnimatable {
     public void setFusionStats(GemStats fusionStats) {
         this.fusionStats = fusionStats;
         applyStats();
+
+        entityData.set(FUSION_HEALTH, fusionStats.getHealth());
+        entityData.set(FUSION_STRENGTH, fusionStats.getStrength());
+        entityData.set(FUSION_SPEED, fusionStats.getSpeed());
     }
 
     public List<Identifier> getFusionAbilities() {
-        return fusionAbilities;
+        String serialized = entityData.get(FUSION_ABILITIES);
+
+        if (serialized.isEmpty()) {
+            return List.of();
+        }
+
+        return Arrays.stream(serialized.split(","))
+                .map(Identifier::tryParse)
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     public void setFusionAbilities(List<Identifier> fusionAbilities) {
-        this.fusionAbilities = new ArrayList<>(fusionAbilities);
+        String serialized = fusionAbilities.stream()
+                .map(Identifier::toString)
+                .collect(Collectors.joining(","));
+
+        entityData.set(FUSION_ABILITIES, serialized);
     }
 
     public GemDimensions getFusionDimensions() {
@@ -315,6 +348,18 @@ public class EntityFusion extends Monster implements GeoAnimatable {
         getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(fusionStats.getStrength());
     }
 
+    public float getFusionHealth() {
+        return entityData.get(FUSION_HEALTH);
+    }
+
+    public float getFusionStrength() {
+        return entityData.get(FUSION_STRENGTH);
+    }
+
+    public float getFusionSpeed() {
+        return entityData.get(FUSION_SPEED);
+    }
+
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(test -> {
@@ -333,20 +378,29 @@ public class EntityFusion extends Monster implements GeoAnimatable {
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+        System.out.println("interact");
         if (level().isClientSide()) {
             return InteractionResult.SUCCESS;
-        }
-
-        ItemStack stack = player.getItemInHand(hand);
-
-        if (!(stack.getItem() instanceof FusionItem)) {
-            return InteractionResult.PASS;
         }
 
         if (firstGemData == null || secondGemData == null) {
             return InteractionResult.PASS;
         }
 
+        ItemStack stack = player.getItemInHand(hand);
+        System.out.println("check fusion item");
+        if ((stack.getItem() instanceof FusionItem)) {
+            unfuse(player);
+
+            return InteractionResult.SUCCESS;
+        } else {
+            System.out.println("open menu");
+            player.openMenu(this, buf -> buf.writeInt(this.getId()));
+            return InteractionResult.SUCCESS;
+        }
+    }
+
+    public void unfuse(Player player) {
         double offset = 1;
 
         Vec3 direction = player.getLookAngle();
@@ -357,8 +411,6 @@ public class EntityFusion extends Monster implements GeoAnimatable {
         spawnGem(secondGemData, (side.x * offset), 0, (side.z * offset));
 
         discard();
-
-        return InteractionResult.SUCCESS;
     }
 
     private void spawnGem(CompoundTag gemData, double offsetX, double offsetY, double offsetZ) {
@@ -436,6 +488,85 @@ public class EntityFusion extends Monster implements GeoAnimatable {
                 entityData.get(FUSION_WIDTH),
                 entityData.get(FUSION_HEIGHT)
         );
+    }
+
+    @Override
+    public int getContainerSize() {
+        return INVENTORY_SIZE;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        for (ItemStack stack : fusionInventory) {
+            if (!stack.isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public ItemStack getItem(int index) {
+        return fusionInventory.get(index);
+    }
+
+    @Override
+    public ItemStack removeItem(int index, int count) {
+        ItemStack stack = ContainerHelper.removeItem(fusionInventory, index, count);
+
+        if (!stack.isEmpty()) {
+            setChanged();
+        }
+
+        return stack;
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int index) {
+        ItemStack stack = fusionInventory.get(index);
+        fusionInventory.set(index, ItemStack.EMPTY);
+        return stack;
+    }
+
+    @Override
+    public void setItem(int index, ItemStack stack) {
+        fusionInventory.set(index, stack);
+
+        if (stack.getCount() > getMaxStackSize()) {
+            stack.setCount(getMaxStackSize());
+        }
+
+        setChanged();
+    }
+
+    @Override
+    public void setChanged() {
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        return isAlive() && player.distanceToSqr(this) <= 64.0;
+    }
+
+    @Override
+    public void clearContent() {
+        fusionInventory.clear();
+    }
+
+    @Override
+    public void slotChanged(AbstractContainerMenu abstractContainerMenu, int i, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void dataChanged(AbstractContainerMenu abstractContainerMenu, int i, int i1) {
+
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+        return new FusionUIContainer(id, inventory, this);
     }
 
     @Override

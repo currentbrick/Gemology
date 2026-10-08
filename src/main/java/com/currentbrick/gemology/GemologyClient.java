@@ -4,6 +4,7 @@ import com.currentbrick.gemology.client.entity.FusionRenderer;
 import com.currentbrick.gemology.client.entity.GemRenderer;
 import com.currentbrick.gemology.client.item.GemVariantProperty;
 import com.currentbrick.gemology.client.jei.IncubationJEIRecipes;
+import com.currentbrick.gemology.client.screen.FusionUIScreen;
 import com.currentbrick.gemology.client.screen.GemUIScreen;
 import com.currentbrick.gemology.client.screen.IncubatorScreen;
 import com.currentbrick.gemology.datagen.ModBlockLootProvider;
@@ -87,6 +88,7 @@ public class GemologyClient {
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModContainers.GEM_UI_CONTAINER.get(), GemUIScreen::new);
+        event.register(ModContainers.FUSION_UI_CONTAINER.get(), FusionUIScreen::new);
         event.register(ModContainers.INCUBATOR_CONTAINER.get(), IncubatorScreen::new);
     }
 

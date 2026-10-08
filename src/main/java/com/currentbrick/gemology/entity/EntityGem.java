@@ -702,7 +702,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         discard();
         target.discard();
 
-        getOwner().sendSystemMessage(Component.literal("Fused " + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(0, 1).toUpperCase() + Identifier.parse(secondGemData.getString("GemType").orElse("unknown")).getPath().substring(1) + " + " + getGemName()));
+        getOwner().sendSystemMessage(Component.literal("Fused " + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(0, 1).toUpperCase() + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(1) + " + " + getGemName()));
     }
 
     public boolean isFusionPending() {

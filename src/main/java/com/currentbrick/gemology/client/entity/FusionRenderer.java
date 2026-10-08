@@ -69,10 +69,6 @@ public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRender
             scaleY = state.modelHeight / 2;
         }
 
-        System.out.println(
-                "SCALE: " + scaleX + ", " + scaleY +
-                        " | IDS: " + state.gem1Id + ", " + state.gem2Id
-        );
 
         super.scaleModelForRender(renderPassInfo, widthScale * scaleX, heightScale * scaleY);
     }
@@ -86,12 +82,6 @@ public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRender
         state.gem1Variant = entity.getGem1Variant();
         state.gem2Variant = entity.getGem2Variant();
 
-        System.out.println(
-                "ADD RENDER DATA: " +
-                        state.gem1Id + " | " +
-                        state.gem1InstanceId + " | " +
-                        state.gem1Variant
-        );
         super.addRenderData(entity, relatedObject, state, partialTick);
 
         state.skinTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/skin_0.png");
@@ -103,14 +93,9 @@ public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRender
         Identifier gem1Id = state.gem1Id;
         Identifier gem2Id = state.gem2Id;
 
-        System.out.println("STATE GEM 1 ID: " + state.gem1Id);
-        System.out.println("STATE GEM 1 INSTANCE: " + state.gem1InstanceId);
-        System.out.println("STATE GEM 1 VARIANT: " + state.gem1Variant);
-
 
         if (gem1Id != null) {
             GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gem1Id);
-            System.out.println("DEFINITION: " + definition);
             if (definition != null) {
                 int variant = EntityGem.getVisualVariant(state.gem1InstanceId, definition.getGemVariants(), "gem");
 
@@ -127,8 +112,6 @@ public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRender
             }
         }
 
-        System.out.println("GEM 1 TEXTURE: " + state.gemTexture1);
-        System.out.println("GEM 2 TEXTURE: " + state.gemTexture2);
 
         state.skinColour = entity.getCombinedPaletteColour(GemPaletteGenerator.PaletteType.SKIN);
         state.hairColour = entity.getCombinedPaletteColour(GemPaletteGenerator.PaletteType.HAIR);

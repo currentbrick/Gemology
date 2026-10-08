@@ -90,12 +90,6 @@ public class GemRenderer extends GeoEntityRenderer<EntityGem, GemRenderState> {
         state.gemTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/gemstones/gem_"+visualVariant.gem()+".png");
         state.faceTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/"+gemId.getPath()+".png");
 
-        System.out.println(
-                "GEM: " + gemId +
-                        " | OUTFIT VARIANT: " + visualVariant.outfit() +
-                        " | TEXTURE: " + gemId.getPath() + "/outfits/outfit_" + visualVariant.outfit() + ".png"
-        );
-
         state.skinColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.SKIN);
         state.hairColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.HAIR);
         state.gemColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.GEM);

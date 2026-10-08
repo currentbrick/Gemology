@@ -1,6 +1,7 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
+import com.currentbrick.gemology.container.FusionUIContainer;
 import com.currentbrick.gemology.container.GemUIContainer;
 import com.currentbrick.gemology.container.IncubatorContainer;
 import net.minecraft.core.registries.Registries;
@@ -17,6 +18,9 @@ public class ModContainers {
 
     public static final DeferredHolder<MenuType<?>, MenuType<GemUIContainer>> GEM_UI_CONTAINER =
             MENUS.register("gem_ui", () -> IMenuTypeExtension.create(GemUIContainer::new));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<FusionUIContainer>> FUSION_UI_CONTAINER =
+            MENUS.register("fusion_ui", () -> IMenuTypeExtension.create(FusionUIContainer::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<IncubatorContainer>> INCUBATOR_CONTAINER =
             MENUS.register("incubator", () -> IMenuTypeExtension.create(IncubatorContainer::new));
