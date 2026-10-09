@@ -456,6 +456,7 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         }
 
         long seed = getFusionId() ^ category.hashCode();
+
         RandomSource random = RandomSource.create(seed);
 
         return random.nextInt(count);
