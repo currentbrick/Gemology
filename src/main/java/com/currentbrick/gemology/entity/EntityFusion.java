@@ -642,9 +642,23 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         return result.toString().trim();
     }
 
+    private Identifier getFusionTypeId(Identifier gemId) {
+        if (gemId == null) {
+            return null;
+        }
+
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gemId);
+
+        if (definition == null) {
+            return gemId;
+        }
+
+        return definition.getFusionTypeId();
+    }
+
     @Override
     public Component getDisplayName() {
-        if (getGem1ID().equals(getGem2ID())) return Component.literal(getGemName());
+        if (getFusionTypeId(getGem1ID()).equals(getFusionTypeId(getGem1ID()))) return Component.literal(getGemName());
         return Component.literal(Gemology.FUSION_NAME_MANAGER.getName(getFusionId()));
     }
 }
