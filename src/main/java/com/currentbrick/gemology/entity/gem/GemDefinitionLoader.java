@@ -52,6 +52,17 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
                 JsonArray variantsJson = json.getAsJsonArray("variants");
                 JsonObject visualVariants = json.getAsJsonObject("visual_variants");
 
+                Identifier parentGem = null;
+
+                if (json.has("parent_gem")
+                        && !json.get("parent_gem").isJsonNull()
+                        && !json.get("parent_gem").getAsString().isBlank()) {
+
+                    parentGem = Identifier.parse(
+                            json.get("parent_gem").getAsString()
+                    );
+                }
+
                 List<Identifier> abilities = new ArrayList<>();
                 List<GemVariant> variants = new ArrayList<>();
 
@@ -116,13 +127,32 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
                 int outfitVariants = visualVariants.get("outfit").getAsInt();
                 int insigniaVariants = visualVariants.get("insignia").getAsInt();
 
+                JsonObject sounds = json.has("sounds")
+                        ? json.getAsJsonObject("sounds")
+                        : new JsonObject();
+
+                Identifier instrumentSound = sounds.has("instrument")
+                        ? Identifier.parse(sounds.get("instrument").getAsString())
+                        : Identifier.withDefaultNamespace("block.note_block.harp");
+
                 GemDimensions defDimensions = new GemDimensions(dimensions.get("width").getAsFloat(), dimensions.get("height").getAsFloat());
                 GemStats defStats = new GemStats(stats.get("health").getAsFloat(), stats.get("strength").getAsFloat(), stats.get("speed").getAsFloat());
 
-                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions, abilities, variants, skinVariants, hairVariants, gemVariants, outfitVariants, insigniaVariants, availability);
+                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions, abilities, variants, skinVariants, hairVariants, gemVariants, outfitVariants, insigniaVariants, availability, instrumentSound, parentGem);
 
                 definitions.put(gemId, definition);
                 Gemology.LOGGER.info("Loaded gem {} with abilities: {}", gemId, abilities);
+                Gemology.LOGGER.info(
+
+                        "Gem {} has parent {} and fusion type {}",
+
+                        definition.getId(),
+
+                        definition.getParentGem(),
+
+                        definition.getFusionTypeId()
+
+                );
                 //Gemology.LOGGER.info("Loaded gem definition: {}", gemId);
             } catch (IOException | RuntimeException e) {
                 throw new RuntimeException("Failed to load gem definition: " + resourceId, e);

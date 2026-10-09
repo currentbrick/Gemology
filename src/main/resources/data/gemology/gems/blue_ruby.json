@@ -18,12 +18,18 @@
     "insignia": 9
   },
 
+  "sounds": {
+    "instrument": "minecraft:block.note_block.guitar"
+  },
+
   "availability": [
     {
       "start": "04-01",
       "end": "04-01"
     }
   ],
+
+  "parent_gem": "gemology:ruby",
 
   "abilities": []
 }

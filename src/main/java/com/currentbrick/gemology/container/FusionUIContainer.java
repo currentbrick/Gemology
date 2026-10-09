@@ -29,7 +29,7 @@ public class FusionUIContainer extends AbstractContainerMenu {
 
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 8; col++) {
-                int slot = col + row * 4;
+                int slot = col + row * 8;
                 this.addSlot(new FusionInventorySlot(this, fusion, slot, 33 + col * 18, 47 + row * 18));
             }
         }

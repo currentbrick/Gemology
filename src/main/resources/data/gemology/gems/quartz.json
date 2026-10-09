@@ -22,6 +22,10 @@
     "insignia": 6
   },
 
+  "sounds": {
+    "instrument": "minecraft:block.note_block.bass"
+  },
+
   "variants": [
     {
       "id": 0,

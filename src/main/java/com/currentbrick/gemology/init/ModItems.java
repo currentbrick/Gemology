@@ -75,6 +75,12 @@ public class ModItems {
     public static final DeferredItem<BlockItem> TUNGSTEN_BLOCK = ITEMS.registerSimpleBlockItem("tungsten_block", ModBlocks.TUNGSTEN_BLOCK);
     public static final DeferredItem<BlockItem> RAW_TUNGSTEN_BLOCK = ITEMS.registerSimpleBlockItem("raw_tungsten_block", ModBlocks.RAW_TUNGSTEN_BLOCK);
 
+    public static final DeferredItem<BlockItem> RUINED_MARBLE_BLOCK = ITEMS.registerSimpleBlockItem("ruined_marble_block", ModBlocks.RUINED_MARBLE_BLOCK);
+    public static final DeferredItem<BlockItem> RUINED_MARBLE_BRICK = ITEMS.registerSimpleBlockItem("ruined_marble_brick", ModBlocks.RUINED_MARBLE_BRICK);
+    public static final DeferredItem<BlockItem> RUINED_MARBLE_PILLAR = ITEMS.registerSimpleBlockItem("ruined_marble_pillar", ModBlocks.RUINED_MARBLE_PILLAR);
+    public static final DeferredItem<BlockItem> CHISELED_RUINED_MARBLE = ITEMS.registerSimpleBlockItem("chiseled_ruined_marble", ModBlocks.CHISELED_RUINED_MARBLE);
+    public static final DeferredItem<BlockItem> SMOOTH_RUINED_MARBLE = ITEMS.registerSimpleBlockItem("smooth_ruined_marble", ModBlocks.SMOOTH_RUINED_MARBLE);
+
     public static final DeferredItem<BlockItem> DRAINED_STONE = ITEMS.registerSimpleBlockItem("drained_stone", ModBlocks.DRAINED_STONE);
     public static final DeferredItem<BlockItem> DRAINED_SOIL = ITEMS.registerSimpleBlockItem("drained_soil", ModBlocks.DRAINED_SOIL);
 

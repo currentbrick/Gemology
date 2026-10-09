@@ -14,6 +14,10 @@
     "gemology:night_vision"
   ],
 
+  "sounds": {
+    "instrument": "minecraft:block.note_block.bass"
+  },
+
   "visual_variants": {
     "skin": 1,
     "hair": 4,

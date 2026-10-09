@@ -6,6 +6,12 @@
   "block.gemology.tungsten_block": "Tungsten Block",
   "block.gemology.raw_tungsten_block": "Raw Tungsten Block",
 
+  "block.gemology.ruined_marble_block": "Ruined Marble Block",
+  "block.gemology.ruined_marble_brick": "Ruined Marble Brick",
+  "block.gemology.ruined_marble_pillar": "Ruined Marble Pillar",
+  "block.gemology.smooth_ruined_marble": "Smooth Ruined Marble",
+  "block.gemology.chiseled_ruined_marble": "Chiseled Ruined Marble",
+
   "block.gemology.drained_soil": "Drained Soil",
   "block.gemology.drained_stone": "Drained Stone",
 

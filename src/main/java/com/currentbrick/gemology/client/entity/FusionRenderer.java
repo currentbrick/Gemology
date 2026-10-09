@@ -61,7 +61,10 @@ public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRender
         float scaleX;
         float scaleY;
 
-        if (state.gem1Id != null && state.gem1Id.equals(state.gem2Id)) {
+        Identifier fusionType1 = getFusionTypeId(state.gem1Id);
+        Identifier fusionType2 = getFusionTypeId(state.gem2Id);
+
+        if (fusionType1 != null && fusionType1.equals(fusionType2)) {
                 scaleX = 1.4F;
                 scaleY = 1.4F;
         } else {
@@ -84,32 +87,65 @@ public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRender
 
         super.addRenderData(entity, relatedObject, state, partialTick);
 
-        state.skinTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/skin_0.png");
-        state.hairTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/hair_0.png");
-        state.outfitTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/outfits/outfit_0.png");
-        state.eyeTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/eyes/eye_"+entity.getVisualVariant().eyes()+".png");
-        state.irisTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/eyes/iris_"+entity.getVisualVariant().eyes()+".png");
+        Identifier fusionType1 = getFusionTypeId(state.gem1Id);
+        Identifier fusionType2 = getFusionTypeId(state.gem2Id);
 
-        Identifier gem1Id = state.gem1Id;
-        Identifier gem2Id = state.gem2Id;
+        if (fusionType1 != null && fusionType1.equals(fusionType2)) {
+
+            Identifier gem1Id = state.gem1Id;
+            Identifier gem2Id = state.gem2Id;
+
+            Identifier textureGemId = fusionType1;
+
+            state.skinTexture = Identifier.fromNamespaceAndPath(textureGemId.getNamespace(), "textures/entity/" + textureGemId.getPath() + "/skin_0.png");
+
+            state.hairTexture = Identifier.fromNamespaceAndPath(textureGemId.getNamespace(), "textures/entity/" + textureGemId.getPath() + "/hair_0.png");
+
+            state.outfitTexture = Identifier.fromNamespaceAndPath(textureGemId.getNamespace(), "textures/entity/" + textureGemId.getPath() + "/outfits/outfit_0.png");
+
+            state.irisTexture = Identifier.fromNamespaceAndPath(textureGemId.getNamespace(), "textures/entity/" + textureGemId.getPath() + "/" + textureGemId.getPath() + ".png");
 
 
-        if (gem1Id != null) {
-            GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gem1Id);
-            if (definition != null) {
-                int variant = EntityGem.getVisualVariant(state.gem1InstanceId, definition.getGemVariants(), "gem");
+            if (gem1Id != null && gem2Id != null) {
+                GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gem1Id);
+                if (definition != null) {
+                    int variant = EntityGem.getVisualVariant(state.gem1InstanceId, definition.getGemVariants(), "gem");
+                    int variant2 = EntityGem.getVisualVariant(state.gem2InstanceId, definition.getGemVariants(), "gem");
 
-                state.gemTexture1 = Identifier.fromNamespaceAndPath(gem1Id.getNamespace(), "textures/entity/fusion/gemstones/gem_" + variant + ".png");
+                    state.gemTexture1 = Identifier.fromNamespaceAndPath(textureGemId.getNamespace(), "textures/entity/" + textureGemId.getPath() + "/gemstones/gem_" + variant + ".png");
+                    state.gemTexture2 = Identifier.fromNamespaceAndPath(textureGemId.getNamespace(), "textures/entity/" + textureGemId.getPath() + "/gemstones/gem_" + variant2 + ".png");
+                }
             }
-        }
+        } else {
 
-        if (gem2Id != null) {
-            GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gem2Id);
-            if (definition != null) {
-                int variant = EntityGem.getVisualVariant(state.gem2InstanceId, definition.getGemVariants(), "gem");
+            state.skinTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/skin_0.png");
+            state.hairTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/hair_0.png");
+            state.outfitTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/outfits/outfit_0.png");
+            state.eyeTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/eyes/eye_" + entity.getVisualVariant().eyes() + ".png");
+            state.irisTexture = Identifier.fromNamespaceAndPath(Gemology.MODID, "textures/entity/fusion/eyes/iris_" + entity.getVisualVariant().eyes() + ".png");
 
-                state.gemTexture2 = Identifier.fromNamespaceAndPath(gem2Id.getNamespace(), "textures/entity/fusion/gemstones/gem_" + variant + ".png");
+            Identifier gem1Id = state.gem1Id;
+            Identifier gem2Id = state.gem2Id;
+
+
+            if (gem1Id != null) {
+                GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gem1Id);
+                if (definition != null) {
+                    int variant = EntityGem.getVisualVariant(state.gem1InstanceId, definition.getGemVariants(), "gem");
+
+                    state.gemTexture1 = Identifier.fromNamespaceAndPath(gem1Id.getNamespace(), "textures/entity/fusion/gemstones/gem_" + variant + ".png");
+                }
             }
+
+            if (gem2Id != null) {
+                GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gem2Id);
+                if (definition != null) {
+                    int variant = EntityGem.getVisualVariant(state.gem2InstanceId, definition.getGemVariants(), "gem");
+
+                    state.gemTexture2 = Identifier.fromNamespaceAndPath(gem2Id.getNamespace(), "textures/entity/fusion/gemstones/gem_" + variant + ".png");
+                }
+            }
+
         }
 
 
@@ -128,5 +164,19 @@ public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRender
         Minecraft minecraft = Minecraft.getInstance();
 
         return minecraft.crosshairPickEntity == entity;
+    }
+
+    private Identifier getFusionTypeId(Identifier gemId) {
+        if (gemId == null) {
+            return null;
+        }
+
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gemId);
+
+        if (definition == null) {
+            return gemId;
+        }
+
+        return definition.getFusionTypeId();
     }
 }

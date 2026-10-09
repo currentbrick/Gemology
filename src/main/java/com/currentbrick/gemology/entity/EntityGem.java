@@ -30,6 +30,7 @@ import com.geckolib.constant.DefaultAnimations;
 import com.geckolib.util.GeckoLibUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -38,6 +39,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
@@ -121,11 +124,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
                 variant = generateRandomVariant();
             }
 
-            instanceData = new GemInstanceData(
-                    instanceId,
-                    1.0F,
-                    variant
-            );
+            instanceData = new GemInstanceData(instanceId, 1.0F, variant);
 
             System.out.println("RESTORED FROM SYNC: " + instanceId);
 
@@ -689,6 +688,10 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
             return;
         }
 
+        this.copyInventoryTo(fusion, 0);
+
+        target.copyInventoryTo(fusion, 16);
+
         fusion.setComponents(firstGemData, secondGemData);
         fusion.setFusionId(seed);
         fusion.setFusionStats(fusionStats);
@@ -698,6 +701,9 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         fusion.setPos(getX(), getY(), getZ());
 
         level().addFreshEntity(fusion);
+
+        this.clearInventory();
+        target.clearInventory();
 
         discard();
         target.discard();
@@ -724,10 +730,39 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         }
 
         GemStats stats = definition.getStats();
+        GemInstanceData instance = getInstanceData();
 
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(stats.getHealth());
-        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(stats.getSpeed());
-        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(stats.getStrength());
+        if (instance == null) {
+            return;
+        }
+
+        UUID instanceId = instance.getInstanceId();
+        float quality = instance.getQuality();
+
+        float health = GemStatCalculator.calculateStat(stats.getHealth(), quality, instanceId, "health");
+
+        float strength = GemStatCalculator.calculateStat(stats.getStrength(), quality, instanceId, "strength");
+
+        float speed = GemStatCalculator.calculateStat(stats.getSpeed(), quality, instanceId, "speed");
+
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(health);
+        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(speed);
+        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(strength);
+
+        setHealth(Math.min(getHealth(), getMaxHealth()));
+    }
+
+
+    public double getHealthStat() {
+        return getAttribute(Attributes.MAX_HEALTH).getBaseValue();
+    }
+
+    public double getSpeedStat() {
+        return getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue();
+    }
+
+    public double getStrengthStat() {
+        return getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
     }
 
 
@@ -936,7 +971,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
                     stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 
                     player.sendSystemMessage(Component.literal(getGemName() + " selected"));
-
+                    this.playSound(getInstrument(), this.getSoundVolume(), (interactPitch()));
                     return InteractionResult.SUCCESS;
                 }
 
@@ -966,6 +1001,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
                     stack.remove(DataComponents.CUSTOM_DATA);
                 });
 
+                this.playSound(getInstrument(), this.getSoundVolume(), (interactPitch()));
                 return InteractionResult.SUCCESS;
             }
         }
@@ -973,10 +1009,12 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         if (hasOwner() && player.getUUID().equals(getOwnerUUID()) && player.isShiftKeyDown()) {
             setMovementMode(getMovementMode().next());
             player.sendSystemMessage(Component.literal("Set "  + getGemName() + " to "+ getMovementMode().name().toLowerCase().replace("_", " ")));
+            this.playSound(getInstrument(), this.getSoundVolume(), (interactPitch()));
             return InteractionResult.SUCCESS;
         }
 
         if (hasOwner() && player.getUUID().equals(getOwnerUUID())) {
+            this.playSound(getInstrument(), this.getSoundVolume(), (interactPitch()));
             player.openMenu(this);
         }
 
@@ -989,7 +1027,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         player.sendSystemMessage(Component.literal("Claimed "+getGemName()));
 
         Gemology.LOGGER.info("Gem claimed by {}", player.getName().getString());
-
+        this.playSound(getInstrument(), this.getSoundVolume(), (interactPitch()));
         return InteractionResult.SUCCESS;
     }
 
@@ -1183,6 +1221,49 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
     @Override
     public Component getDisplayName() {
         return Component.literal(getGemName());
+    }
+
+
+    public SoundEvent getInstrument() {
+        GemDefinition definition = getGemDefinition();
+
+        if (definition == null) {
+            return SoundEvents.NOTE_BLOCK_HARP.value();
+        }
+
+        return BuiltInRegistries.SOUND_EVENT.getValue(definition.getInstrumentSound());
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return getInstrument();
+    }
+
+    protected SoundEvent getHurtSound(DamageSource p_30424_) {
+        return getInstrument();
+    }
+
+    @Override
+    protected void playHurtSound(DamageSource p_21160_) {
+        this.playSound(getInstrument(), this.getSoundVolume(), this.hurtPitch());
+    }
+
+    public float interactPitch() {
+        return (float) (1 + random.nextFloat() * (1.5 - 1));
+    }
+
+    public float hurtPitch() {
+        return (float) (0.25 + random.nextFloat() * (0.75 - 0.25));
+    }
+
+
+    public void copyInventoryTo(EntityFusion fusion, int offset) {
+        for (int i = 0; i < getContainerSize(); i++) {
+            fusion.setItem(offset + i, getItem(i).copy());
+        }
+    }
+
+    public void clearInventory() {
+        gemInventory.clear();
     }
 
 }

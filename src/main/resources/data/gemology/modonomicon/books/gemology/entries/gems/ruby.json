@@ -1,0 +1,29 @@
+{
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gray",
+    "width": 26
+  },
+  "category": "gemology:gems",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "ruby description",
+  "icon": {
+    "id": "gemology:ruby"
+  },
+  "id": "gemology:gems/ruby",
+  "name": "Ruby",
+  "sort_number": 0,
+  "x": 0,
+  "y": 0,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "ruby_intro",
+      "title": "Ruby",
+      "text": "A ruby guard, but just a single one."
+    }
+  ]
+}

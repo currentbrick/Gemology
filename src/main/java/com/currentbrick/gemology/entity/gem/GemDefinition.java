@@ -18,8 +18,10 @@ public class GemDefinition {
     private final int outfitVariants;
     private final int insigniaVariants;
     private final List<GemAvailability> availability;
+    private final Identifier instrumentSound;
+    private final Identifier parentGem;
 
-    public GemDefinition(Identifier id, GemStats stats, GemDimensions dimensions, List<Identifier> abilities, List<GemVariant> variants, int skinVariants, int hairVariants, int gemVariants, int outfitVariants, int insigniaVariants, List<GemAvailability> availability) {
+    public GemDefinition(Identifier id, GemStats stats, GemDimensions dimensions, List<Identifier> abilities, List<GemVariant> variants, int skinVariants, int hairVariants, int gemVariants, int outfitVariants, int insigniaVariants, List<GemAvailability> availability, Identifier instrumentSound, Identifier parentGem) {
         this.id = id;
         this.stats = stats;
         this.dimensions = dimensions;
@@ -31,6 +33,8 @@ public class GemDefinition {
         this.outfitVariants = outfitVariants;
         this.insigniaVariants = insigniaVariants;
         this.availability = availability;
+        this.instrumentSound = instrumentSound;
+        this.parentGem = parentGem;
     }
 
     public Identifier getId() {
@@ -87,6 +91,10 @@ public class GemDefinition {
         return availability;
     }
 
+    public Identifier getInstrumentSound() {
+        return instrumentSound;
+    }
+
     public boolean isAvailable(LocalDate date) {
         if (availability.isEmpty()) {
             return true;
@@ -94,5 +102,13 @@ public class GemDefinition {
 
         return availability.stream()
                 .anyMatch(period -> period.isAvailable(date));
+    }
+
+    public Identifier getParentGem() {
+        return parentGem;
+    }
+
+    public Identifier getFusionTypeId() {
+        return parentGem != null ? parentGem : id;
     }
 }

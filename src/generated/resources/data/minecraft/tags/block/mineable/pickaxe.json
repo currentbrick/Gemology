@@ -21,6 +21,11 @@
     "gemology:green_chroma_crystal",
     "gemology:red_chroma_crystal",
     "gemology:black_chroma_crystal",
-    "gemology:drained_stone"
+    "gemology:drained_stone",
+    "gemology:ruined_marble_block",
+    "gemology:ruined_marble_brick",
+    "gemology:ruined_marble_pillar",
+    "gemology:chiseled_ruined_marble",
+    "gemology:smooth_ruined_marble"
   ]
 }

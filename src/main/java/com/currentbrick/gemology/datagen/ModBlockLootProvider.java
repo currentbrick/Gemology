@@ -43,6 +43,12 @@ public class ModBlockLootProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.DRAINED_SOIL.get());
         dropSelf(ModBlocks.INCUBATOR.get());
         add(ModBlocks.CHROMA_CLUSTER_CROP.get(), noDrop());
+
+        dropSelf(ModBlocks.RUINED_MARBLE_PILLAR.get());
+        dropSelf(ModBlocks.RUINED_MARBLE_BLOCK.get());
+        dropSelf(ModBlocks.RUINED_MARBLE_BRICK.get());
+        dropSelf(ModBlocks.SMOOTH_RUINED_MARBLE.get());
+        dropSelf(ModBlocks.CHISELED_RUINED_MARBLE.get());
     }
 
     @Override

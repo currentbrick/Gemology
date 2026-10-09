@@ -1,0 +1,8 @@
+{
+  "name": "Gems",
+  "description": "gem description",
+  "icon": {
+    "id": "gemology:ruby"
+  },
+  "sort_number": 0
+}

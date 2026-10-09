@@ -44,7 +44,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(ModBlocks.GREEN_CHROMA_CRYSTAL.getKey())
                 .add(ModBlocks.RED_CHROMA_CRYSTAL.getKey())
                 .add(ModBlocks.BLACK_CHROMA_CRYSTAL.getKey())
-                .add(ModBlocks.DRAINED_STONE.getKey());
+                .add(ModBlocks.DRAINED_STONE.getKey())
+                .add(ModBlocks.RUINED_MARBLE_BLOCK.getKey())
+                .add(ModBlocks.RUINED_MARBLE_BRICK.getKey())
+                .add(ModBlocks.RUINED_MARBLE_PILLAR.getKey())
+                .add(ModBlocks.CHISELED_RUINED_MARBLE.getKey())
+                .add(ModBlocks.SMOOTH_RUINED_MARBLE.getKey());
 
         tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(ModBlocks.TUNGSTEN_ORE.getKey())

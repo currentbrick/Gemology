@@ -12,10 +12,14 @@
 
   "visual_variants": {
     "skin": 1,
-    "hair": 4,
+    "hair": 12,
     "gem": 20,
     "outfit": 6,
     "insignia": 6
+  },
+
+  "sounds": {
+    "instrument": "minecraft:block.note_block.bass"
   },
 
   "abilities": [

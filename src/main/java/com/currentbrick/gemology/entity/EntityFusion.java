@@ -4,6 +4,7 @@ import com.currentbrick.gemology.Gemology;
 import com.currentbrick.gemology.container.FusionUIContainer;
 import com.currentbrick.gemology.container.GemUIContainer;
 import com.currentbrick.gemology.entity.gem.FusionVisualVariant;
+import com.currentbrick.gemology.entity.gem.GemDefinition;
 import com.currentbrick.gemology.entity.gem.GemDimensions;
 import com.currentbrick.gemology.entity.gem.GemStats;
 import com.currentbrick.gemology.entity.gem.palette.GemPalette;
@@ -281,6 +282,8 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         }
 
         output.putLong("FusionID", entityData.get(FUSION_ID));
+
+        ContainerHelper.saveAllItems(output, fusionInventory);
     }
 
     @Override
@@ -340,6 +343,8 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
                     secondGemData.getInt("Variant").orElse(-1)
             );
         }
+
+        ContainerHelper.loadAllItems(input, fusionInventory);
     }
 
     public void applyStats() {
@@ -405,15 +410,21 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
 
         Vec3 direction = player.getLookAngle();
         direction = new Vec3(direction.x, 0, direction.z).normalize();
+
+        // Handle the case where the player is looking straight up or down.
+        if (direction.lengthSqr() < 1.0E-6) {
+            direction = new Vec3(0, 0, 1);
+        }
+
         Vec3 side = new Vec3(-direction.z, 0, direction.x).normalize();
 
-        spawnGem(firstGemData, (-side.x * offset), 0, (-side.z * offset));
-        spawnGem(secondGemData, (side.x * offset), 0, (side.z * offset));
+        spawnGem(firstGemData, -side.x * offset, 0, -side.z * offset, 0);
+        spawnGem(secondGemData, side.x * offset, 0, side.z * offset, 16);
 
         discard();
     }
 
-    private void spawnGem(CompoundTag gemData, double offsetX, double offsetY, double offsetZ) {
+    private void spawnGem(CompoundTag gemData, double offsetX, double offsetY, double offsetZ, int inventoryOffset) {
         EntityGem gem = ModEntities.GEM.get().create(level(), EntitySpawnReason.SPAWN_ITEM_USE);
 
         if (gem == null) {
@@ -421,6 +432,10 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         }
 
         gem.applyGemData(gemData);
+
+        for (int i = 0; i < gem.getContainerSize(); i++) {
+            gem.setItem(i, getItem(inventoryOffset + i).copy());
+        }
 
         gem.setPos(getX() + offsetX, getY() + offsetY, getZ() + offsetZ);
 
@@ -458,26 +473,66 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
     }
 
     public int getCombinedPaletteColour(GemPaletteGenerator.PaletteType type) {
-        int colour1 = getComponentPaletteColour(getGem1ID(), getGem1InstanceId(), getGem1Variant(), type);
+        int colour1 = getComponentPaletteColour(
+                getGem1ID(),
+                getGem1InstanceId(),
+                getGem1Variant() < 0 ? 0 : getGem1Variant(),
+                type
+        );
 
-        int colour2 = getComponentPaletteColour(getGem2ID(), getGem2InstanceId(), getGem2Variant(), type);
+        int colour2 = getComponentPaletteColour(
+                getGem2ID(),
+                getGem2InstanceId(),
+                getGem2Variant() < 0 ? 0 : getGem2Variant(),
+                type
+        );
 
         return GemPaletteGenerator.combineColours(colour1, colour2);
     }
 
-    private int getComponentPaletteColour(Identifier gemId, UUID instanceId, int variant, GemPaletteGenerator.PaletteType type) {
+    private int getComponentPaletteColour(
+            Identifier gemId,
+            UUID instanceId,
+            int variant,
+            GemPaletteGenerator.PaletteType type
+    ) {
         if (gemId == null || instanceId == null) {
+            System.out.printf(
+                    "%s — Missing data: gemId=%s, instanceId=%s%n",
+                    type, gemId, instanceId
+            );
             return 0xFFFFFFFF;
         }
 
-        Identifier paletteTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/" + gemId.getPath() + "/palettes/" + type.name().toLowerCase() + "_palette.png");
+        Identifier paletteTexture = Identifier.fromNamespaceAndPath(
+                gemId.getNamespace(),
+                "textures/entity/" + gemId.getPath()
+                        + "/palettes/" + type.name().toLowerCase() + "_palette.png"
+        );
 
         try {
-            GemPalette palette = GemPaletteLoader.load(Minecraft.getInstance().getResourceManager(), paletteTexture);
+            GemPalette palette = GemPaletteLoader.load(
+                    Minecraft.getInstance().getResourceManager(),
+                    paletteTexture
+            );
 
-            return GemPaletteGenerator.generate(palette, variant, instanceId, type);
+            if (variant < 0 || variant >= palette.getRowCount()) {
+                System.out.printf(
+                        "%s — INVALID VARIANT: %d (valid range: 0–%d)%n",
+                        type, variant, palette.getRowCount() - 1
+                );
+            }
 
+            int colour = GemPaletteGenerator.generate(
+                    palette, variant, instanceId, type
+            );
+
+            return colour;
         } catch (IOException e) {
+            Gemology.LOGGER.warn(
+                    "Failed to load palette {} for gem {}",
+                    paletteTexture, gemId, e
+            );
             return 0xFFFFFFFF;
         }
     }
@@ -569,8 +624,27 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         return new FusionUIContainer(id, inventory, this);
     }
 
+    public String getGemName() {
+        String gemName = getGem1ID().getPath();
+
+        String[] words = gemName.split("_");
+
+        StringBuilder result = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                result.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1))
+                        .append(" ");
+            }
+        }
+
+        return result.toString().trim();
+    }
+
     @Override
     public Component getDisplayName() {
+        if (getGem1ID().equals(getGem2ID())) return Component.literal(getGemName());
         return Component.literal(Gemology.FUSION_NAME_MANAGER.getName(getFusionId()));
     }
 }

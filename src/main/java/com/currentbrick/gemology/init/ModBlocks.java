@@ -7,6 +7,7 @@ import com.currentbrick.gemology.block.DrainedBlock;
 import com.currentbrick.gemology.block.IncubatorBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -26,6 +27,21 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> RAW_TUNGSTEN_BLOCK = BLOCKS.registerSimpleBlock("raw_tungsten_block",
             p -> p.ofFullCopy(Blocks.RAW_IRON_BLOCK));
+
+    public static final DeferredBlock<Block> RUINED_MARBLE_BLOCK = BLOCKS.registerSimpleBlock("ruined_marble_block",
+            p -> p.of().requiresCorrectToolForDrops().strength(1.5f, 6f).sound(SoundType.STONE));
+
+    public static final DeferredBlock<Block> RUINED_MARBLE_BRICK = BLOCKS.registerSimpleBlock("ruined_marble_brick",
+            p -> p.of().requiresCorrectToolForDrops().strength(1.5f, 6f).sound(SoundType.STONE));
+
+    public static final DeferredBlock<RotatedPillarBlock> RUINED_MARBLE_PILLAR = BLOCKS.registerBlock("ruined_marble_pillar",
+            p -> new RotatedPillarBlock(p.requiresCorrectToolForDrops().strength(1.5F, 6.0F).sound(SoundType.STONE)));
+
+    public static final DeferredBlock<Block> CHISELED_RUINED_MARBLE = BLOCKS.registerSimpleBlock("chiseled_ruined_marble",
+            p -> p.of().requiresCorrectToolForDrops().strength(1.5f, 6f).sound(SoundType.STONE));
+
+    public static final DeferredBlock<Block> SMOOTH_RUINED_MARBLE = BLOCKS.registerSimpleBlock("smooth_ruined_marble",
+            p -> p.of().requiresCorrectToolForDrops().strength(1.5f, 6f).sound(SoundType.STONE));
 
     public static final DeferredBlock<Block> DRAINED_STONE = BLOCKS.registerBlock("drained_stone",
             p -> new DrainedBlock(p.strength(1.5F, 6.0F).requiresCorrectToolForDrops().randomTicks()));

@@ -193,16 +193,16 @@ public class GemUIScreen extends AbstractContainerScreen<GemUIContainer> {
         int x = leftPos + 28;
         int y = topPos + 22;
 
-        graphics.text(Minecraft.getInstance().font, "HP: " + definition.getStats().getHealth(), x, y, 0xFF6E7070, false);
+        graphics.text(Minecraft.getInstance().font, "HP: " + Math.round((menu.gem.getHealthStat()*10))/10.0, x, y, 0xFF6E7070, false);
 
 
         y += 12;
 
-        graphics.text(Minecraft.getInstance().font, "Attack: " + definition.getStats().getStrength(), x, y, 0xFF6E7070, false);
+        graphics.text(Minecraft.getInstance().font, "Attack: " + Math.round(menu.gem.getStrengthStat()*10)/10.0, x, y, 0xFF6E7070, false);
 
         y += 12;
 
-        graphics.text(Minecraft.getInstance().font, "Speed: " + definition.getStats().getSpeed(), x, y, 0xFF6E7070, false);
+        graphics.text(Minecraft.getInstance().font, "Speed: " + Math.round(menu.gem.getSpeedStat()*10)/10.0, x, y, 0xFF6E7070, false);
 
         x = leftPos + 120;
         y = topPos + 22;

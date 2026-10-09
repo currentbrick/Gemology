@@ -38,6 +38,12 @@ public class ModTabs {
                 output.accept(ModItems.TUNGSTEN_ORE.get());
                 output.accept(ModItems.DEEPSLATE_TUNGSTEN_ORE.get());
 
+                output.accept(ModItems.RUINED_MARBLE_BLOCK.get());
+                output.accept(ModItems.RUINED_MARBLE_BRICK.get());
+                output.accept(ModItems.RUINED_MARBLE_PILLAR.get());
+                output.accept(ModItems.CHISELED_RUINED_MARBLE.get());
+                output.accept(ModItems.SMOOTH_RUINED_MARBLE.get());
+
                 output.accept(ModItems.DRAINED_SOIL.get());
                 output.accept(ModItems.DRAINED_STONE.get());
 

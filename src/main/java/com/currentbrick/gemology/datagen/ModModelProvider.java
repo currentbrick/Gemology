@@ -36,6 +36,10 @@ public class ModModelProvider extends ModelProvider {
         super(output, Gemology.MODID);
     }
 
+    private static TexturedModel.Provider ruinedMarblePillarModel() {
+        return TexturedModel.COLUMN;
+    }
+
     @Override
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
 
@@ -53,6 +57,13 @@ public class ModModelProvider extends ModelProvider {
         blockModels.createTrivialCube(ModBlocks.DEEPSLATE_TUNGSTEN_ORE.get());
         blockModels.createTrivialCube(ModBlocks.TUNGSTEN_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.RAW_TUNGSTEN_BLOCK.get());
+
+        blockModels.createTrivialCube(ModBlocks.RUINED_MARBLE_BLOCK.get());
+        blockModels.createTrivialCube(ModBlocks.RUINED_MARBLE_BRICK.get());
+        blockModels.createTrivialCube(ModBlocks.SMOOTH_RUINED_MARBLE.get());
+        blockModels.createTrivialCube(ModBlocks.CHISELED_RUINED_MARBLE.get());
+
+        blockModels.createAxisAlignedPillarBlock(ModBlocks.RUINED_MARBLE_PILLAR.get(), ruinedMarblePillarModel());
 
         blockModels.createTrivialCube(ModBlocks.DRAINED_SOIL.get());
         blockModels.createTrivialCube(ModBlocks.DRAINED_STONE.get());
