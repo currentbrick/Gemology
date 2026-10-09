@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "gemology:block/ruined_marble_pillar",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "gemology:block/ruined_marble_pillar"
+    },
+    "axis=z": {
+      "model": "gemology:block/ruined_marble_pillar",
+      "x": 90
+    }
+  }
+}
