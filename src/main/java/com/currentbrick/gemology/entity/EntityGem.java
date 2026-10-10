@@ -200,8 +200,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
         String gemPath = gemId.getPath();
 
-        for (GemPaletteGenerator.PaletteType type :
-                GemPaletteGenerator.PaletteType.values()) {
+        for (GemPaletteGenerator.PaletteType type : GemPaletteGenerator.PaletteType.values()) {
 
             String paletteName = switch (type) {
                 case SKIN -> "skin_palette.png";
@@ -213,33 +212,19 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
                 case WINGS -> "wing_palette.png";
             };
 
-            Identifier paletteId = Identifier.fromNamespaceAndPath(
-                    gemId.getNamespace(),
-                    "textures/entity/" + gemPath + "/palettes/" + paletteName
-            );
+            Identifier paletteId = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/" + gemPath + "/palettes/" + paletteName);
 
             try {
-                GemPalette palette = GemPaletteLoader.load(
-                        resourceManager,
-                        paletteId
-                );
-
-                System.out.println(
-                        "FIRST PIXEL "
-                                + type
-                                + ": "
-                                + String.format(
-                                "%08X",
-                                palette.getRow(0).get(0)
-                        )
-                );
-
+                GemPalette palette = GemPaletteLoader.load(resourceManager, paletteId);
                 palettes.put(type, palette);
 
             } catch (IOException e) {
-                System.out.println(
-                    "PALETTE LOAD FAILED: " + paletteId
-                );
+                if (type == GemPaletteGenerator.PaletteType.INSIGNIA || type == GemPaletteGenerator.PaletteType.MARKINGS || type == GemPaletteGenerator.PaletteType.WINGS) {
+                    continue;
+                }
+
+                System.err.println("[Gemology] Failed to load required palette: " + paletteId);
+                e.printStackTrace();
             }
         }
     }

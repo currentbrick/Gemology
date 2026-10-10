@@ -32,11 +32,22 @@ public class GemPaletteLoader {
             List<List<Integer>> rows = new ArrayList<>();
 
             for (int y = 0; y < height; y++) {
-
                 List<Integer> row = new ArrayList<>();
 
                 for (int x = 0; x < width; x++) {
-                    row.add(pixels[y * width + x]);
+                    int pixel = pixels[y * width + x];
+
+                    int alpha = (pixel >>> 24) & 0xFF;
+
+                    if (alpha == 0) {
+                        continue;
+                    }
+
+                    row.add(pixel);
+                }
+
+                if (row.isEmpty()) {
+                    System.err.println("[Gemology] Palette row " + y + " contains no visible colours: " + texture);
                 }
 
                 rows.add(row);

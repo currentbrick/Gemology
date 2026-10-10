@@ -62,10 +62,7 @@ public class GemPalette {
         int g = (int) (g1 + (g2 - g1) * t);
         int b = (int) (b1 + (b2 - b1) * t);
 
-        return (a << 24)
-                | (r << 16)
-                | (g << 8)
-                | b;
+        return (a << 24) | (r << 16) | (g << 8) | b;
     }
 
 
@@ -75,9 +72,6 @@ public class GemPalette {
         int g = (colour >> 8) & 0xFF;
         int r = colour & 0xFF;
 
-        return (a << 24)
-                | (r << 16)
-                | (g << 8)
-                | b;
+        return (a << 24) | (r << 16) | (g << 8) | b;
     }
 }

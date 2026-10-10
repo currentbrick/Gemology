@@ -133,6 +133,11 @@ public class GemRenderer extends GeoEntityRenderer<EntityGem, GemRenderState> {
         state.outfitColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.OUTFIT);
         state.markingColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.MARKINGS);
 
+        System.out.printf(
+                "[Gemology] Skin palette colour: 0x%08X%n",
+                state.skinColour
+        );
+
         state.compositeSkinTexture = GemCompositeTextureManager.getCompositeTexture(state.skinTexture, state.markingTexture, state.skinColour, state.markingColour);
     }
 

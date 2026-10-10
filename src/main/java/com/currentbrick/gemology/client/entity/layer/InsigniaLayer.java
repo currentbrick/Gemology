@@ -19,7 +19,7 @@ public class InsigniaLayer extends GeoRenderLayer<EntityGem, Void, GemRenderStat
 
     @Override
     public void submitRenderTask(RenderPassInfo<GemRenderState> renderPassInfo, SubmitNodeCollector renderTasks) {
-        Identifier texture = renderPassInfo.renderState().outfitTexture;
+        Identifier texture = renderPassInfo.renderState().insigniaTexture;
         if (texture == null) {
             return;
         }
