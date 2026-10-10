@@ -29,9 +29,9 @@
   "variants": [
     {
       "id": 0,
-      "name": "Zebra",
+      "name": "Dalmatian",
       "chroma": "gemology:white_chroma",
-      "item_texture": "gemology:item/jasper/zebra"
+      "item_texture": "gemology:item/jasper/dalmatian"
     },
     {
       "id": 1,
@@ -41,21 +41,21 @@
     },
     {
       "id": 2,
-      "name": "Ripple",
+      "name": "Mookaite",
       "chroma": "gemology:magenta_chroma",
-      "item_texture": "gemology:item/jasper/ripple"
+      "item_texture": "gemology:item/jasper/mookaite"
     },
     {
       "id": 3,
-      "name": "Imperial",
+      "name": "Picture",
       "chroma": "gemology:light_blue_chroma",
-      "item_texture": "gemology:item/jasper/imperial"
+      "item_texture": "gemology:item/jasper/picture"
     },
     {
       "id": 4,
-      "name": "Golden",
+      "name": "Yellow",
       "chroma": "gemology:yellow_chroma",
-      "item_texture": "gemology:item/jasper/golden"
+      "item_texture": "gemology:item/jasper/yellow"
     },
     {
       "id": 5,
@@ -65,21 +65,21 @@
     },
     {
       "id": 6,
-      "name": "Mookaite",
+      "name": "Butterfly",
       "chroma": "gemology:pink_chroma",
-      "item_texture": "gemology:item/jasper/mookaite"
+      "item_texture": "gemology:item/jasper/butterfly"
     },
     {
       "id": 7,
-      "name": "Matrix",
+      "name": "Picasso",
       "chroma": "gemology:gray_chroma",
-      "item_texture": "gemology:item/jasper/matrix"
+      "item_texture": "gemology:item/jasper/picasso"
     },
     {
       "id": 8,
-      "name": "Picasso",
+      "name": "Silver Leaf",
       "chroma": "gemology:light_gray_chroma",
-      "item_texture": "gemology:item/jasper/picasso"
+      "item_texture": "gemology:item/jasper/silver_leaf"
     },
     {
       "id": 9,
@@ -89,15 +89,15 @@
     },
     {
       "id": 10,
-      "name": "Royal Plume",
+      "name": "Lavender",
       "chroma": "gemology:purple_chroma",
-      "item_texture": "gemology:item/jasper/royal_plume"
+      "item_texture": "gemology:item/jasper/lavender"
     },
     {
       "id": 11,
-      "name": "Blue Snakeskin",
+      "name": "K2",
       "chroma": "gemology:blue_chroma",
-      "item_texture": "gemology:item/jasper/blue_snakeskin"
+      "item_texture": "gemology:item/jasper/k2"
     },
     {
       "id": 12,
@@ -107,27 +107,21 @@
     },
     {
       "id": 13,
-      "name": "Kambaba",
+      "name": "Bloodstone",
       "chroma": "gemology:green_chroma",
-      "item_texture": "gemology:item/jasper/kambaba"
+      "item_texture": "gemology:item/jasper/bloodstone"
     },
     {
       "id": 14,
-      "name": "Flame",
+      "name": "Red",
       "chroma": "gemology:red_chroma",
-      "item_texture": "gemology:item/jasper/flame"
+      "item_texture": "gemology:item/jasper/red"
     },
     {
       "id": 15,
       "name": "Black",
       "chroma": "gemology:black_chroma",
       "item_texture": "gemology:item/jasper/black"
-    },
-    {
-      "id": 16,
-      "name": "Butterfly",
-      "chroma": "gemology:white_chroma",
-      "item_texture": "gemology:item/jasper/butterfly"
     }
   ]
 }
