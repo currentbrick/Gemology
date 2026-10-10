@@ -47,7 +47,9 @@ import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -268,6 +270,8 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         goalSelector.addGoal(5, new GemWanderGoal(this, 1.0));
         goalSelector.addGoal(5, new GemFollowOwnerGoal(this, 1.0, 2, 6));
         goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(6, new FloatGoal(this));
+        goalSelector.addGoal(6, new RandomSwimmingGoal(this, 1.0F, 3));
         targetSelector.addGoal(1, new GemTargetGoal(this));
         goalSelector.addGoal(2, new GemMeleeAttackGoal(this, 1.0D, true));
         goalSelector.addGoal(3, new GemRangedAttackGoal(this, 1.0D));
@@ -912,10 +916,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
             return;
         }
 
-        executeAbilities(
-                AbilityTrigger.SECONDARY_ATTACK,
-                target
-        );
+        executeAbilities(AbilityTrigger.SECONDARY_ATTACK, target);
 
         secondaryAttackCooldown = 60;
     }
@@ -1051,8 +1052,9 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
     public String getGemName() {
         String gemName = getGemId().getPath();
+        String gemVariant = getGemVariant() != null ? getGemVariant().getName() : null;
 
-        String[] words = gemName.split("_");
+        String[] words = gemVariant != null ? (gemVariant + "_" + gemName).split("_") : gemName.split("_");
 
         StringBuilder result = new StringBuilder();
 
@@ -1086,10 +1088,10 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
     private ItemStack createGemItem() {
         GemInstanceData instance = getInstanceData();
 
-        return createGemItem(getGemId(), instance.getInstanceId(), instance.getQuality(), instance.getVariant());
+        return createGemItem(getGemId(), instance.getInstanceId(), instance.getQuality(), instance.getVariant(), getOwnerUUID());
     }
 
-    public static ItemStack createGemItem(Identifier gemId, UUID instanceId, float quality, int variant) {
+    public static ItemStack createGemItem(Identifier gemId, UUID instanceId, float quality, int variant, UUID owner) {
         if (gemId == null) {
             return ItemStack.EMPTY;
         }
@@ -1108,6 +1110,9 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         tag.putString("InstanceId", instanceId.toString());
         tag.putFloat("Quality", quality);
         tag.putInt("Variant", variant);
+        if (owner != null) {
+            tag.putString("Owner", owner.toString());
+        }
 
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 

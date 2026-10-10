@@ -215,7 +215,7 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
 
         GemInstanceData instance = new GemInstanceData(UUID.randomUUID(), calculateQuality(recipe), variant);
 
-        return EntityGem.createGemItem(gemId, instance.getInstanceId(), instance.getQuality(), instance.getVariant());
+        return EntityGem.createGemItem(gemId, instance.getInstanceId(), instance.getQuality(), instance.getVariant(), null);
     }
 
 

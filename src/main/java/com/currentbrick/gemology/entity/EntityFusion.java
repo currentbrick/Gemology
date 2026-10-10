@@ -7,6 +7,11 @@ import com.currentbrick.gemology.entity.gem.FusionVisualVariant;
 import com.currentbrick.gemology.entity.gem.GemDefinition;
 import com.currentbrick.gemology.entity.gem.GemDimensions;
 import com.currentbrick.gemology.entity.gem.GemStats;
+import com.currentbrick.gemology.entity.gem.abilities.Ability;
+import com.currentbrick.gemology.entity.gem.abilities.AbilityDefinition;
+import com.currentbrick.gemology.entity.gem.abilities.AbilityTrigger;
+import com.currentbrick.gemology.entity.gem.abilities.AbilityTypeRegistry;
+import com.currentbrick.gemology.entity.gem.ai.MovementMode;
 import com.currentbrick.gemology.entity.gem.palette.GemPalette;
 import com.currentbrick.gemology.entity.gem.palette.GemPaletteGenerator;
 import com.currentbrick.gemology.entity.gem.palette.GemPaletteLoader;
@@ -31,10 +36,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
@@ -57,6 +59,10 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
     private CompoundTag firstGemData;
     private CompoundTag secondGemData;
 
+    private int secondaryAttackCooldown = 0;
+
+    private MovementMode movementMode = MovementMode.WANDER;
+
     private static final EntityDataAccessor<String> FUSION_GEM_1 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> FUSION_GEM_2 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> FUSION_INSTANCE_1 = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
@@ -68,6 +74,7 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
     private static final EntityDataAccessor<Float> FUSION_STRENGTH = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> FUSION_SPEED = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<String> FUSION_ABILITIES = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> OWNER_UUID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
 
     private static final int INVENTORY_SIZE = 32;
 
@@ -106,6 +113,8 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         builder.define(FUSION_SPEED, 0F);
 
         builder.define(FUSION_ABILITIES, "");
+
+        builder.define(OWNER_UUID, "");
     }
 
     public void setComponents(CompoundTag first, CompoundTag second) {
@@ -253,6 +262,92 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         );
     }
 
+    public boolean canTarget(LivingEntity target) {
+        if (target == null || !target.isAlive()) {
+            return false;
+        }
+
+        if (target == this) {
+            return false;
+        }
+
+        if (target instanceof EntityGem) {
+            return false;
+        }
+
+        if (target instanceof EntityFusion) {
+            return false;
+        }
+
+        return target instanceof Monster;
+    }
+
+    public boolean hasRangedAbility() {
+        return hasAbilityForTrigger(
+                AbilityTrigger.SECONDARY_ATTACK
+        );
+    }
+
+    private boolean hasAbilityForTrigger(AbilityTrigger trigger) {
+        for (Identifier abilityId : getFusionAbilities()) {
+
+            AbilityDefinition ability = Gemology.ABILITY_MANAGER.get(abilityId);
+
+            if (ability == null) {
+                continue;
+            }
+
+            if (ability.getTrigger().equals(trigger.getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void performSecondaryAttack(LivingEntity target) {
+
+        if (!(level() instanceof ServerLevel)) {
+            return;
+        }
+
+        if (secondaryAttackCooldown > 0) {
+            return;
+        }
+
+        if (target == null || !target.isAlive()) {
+            return;
+        }
+
+        executeAbilities(AbilityTrigger.SECONDARY_ATTACK, target);
+
+        secondaryAttackCooldown = 60;
+    }
+
+    private void executeAbilities(AbilityTrigger trigger, LivingEntity target) {
+        for (Identifier abilityId : getFusionAbilities()) {
+
+            AbilityDefinition abilityDefinition = Gemology.ABILITY_MANAGER.get(abilityId);
+
+            if (abilityDefinition == null) {
+                continue;
+            }
+
+            if (!abilityDefinition.getTrigger().equals(trigger.getId())) {
+                continue;
+            }
+
+            Ability ability = AbilityTypeRegistry.create(abilityDefinition.getType());
+
+            if (ability == null) {
+                System.err.println("Unknown ability type: " + abilityDefinition.getType());
+                continue;
+            }
+
+            ability.execute(this, abilityDefinition, target);
+        }
+    }
+
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
@@ -394,6 +489,13 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
             return InteractionResult.PASS;
         }
 
+        if (player.isShiftKeyDown()) {
+            setMovementMode(getMovementMode().next());
+            player.sendSystemMessage(Component.literal("Set "  + getGemName() + " to "+ getMovementMode().name().toLowerCase().replace("_", " ")));
+            //this.playSound(getInstrument(), this.getSoundVolume(), (interactPitch()));
+            return InteractionResult.SUCCESS;
+        }
+
         ItemStack stack = player.getItemInHand(hand);
         System.out.println("check fusion item");
         if ((stack.getItem() instanceof FusionItem)) {
@@ -442,6 +544,38 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         gem.setPos(getX() + offsetX, getY() + offsetY, getZ() + offsetZ);
 
         level().addFreshEntity(gem);
+    }
+
+    public void setOwnerUUID(UUID uuid) {
+        this.entityData.set(OWNER_UUID, uuid == null ? "" : uuid.toString());
+    }
+
+    public UUID getOwnerUUID() {
+        String value = this.entityData.get(OWNER_UUID);
+
+        if (value.isEmpty()) {
+            return null;
+        }
+
+        return UUID.fromString(value);
+    }
+
+    public void setOwner(Player player) {
+        setOwnerUUID(player.getUUID());
+    }
+
+    public Player getOwner() {
+        UUID uuid = getOwnerUUID();
+
+        if (uuid == null) {
+            return null;
+        }
+
+        return level().getPlayerByUUID(uuid);
+    }
+
+    public boolean hasOwner() {
+        return !this.entityData.get(OWNER_UUID).isEmpty();
     }
 
     public void setFusionId(Long id) {
@@ -669,12 +803,20 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
     protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean recentlyHit) {
         super.dropCustomDeathLoot(level, source, recentlyHit);
 
-        ItemStack stack = EntityGem.createGemItem(getGem1ID(), getGem1InstanceId(), getFirstGemData().getFloat("Quality").get(), getFirstGemData().getIntOr("Variant", 0));
-        ItemStack stack2 = EntityGem.createGemItem(getGem2ID(), getGem2InstanceId(), getSecondGemData().getFloat("Quality").get(), getSecondGemData().getIntOr("Variant", 0));
+        ItemStack stack = EntityGem.createGemItem(getGem1ID(), getGem1InstanceId(), getFirstGemData().getFloat("Quality").get(), getFirstGemData().getIntOr("Variant", 0), UUID.fromString(getFirstGemData().getString("Owner").get()));
+        ItemStack stack2 = EntityGem.createGemItem(getGem2ID(), getGem2InstanceId(), getSecondGemData().getFloat("Quality").get(), getSecondGemData().getIntOr("Variant", 0), UUID.fromString(getSecondGemData().getString("Owner").get()));
 
         if (stack != null && stack2 != null) {
             spawnAtLocation(level, stack);
             spawnAtLocation(level, stack2);
         }
+    }
+
+    public MovementMode getMovementMode() {
+        return movementMode;
+    }
+
+    public void setMovementMode(MovementMode movementMode) {
+        this.movementMode = movementMode;
     }
 }

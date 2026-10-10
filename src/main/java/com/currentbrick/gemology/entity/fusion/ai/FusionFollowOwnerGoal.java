@@ -1,27 +1,28 @@
-package com.currentbrick.gemology.entity.gem.ai;
+package com.currentbrick.gemology.entity.fusion.ai;
 
-import com.currentbrick.gemology.entity.EntityGem;
+import com.currentbrick.gemology.entity.EntityFusion;
+import com.currentbrick.gemology.entity.gem.ai.MovementMode;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumSet;
 
-public class GemFollowOwnerGoal extends Goal {
+public class FusionFollowOwnerGoal extends Goal {
 
-    private final EntityGem gem;
+    private final EntityFusion gem;
     private final double speed;
     private final float minDistance;
     private final float maxDistance;
 
     private Player owner;
 
-    public GemFollowOwnerGoal(EntityGem gem, double speed, float minDistance, float maxDistance) {
+    public FusionFollowOwnerGoal(EntityFusion gem, double speed, float minDistance, float maxDistance) {
         this.gem = gem;
         this.speed = speed;
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
 
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     @Override

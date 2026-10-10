@@ -1,5 +1,6 @@
 package com.currentbrick.gemology.entity.gem.abilities.types;
 
+import com.currentbrick.gemology.entity.EntityFusion;
 import com.currentbrick.gemology.entity.EntityGem;
 import com.currentbrick.gemology.entity.gem.abilities.Ability;
 import com.currentbrick.gemology.entity.gem.abilities.AbilityDefinition;
@@ -18,6 +19,32 @@ public class MeleeAbility implements Ability {
 
     @Override
     public void execute(EntityGem gem, AbilityDefinition definition, LivingEntity target) {
+        if (target == null || !target.isAlive()) {
+            return;
+        }
+
+        if (!(gem.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        JsonObject data = definition.getData();
+
+        if (data.has("effects")) {
+            JsonArray effects = data.getAsJsonArray("effects");
+
+            for (int i = 0; i < effects.size(); i++) {
+                applyEffect(target, effects.get(i).getAsJsonObject()
+                );
+            }
+        }
+
+        if (data.has("particles")) {
+            spawnParticles(serverLevel, target, data.getAsJsonArray("particles"));
+        }
+    }
+
+    @Override
+    public void execute(EntityFusion gem, AbilityDefinition definition, LivingEntity target) {
         if (target == null || !target.isAlive()) {
             return;
         }

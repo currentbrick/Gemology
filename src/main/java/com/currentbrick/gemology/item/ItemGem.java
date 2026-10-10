@@ -21,6 +21,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class ItemGem extends Item {

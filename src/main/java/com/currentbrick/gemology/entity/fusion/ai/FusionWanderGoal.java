@@ -1,13 +1,14 @@
-package com.currentbrick.gemology.entity.gem.ai;
+package com.currentbrick.gemology.entity.fusion.ai;
 
-import com.currentbrick.gemology.entity.EntityGem;
+import com.currentbrick.gemology.entity.EntityFusion;
+import com.currentbrick.gemology.entity.gem.ai.MovementMode;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 
-public class GemWanderGoal extends RandomStrollGoal {
+public class FusionWanderGoal extends RandomStrollGoal {
 
-    private final EntityGem gem;
+    private final EntityFusion gem;
 
-    public GemWanderGoal(EntityGem gem, double speedModifier) {
+    public FusionWanderGoal(EntityFusion gem, double speedModifier) {
         super(gem, speedModifier);
         this.gem = gem;
     }
