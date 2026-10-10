@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "gemology:item/jasper/kambaba"
+    "layer0": "gemology:item/quartz/angel_aura"
   }
 }

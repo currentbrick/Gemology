@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "gemology:item/jasper/blue_snakeskin"
+    "layer0": "gemology:item/agate/chrysoprase"
   }
 }

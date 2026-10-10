@@ -137,8 +137,7 @@
       "id": 15,
       "name": "Black",
       "chroma": "gemology:black_chroma",
-      "item_texture": "gemology:item/jasper/black",
-      "marking_variants": 0
+      "item_texture": "gemology:item/jasper/black"
     }
   ]
 }

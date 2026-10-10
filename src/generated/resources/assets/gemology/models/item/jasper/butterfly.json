@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "gemology:item/agate/dragons_vein"
+    "layer0": "gemology:item/jasper/butterfly"
   }
 }

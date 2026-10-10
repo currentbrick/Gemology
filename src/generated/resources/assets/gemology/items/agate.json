@@ -5,49 +5,49 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/dendritic"
+          "model": "gemology:item/agate/white"
         },
         "when": 0
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/wingate_pass_plume"
+          "model": "gemology:item/agate/sardonyx"
         },
         "when": 1
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/rose"
+          "model": "gemology:item/agate/agua_nueva"
         },
         "when": 2
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/holly_blue"
+          "model": "gemology:item/agate/blue_lace"
         },
         "when": 3
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/tawny"
+          "model": "gemology:item/agate/kentucky"
         },
         "when": 4
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/dragons_vein"
+          "model": "gemology:item/agate/chrysoprase"
         },
         "when": 5
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/sakura"
+          "model": "gemology:item/agate/apricot"
         },
         "when": 6
       },
@@ -61,14 +61,14 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/water"
+          "model": "gemology:item/agate/montana"
         },
         "when": 8
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/blue_lace"
+          "model": "gemology:item/agate/ellensburg_blue"
         },
         "when": 9
       },
@@ -82,21 +82,21 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/ellensburg_blue"
+          "model": "gemology:item/agate/holly_blue"
         },
         "when": 11
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/turritella"
+          "model": "gemology:item/agate/brazilian"
         },
         "when": 12
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/tree"
+          "model": "gemology:item/agate/moss"
         },
         "when": 13
       },
@@ -110,7 +110,7 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/agate/orca"
+          "model": "gemology:item/agate/onyx"
         },
         "when": 15
       },

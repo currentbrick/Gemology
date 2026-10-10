@@ -103,7 +103,7 @@ public class ModTabs {
                 if (Gemology.GEM_DEFINITION_MANAGER.get(Identifier.fromNamespaceAndPath("gemology", "blue_ruby")).isAvailable(today)) output.accept(ModItems.BLUE_RUBY.get());
 
                 addGemVariants(output, ModItems.JASPER.get(), 16);
-                addGemVariants(output, ModItems.QUARTZ.get(), 17);
+                addGemVariants(output, ModItems.QUARTZ.get(), 19);
                 addGemVariants(output, ModItems.AGATE.get(), 16);
             }).build());
 

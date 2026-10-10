@@ -37,7 +37,7 @@ public class GemLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
                             renderPassInfo.model().render(
                                     renderPassInfo,
                                     vertexConsumer,
-                                    renderPassInfo.packedLight(),
+                                    0x00F000F0,
                                     renderPassInfo.packedOverlay(),
                                     renderPassInfo.renderState().gemColour
                             )

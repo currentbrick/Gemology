@@ -113,6 +113,27 @@
           "model": "gemology:item/quartz/onyx"
         },
         "when": 15
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/angel_aura"
+        },
+        "when": 16
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/lace_amethyst"
+        },
+        "when": 17
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "gemology:item/quartz/ametrine"
+        },
+        "when": 18
       }
     ],
     "property": "gemology:gem_variant"

@@ -5,7 +5,7 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/zebra"
+          "model": "gemology:item/jasper/dalmatian"
         },
         "when": 0
       },
@@ -19,21 +19,21 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/ripple"
+          "model": "gemology:item/jasper/mookaite"
         },
         "when": 2
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/imperial"
+          "model": "gemology:item/jasper/picture"
         },
         "when": 3
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/golden"
+          "model": "gemology:item/jasper/yellow"
         },
         "when": 4
       },
@@ -47,21 +47,21 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/mookaite"
+          "model": "gemology:item/jasper/butterfly"
         },
         "when": 6
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/matrix"
+          "model": "gemology:item/jasper/picasso"
         },
         "when": 7
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/picasso"
+          "model": "gemology:item/jasper/silver_leaf"
         },
         "when": 8
       },
@@ -75,14 +75,14 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/royal_plume"
+          "model": "gemology:item/jasper/lavender"
         },
         "when": 10
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/blue_snakeskin"
+          "model": "gemology:item/jasper/k2"
         },
         "when": 11
       },
@@ -96,14 +96,14 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/kambaba"
+          "model": "gemology:item/jasper/bloodstone"
         },
         "when": 13
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/jasper/flame"
+          "model": "gemology:item/jasper/red"
         },
         "when": 14
       },

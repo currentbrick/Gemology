@@ -123,12 +123,8 @@ public class GemRenderer extends GeoEntityRenderer<EntityGem, GemRenderState> {
                     "textures/entity/" + gemId.getPath()
                             + "/visor_" + visualVariant.visor() + ".png"
             );
-
-            System.out.println("[Gemology] Visor variant: " + visualVariant.visor());
-            System.out.println("[Gemology] Visor texture: " + state.visorTexture);
         } else {
             state.visorTexture = null;
-            System.out.println("[Gemology] No visor variant for " + gemId);
         }
 
         state.skinColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.SKIN);

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "gemology:item/jasper/matrix"
+    "layer0": "gemology:item/agate/moss"
   }
 }
