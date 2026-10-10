@@ -715,7 +715,13 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         discard();
         target.discard();
 
-        getOwner().sendSystemMessage(Component.literal("Fused " + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(0, 1).toUpperCase() + Identifier.parse(firstGemData.getString("GemType").orElse("unknown")).getPath().substring(1) + " + " + getGemName()));
+        String secondGemType = secondGemData.getString("GemType").orElse("unknown");
+        String secondGemName = Identifier.parse(secondGemType).getPath();
+        secondGemName = secondGemName.substring(0, 1).toUpperCase() + secondGemName.substring(1);
+
+        getOwner().sendSystemMessage(Component.literal(
+                "Fused " + getGemName() + " + " + secondGemName
+        ));
     }
 
     public boolean isFusionPending() {
@@ -999,15 +1005,18 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
                     CompoundTag secondGemData = createGemData();
 
-                    if (firstGem != null) {
-                        firstGem.startFusionApproach(this, secondGemData);
+                    if (!getUUID().toString().equals(fusionData.getString("FirstGemUUID").orElse(""))) {
 
-                        startFusionApproach(firstGem, firstGemData);
+                        if (firstGem != null) {
+                            firstGem.startFusionApproach(this, secondGemData);
+
+                            startFusionApproach(firstGem, firstGemData);
+                        }
+
+                        stack.remove(DataComponents.CUSTOM_DATA);
+
+                        stack.hurtAndBreak(1, player, hand);
                     }
-
-                    stack.remove(DataComponents.CUSTOM_DATA);
-
-                    stack.hurtAndBreak(1, player, hand);
                 });
 
                 this.playSound(getInstrument(), this.getSoundVolume(), (interactPitch()));

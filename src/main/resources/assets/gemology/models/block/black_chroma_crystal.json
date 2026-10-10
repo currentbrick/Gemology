@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:block/cube_all",
+	"parent": "gemology:block/template_chroma_crystal",
 	"textures": {
-		"all": "gemology:block/chroma_black"
+		"crystal": "gemology:block/chroma_black"
 	}
 }

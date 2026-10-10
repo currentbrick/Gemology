@@ -26,7 +26,7 @@ public class EyeLayer extends GeoRenderLayer<EntityFusion, Void, FusionRenderSta
         if (texture == null) {
             return;
         }
-        RenderType renderType = RenderTypes.entityCutoutZOffset(texture);
+        RenderType renderType = RenderTypes.entityCutout(texture);
 
         renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), renderType,
                 (pose, vertexConsumer) -> {
