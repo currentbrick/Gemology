@@ -5,5 +5,8 @@ public record GemVisualVariant(
         int hair,
         int gem,
         int outfit,
-        int insignia
+        int insignia,
+        int marking,
+        int visor,
+        int wing
 ) {}

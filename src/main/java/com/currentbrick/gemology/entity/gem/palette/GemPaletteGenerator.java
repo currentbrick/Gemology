@@ -10,7 +10,8 @@ public class GemPaletteGenerator {
         GEM(0x03),
         OUTFIT(0x04),
         INSIGNIA(0x05),
-        MARKINGS(0x06);
+        MARKINGS(0x06),
+        WINGS(0x07);
 
         private final long salt;
 

@@ -8,12 +8,14 @@ public class GemVariant {
     private final String name;
     private final Identifier chromaId;
     private final Identifier itemTexture;
+    private final int markingVariants;
 
-    public GemVariant(int id, String name, Identifier chromaId, Identifier itemTexture) {
+    public GemVariant(int id, String name, Identifier chromaId, Identifier itemTexture, int markingVariants) {
         this.id = id;
         this.name = name;
         this.chromaId = chromaId;
         this.itemTexture = itemTexture;
+        this.markingVariants = markingVariants;
     }
 
     public int getId() {
@@ -30,5 +32,9 @@ public class GemVariant {
 
     public Identifier getItemTexture() {
         return itemTexture;
+    }
+
+    public int getMarkingVariants() {
+        return markingVariants;
     }
 }

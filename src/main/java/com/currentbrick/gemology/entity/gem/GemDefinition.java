@@ -17,11 +17,13 @@ public class GemDefinition {
     private final int gemVariants;
     private final int outfitVariants;
     private final int insigniaVariants;
+    private final int visorVariants;
+    private final int wingVariants;
     private final List<GemAvailability> availability;
     private final Identifier instrumentSound;
     private final Identifier parentGem;
 
-    public GemDefinition(Identifier id, GemStats stats, GemDimensions dimensions, List<Identifier> abilities, List<GemVariant> variants, int skinVariants, int hairVariants, int gemVariants, int outfitVariants, int insigniaVariants, List<GemAvailability> availability, Identifier instrumentSound, Identifier parentGem) {
+    public GemDefinition(Identifier id, GemStats stats, GemDimensions dimensions, List<Identifier> abilities, List<GemVariant> variants, int skinVariants, int hairVariants, int gemVariants, int outfitVariants, int insigniaVariants, int visorVariants, int wingVariants, List<GemAvailability> availability, Identifier instrumentSound, Identifier parentGem) {
         this.id = id;
         this.stats = stats;
         this.dimensions = dimensions;
@@ -32,6 +34,8 @@ public class GemDefinition {
         this.gemVariants = gemVariants;
         this.outfitVariants = outfitVariants;
         this.insigniaVariants = insigniaVariants;
+        this.visorVariants = visorVariants;
+        this.wingVariants = wingVariants;
         this.availability = availability;
         this.instrumentSound = instrumentSound;
         this.parentGem = parentGem;
@@ -110,5 +114,13 @@ public class GemDefinition {
 
     public Identifier getFusionTypeId() {
         return parentGem != null ? parentGem : id;
+    }
+
+    public int getVisorVariants() {
+        return visorVariants;
+    }
+
+    public int getWingVariants() {
+        return wingVariants;
     }
 }

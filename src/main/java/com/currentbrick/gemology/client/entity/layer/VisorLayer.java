@@ -5,45 +5,45 @@ import com.currentbrick.gemology.entity.EntityGem;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.base.RenderPassInfo;
 import com.geckolib.renderer.layer.GeoRenderLayer;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
-public class InsigniaLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
+public class VisorLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
 
-    public InsigniaLayer(GeoEntityRenderer<EntityGem, GemRenderState> renderer) {
+    public VisorLayer(GeoEntityRenderer<EntityGem, GemRenderState> renderer) {
         super(renderer);
     }
 
     @Override
     public void submitRenderTask(RenderPassInfo<GemRenderState> renderPassInfo, SubmitNodeCollector renderTasks) {
-        Identifier texture = renderPassInfo.renderState().outfitTexture;
+        Identifier texture = renderPassInfo.renderState().visorTexture;
+
+        System.out.println("[Gemology] VisorLayer called");
+
+        System.out.println("[Gemology] Layer texture: " + texture);
+
         if (texture == null) {
             return;
         }
-        RenderType renderType = RenderTypes.entityCutoutZOffset(texture);
 
-        renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), renderType,
+        RenderType renderType = RenderTypes.entityTranslucent(texture);
+
+        renderTasks.submitCustomGeometry(
+                renderPassInfo.poseStack(),
+                renderType,
                 (pose, vertexConsumer) -> {
-
-                    PoseStack poseStack = renderPassInfo.poseStack();
-
-                    poseStack.pushPose();
-                    poseStack.last().set(pose);
-
+                    System.out.println("[Gemology] Visor geometry callback executed");
                     renderPassInfo.renderPosed(() ->
                             renderPassInfo.model().render(
                                     renderPassInfo,
                                     vertexConsumer,
                                     renderPassInfo.packedLight(),
                                     renderPassInfo.packedOverlay(),
-                                    renderPassInfo.renderColor()
+                                    0xFFFFFFFF
                             )
                     );
-
-                    poseStack.popPose();
                 }
         );
     }

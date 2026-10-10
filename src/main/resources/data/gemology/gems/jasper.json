@@ -15,7 +15,8 @@
     "hair": 12,
     "gem": 20,
     "outfit": 6,
-    "insignia": 6
+    "insignia": 6,
+    "visor": 2
   },
 
   "sounds": {
@@ -31,97 +32,113 @@
       "id": 0,
       "name": "Dalmatian",
       "chroma": "gemology:white_chroma",
-      "item_texture": "gemology:item/jasper/dalmatian"
+      "item_texture": "gemology:item/jasper/dalmatian",
+      "marking_variants": 1
     },
     {
       "id": 1,
       "name": "Red Striped",
       "chroma": "gemology:orange_chroma",
-      "item_texture": "gemology:item/jasper/red_striped"
+      "item_texture": "gemology:item/jasper/red_striped",
+      "marking_variants": 1
     },
     {
       "id": 2,
       "name": "Mookaite",
       "chroma": "gemology:magenta_chroma",
-      "item_texture": "gemology:item/jasper/mookaite"
+      "item_texture": "gemology:item/jasper/mookaite",
+      "marking_variants": 2
     },
     {
       "id": 3,
       "name": "Picture",
       "chroma": "gemology:light_blue_chroma",
-      "item_texture": "gemology:item/jasper/picture"
+      "item_texture": "gemology:item/jasper/picture",
+      "marking_variants": 2
     },
     {
       "id": 4,
       "name": "Yellow",
       "chroma": "gemology:yellow_chroma",
-      "item_texture": "gemology:item/jasper/yellow"
+      "item_texture": "gemology:item/jasper/yellow",
+      "marking_variants": 1
     },
     {
       "id": 5,
       "name": "Rainforest",
       "chroma": "gemology:lime_chroma",
-      "item_texture": "gemology:item/jasper/rainforest"
+      "item_texture": "gemology:item/jasper/rainforest",
+      "marking_variants": 2
     },
     {
       "id": 6,
       "name": "Butterfly",
       "chroma": "gemology:pink_chroma",
-      "item_texture": "gemology:item/jasper/butterfly"
+      "item_texture": "gemology:item/jasper/butterfly",
+      "marking_variants": 2
     },
     {
       "id": 7,
       "name": "Picasso",
       "chroma": "gemology:gray_chroma",
-      "item_texture": "gemology:item/jasper/picasso"
+      "item_texture": "gemology:item/jasper/picasso",
+      "marking_variants": 1
     },
     {
       "id": 8,
       "name": "Silver Leaf",
       "chroma": "gemology:light_gray_chroma",
-      "item_texture": "gemology:item/jasper/silver_leaf"
+      "item_texture": "gemology:item/jasper/silver_leaf",
+      "marking_variants": 1
     },
     {
       "id": 9,
       "name": "Ocean",
       "chroma": "gemology:cyan_chroma",
-      "item_texture": "gemology:item/jasper/ocean"
+      "item_texture": "gemology:item/jasper/ocean",
+      "marking_variants": 2
     },
     {
       "id": 10,
       "name": "Lavender",
       "chroma": "gemology:purple_chroma",
-      "item_texture": "gemology:item/jasper/lavender"
+      "item_texture": "gemology:item/jasper/lavender",
+      "marking_variants": 1
     },
     {
       "id": 11,
       "name": "K2",
       "chroma": "gemology:blue_chroma",
-      "item_texture": "gemology:item/jasper/k2"
+      "item_texture": "gemology:item/jasper/k2",
+      "marking_variants": 1
     },
     {
       "id": 12,
       "name": "Biggs",
       "chroma": "gemology:brown_chroma",
-      "item_texture": "gemology:item/jasper/biggs"
+      "item_texture": "gemology:item/jasper/biggs",
+      "marking_variants": 2
     },
     {
       "id": 13,
       "name": "Bloodstone",
       "chroma": "gemology:green_chroma",
-      "item_texture": "gemology:item/jasper/bloodstone"
+      "item_texture": "gemology:item/jasper/bloodstone",
+      "marking_variants": 2
     },
     {
       "id": 14,
       "name": "Red",
       "chroma": "gemology:red_chroma",
-      "item_texture": "gemology:item/jasper/red"
+      "item_texture": "gemology:item/jasper/red",
+      "marking_variants": 1
     },
     {
       "id": 15,
       "name": "Black",
       "chroma": "gemology:black_chroma",
-      "item_texture": "gemology:item/jasper/black"
+      "item_texture": "gemology:item/jasper/black",
+      "marking_variants": 0
     }
   ]
 }

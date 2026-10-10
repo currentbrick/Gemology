@@ -11,15 +11,15 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
-public class InsigniaLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
+public class MarkingLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
 
-    public InsigniaLayer(GeoEntityRenderer<EntityGem, GemRenderState> renderer) {
+    public MarkingLayer(GeoEntityRenderer<EntityGem, GemRenderState> renderer) {
         super(renderer);
     }
 
     @Override
     public void submitRenderTask(RenderPassInfo<GemRenderState> renderPassInfo, SubmitNodeCollector renderTasks) {
-        Identifier texture = renderPassInfo.renderState().outfitTexture;
+        Identifier texture = renderPassInfo.renderState().markingTexture;
         if (texture == null) {
             return;
         }
@@ -39,7 +39,7 @@ public class InsigniaLayer extends GeoRenderLayer<EntityGem, Void, GemRenderStat
                                     vertexConsumer,
                                     renderPassInfo.packedLight(),
                                     renderPassInfo.packedOverlay(),
-                                    renderPassInfo.renderColor()
+                                    renderPassInfo.renderState().markingColour
                             )
                     );
 

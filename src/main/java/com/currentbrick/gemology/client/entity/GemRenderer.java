@@ -1,8 +1,9 @@
 package com.currentbrick.gemology.client.entity;
 
+import com.currentbrick.gemology.Gemology;
 import com.currentbrick.gemology.client.entity.layer.*;
 import com.currentbrick.gemology.entity.EntityGem;
-import com.currentbrick.gemology.entity.gem.GemVisualVariant;
+import com.currentbrick.gemology.entity.gem.*;
 import com.currentbrick.gemology.entity.gem.palette.GemPaletteGenerator;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.layer.GeoRenderLayer;
@@ -39,12 +40,13 @@ public class GemRenderer extends GeoEntityRenderer<EntityGem, GemRenderState> {
 
         this.armorModel = new HumanoidModel<>(modelPart);
 
-        this.withRenderLayer(new SkinLayer(this));
+        this.withRenderLayer(new CompositeSkinLayer(this));
         this.withRenderLayer(new HairLayer(this));
         this.withRenderLayer(new OutfitLayer(this));
         this.withRenderLayer(new InsigniaLayer(this));
         this.withRenderLayer(new FaceLayer(this));
         this.withRenderLayer(new GemLayer(this));
+        this.withRenderLayer(new VisorLayer(this));
         this.withRenderLayer(new GemEquipmentLayer(this, context));
         this.withRenderLayer(new GemHeldItemLayer(this, this.itemModelResolver));
     }
@@ -90,11 +92,52 @@ public class GemRenderer extends GeoEntityRenderer<EntityGem, GemRenderState> {
         state.gemTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/gemstones/gem_"+visualVariant.gem()+".png");
         state.faceTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/"+gemId.getPath()+".png");
 
+        if (visualVariant.marking() >= 0) {
+            GemVariant gemVariant = entity.getGemVariant();
+
+            if (gemVariant != null) {
+                String variantName = gemVariant.getName().toLowerCase(java.util.Locale.ROOT).replace(" ", "_");
+
+                state.markingTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/" + gemId.getPath() + "/markings/" + variantName + "_" + visualVariant.marking() + ".png");
+            } else {
+                state.markingTexture = null;
+            }
+        } else {
+            state.markingTexture = null;
+        }
+
+
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gemId);
+
+        if (definition.getWingVariants() > 0) {
+            state.wingTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/" + gemId.getPath() + "/wings/wings_" + visualVariant.wing() + ".png");
+            state.wingColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.WINGS);
+        } else {
+            state.wingTexture = null;
+            state.wingColour = 0;
+        }
+
+        if (visualVariant.visor() >= 0) {
+            state.visorTexture = Identifier.fromNamespaceAndPath(
+                    gemId.getNamespace(),
+                    "textures/entity/" + gemId.getPath()
+                            + "/visor_" + visualVariant.visor() + ".png"
+            );
+
+            System.out.println("[Gemology] Visor variant: " + visualVariant.visor());
+            System.out.println("[Gemology] Visor texture: " + state.visorTexture);
+        } else {
+            state.visorTexture = null;
+            System.out.println("[Gemology] No visor variant for " + gemId);
+        }
+
         state.skinColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.SKIN);
         state.hairColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.HAIR);
         state.gemColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.GEM);
         state.outfitColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.OUTFIT);
-        state.markingsColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.MARKINGS);
+        state.markingColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.MARKINGS);
+
+        state.compositeSkinTexture = GemCompositeTextureManager.getCompositeTexture(state.skinTexture, state.markingTexture, state.skinColour, state.markingColour);
     }
 
     @Override

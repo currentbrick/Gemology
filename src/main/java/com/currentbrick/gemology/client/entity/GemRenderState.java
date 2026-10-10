@@ -15,11 +15,16 @@ public class GemRenderState extends EntityRenderState implements GeoRenderState 
     public Identifier insigniaTexture;
     public Identifier gemTexture;
     public Identifier faceTexture;
+    public Identifier markingTexture;
+    public Identifier compositeSkinTexture;
+    public Identifier visorTexture;
+    public Identifier wingTexture;
     public int skinColour = 0xFFFFFFFF;
     public int hairColour = 0xFFFFFFFF;
     public int gemColour = 0xFFFFFFFF;
     public int outfitColour = 0xFFFFFFFF;
-    public int markingsColour = 0xFFFFFFFF;
+    public int markingColour = 0xFFFFFFFF;
+    public int wingColour = 0xFFFFFFFF;
     public ItemStack headEquipment = ItemStack.EMPTY;
     public ItemStack chestEquipment = ItemStack.EMPTY;
     public ItemStack legsEquipment = ItemStack.EMPTY;

@@ -209,7 +209,8 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
                 case GEM -> "gem_palette.png";
                 case OUTFIT -> "outfit_palette.png";
                 case INSIGNIA -> "insignia_palette.png";
-                case MARKINGS -> "markings_palette.png";
+                case MARKINGS -> "marking_palette.png";
+                case WINGS -> "wing_palette.png";
             };
 
             Identifier paletteId = Identifier.fromNamespaceAndPath(
@@ -496,10 +497,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
         UUID uuid = instanceData.getInstanceId();
 
-        long seed =
-                uuid.getMostSignificantBits()
-                        ^ uuid.getLeastSignificantBits()
-                        ^ category.hashCode();
+        long seed = uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits() ^ category.hashCode();
 
         RandomSource random = RandomSource.create(seed);
 
@@ -520,13 +518,13 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         ensureInstanceData();
 
         if (instanceData == null) {
-            return new GemVisualVariant(0, 0, 0, 0, 0);
+            return new GemVisualVariant(0, 0, 0, 0, 0, 0, 0, 0);
         }
 
         GemDefinition definition = getGemDefinition();
 
         if (definition == null) {
-            return new GemVisualVariant(0, 0, 0, 0, 0);
+            return new GemVisualVariant(0, 0, 0, 0, 0, 0, 0, 0);
         }
 
         int skin = getVisualVariant(definition.getSkinVariants(), "skin");
@@ -535,23 +533,46 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         int outfit = getVisualVariant(definition.getOutfitVariants(), "outfit");
         int insignia = getVisualVariant(definition.getInsigniaVariants(), "insignia");
 
-        /*System.out.println(
-                "UUID: " + instanceData.getInstanceId()
-                        + " | skin=" + skin
-                        + " hair=" + hair
-                        + " gem=" + gem
-                        + " outfit=" + outfit
-                        + " insignia=" + insignia
-        );*/
+        int visor = -1;
+        int wing = -1;
 
-        return new GemVisualVariant(
-                skin,
-                hair,
-                gem,
-                outfit,
-                insignia
-        );
+        if (definition.getWingVariants() > 0) {
+            wing = getVisualVariant(definition.getWingVariants(), "wing");
+        }
+
+        if (definition.getVisorVariants() > 0 && getVisualVariant(100, "visor_chance") < 20) {
+            visor = getVisualVariant(definition.getVisorVariants(), "visor");
+        }
+
+        int marking = -1;
+
+        GemVariant gemVariant = getGemVariant();
+
+        if (gemVariant != null && gemVariant.getMarkingVariants() > 0) {
+            marking = getVisualVariant(gemVariant.getMarkingVariants(), "markings");
+        }
+
+        return new GemVisualVariant(skin, hair, gem, outfit, insignia, marking, visor, wing);
     }
+
+    public GemVariant getGemVariant() {
+        ensureInstanceData();
+
+        if (instanceData == null) {
+            return null;
+        }
+
+        GemDefinition definition = getGemDefinition();
+
+        if (definition == null) {
+            return null;
+        }
+
+        int variantId = instanceData.getVariant();
+
+        return definition.getVariants().stream().filter(variant -> variant.getId() == variantId).findFirst().orElse(null);
+    }
+
 
     public MovementMode getMovementMode() {
         return movementMode;

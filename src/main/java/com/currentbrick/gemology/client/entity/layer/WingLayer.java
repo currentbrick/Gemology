@@ -11,19 +11,19 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
-public class InsigniaLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
+public class WingLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> {
 
-    public InsigniaLayer(GeoEntityRenderer<EntityGem, GemRenderState> renderer) {
+    public WingLayer(GeoEntityRenderer<EntityGem, GemRenderState> renderer) {
         super(renderer);
     }
 
     @Override
     public void submitRenderTask(RenderPassInfo<GemRenderState> renderPassInfo, SubmitNodeCollector renderTasks) {
-        Identifier texture = renderPassInfo.renderState().outfitTexture;
+        Identifier texture = renderPassInfo.renderState().wingTexture;
         if (texture == null) {
             return;
         }
-        RenderType renderType = RenderTypes.entityCutoutZOffset(texture);
+        RenderType renderType = RenderTypes.entityCutout(texture);
 
         renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), renderType,
                 (pose, vertexConsumer) -> {
@@ -39,7 +39,7 @@ public class InsigniaLayer extends GeoRenderLayer<EntityGem, Void, GemRenderStat
                                     vertexConsumer,
                                     renderPassInfo.packedLight(),
                                     renderPassInfo.packedOverlay(),
-                                    renderPassInfo.renderColor()
+                                    renderPassInfo.renderState().wingColour
                             )
                     );
 

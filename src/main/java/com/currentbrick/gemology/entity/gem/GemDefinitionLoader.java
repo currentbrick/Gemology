@@ -79,25 +79,15 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
 
                         Identifier chromaId = null;
 
-                        if (variantJson.has("chroma")
-                                && !variantJson.get("chroma").isJsonNull()
-                                && !variantJson.get("chroma").getAsString().isEmpty()) {
-
-                            chromaId = Identifier.parse(
-                                    variantJson.get("chroma").getAsString()
-                            );
+                        if (variantJson.has("chroma") && !variantJson.get("chroma").isJsonNull() && !variantJson.get("chroma").getAsString().isEmpty()) {
+                            chromaId = Identifier.parse(variantJson.get("chroma").getAsString());
                         }
 
-                        Identifier itemTexture = Identifier.parse(
-                                variantJson.get("item_texture").getAsString()
-                        );
+                        Identifier itemTexture = Identifier.parse(variantJson.get("item_texture").getAsString());
 
-                        variants.add(new GemVariant(
-                                id,
-                                name,
-                                chromaId,
-                                itemTexture
-                        ));
+                        int markingVariants = variantJson.has("marking_variants") ? variantJson.get("marking_variants").getAsInt() : 0;
+
+                        variants.add(new GemVariant(id, name, chromaId, itemTexture, markingVariants));
                     }
                 }
 
@@ -127,6 +117,9 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
                 int outfitVariants = visualVariants.get("outfit").getAsInt();
                 int insigniaVariants = visualVariants.get("insignia").getAsInt();
 
+                int visorVariants = visualVariants.has("visor") ? visualVariants.get("visor").getAsInt() : 0;
+                int wingVariants = visualVariants.has("wing") ? visualVariants.get("wing").getAsInt() : 0;
+
                 JsonObject sounds = json.has("sounds")
                         ? json.getAsJsonObject("sounds")
                         : new JsonObject();
@@ -138,22 +131,10 @@ public class GemDefinitionLoader extends SimplePreparableReloadListener<Map<Iden
                 GemDimensions defDimensions = new GemDimensions(dimensions.get("width").getAsFloat(), dimensions.get("height").getAsFloat());
                 GemStats defStats = new GemStats(stats.get("health").getAsFloat(), stats.get("strength").getAsFloat(), stats.get("speed").getAsFloat());
 
-                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions, abilities, variants, skinVariants, hairVariants, gemVariants, outfitVariants, insigniaVariants, availability, instrumentSound, parentGem);
+                GemDefinition definition = new GemDefinition(gemId, defStats, defDimensions, abilities, variants, skinVariants, hairVariants, gemVariants, outfitVariants, insigniaVariants, visorVariants, wingVariants, availability, instrumentSound, parentGem);
 
                 definitions.put(gemId, definition);
                 Gemology.LOGGER.info("Loaded gem {} with abilities: {}", gemId, abilities);
-                Gemology.LOGGER.info(
-
-                        "Gem {} has parent {} and fusion type {}",
-
-                        definition.getId(),
-
-                        definition.getParentGem(),
-
-                        definition.getFusionTypeId()
-
-                );
-                //Gemology.LOGGER.info("Loaded gem definition: {}", gemId);
             } catch (IOException | RuntimeException e) {
                 throw new RuntimeException("Failed to load gem definition: " + resourceId, e);
             }
