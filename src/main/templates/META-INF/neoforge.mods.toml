@@ -36,13 +36,18 @@ displayName="${mod_name}" #mandatory
 #credits="" #optional
 
 # The authors of the mod, displayed in the mod UI (optional)
-authors="Currenbrick, Taaffiette"
+authors="Currentbrick, Taaffeite, The Moon, Segapop, PastelPunk"
+
+license="Steven Universe and all related subjects are property of Cartoon Network and Rebecca Sugar"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Example mod description.
+Gemology is a Steven Universe inspired tech/magic mod that lets the players create Gems. These gems can perform many tasks, and are highly customizable and varied, with over a billion possibilities.
 '''
 
+credits="Gemology is a Steven Universe inspired tech/magic mod that lets the players create Gems."
+iconFile="gemology.png"
+displayURL="https://discord.com/invite/AJPYGyTMJJ"
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
 #[[mixins]]
 #config="${mod_id}.mixins.json"
@@ -77,6 +82,19 @@ Example mod description.
     type="required"
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="modonomicon"
+    mandatory=true
+    versionRange="[2.14.1,)"
+    ordering="NONE"
+    side="CLIENT"
+[[dependencies.${mod_id}]]
+    modId="geckolib"
+    mandatory=true
+    versionRange="[5.5.6,)"
     ordering="NONE"
     side="BOTH"
 

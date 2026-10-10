@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gemology:quartz",
+          "modifier": [
+            {
+              "type": "minecraft:set_custom_data",
+              "tag": {
+                "Variant": 16
+              }
+            }
+          ],
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

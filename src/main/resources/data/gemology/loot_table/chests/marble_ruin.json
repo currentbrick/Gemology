@@ -316,6 +316,69 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "gemology:quartz",
+          "modifier": [
+            {
+              "type": "minecraft:set_custom_data",
+              "tag": {
+                "Variant": 16
+              }
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:quartz",
+          "modifier": [
+            {
+              "type": "minecraft:set_custom_data",
+              "tag": {
+                "Variant": 17
+              }
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:quartz",
+          "modifier": [
+            {
+              "type": "minecraft:set_custom_data",
+              "tag": {
+                "Variant": 18
+              }
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gemology:agate",
+          "modifier": [
+            {
+              "type": "minecraft:set_custom_data",
+              "tag": {
+                "Variant": 16
+              }
+            }
+          ],
+          "weight": 3
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.25
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "gemology:ruined_marble_block",
           "functions": [
             {
