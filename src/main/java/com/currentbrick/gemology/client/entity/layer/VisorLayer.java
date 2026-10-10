@@ -5,6 +5,7 @@ import com.currentbrick.gemology.entity.EntityGem;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.base.RenderPassInfo;
 import com.geckolib.renderer.layer.GeoRenderLayer;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -20,10 +21,6 @@ public class VisorLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> 
     public void submitRenderTask(RenderPassInfo<GemRenderState> renderPassInfo, SubmitNodeCollector renderTasks) {
         Identifier texture = renderPassInfo.renderState().visorTexture;
 
-        System.out.println("[Gemology] VisorLayer called");
-
-        System.out.println("[Gemology] Layer texture: " + texture);
-
         if (texture == null) {
             return;
         }
@@ -34,16 +31,24 @@ public class VisorLayer extends GeoRenderLayer<EntityGem, Void, GemRenderState> 
                 renderPassInfo.poseStack(),
                 renderType,
                 (pose, vertexConsumer) -> {
-                    System.out.println("[Gemology] Visor geometry callback executed");
-                    renderPassInfo.renderPosed(() ->
-                            renderPassInfo.model().render(
-                                    renderPassInfo,
-                                    vertexConsumer,
-                                    renderPassInfo.packedLight(),
-                                    renderPassInfo.packedOverlay(),
-                                    0xFFFFFFFF
-                            )
-                    );
+                    PoseStack poseStack = renderPassInfo.poseStack();
+
+                    poseStack.pushPose();
+                    poseStack.last().set(pose);
+
+                    try {
+                        renderPassInfo.renderPosed(() ->
+                                renderPassInfo.model().render(
+                                        renderPassInfo,
+                                        vertexConsumer,
+                                        renderPassInfo.packedLight(),
+                                        renderPassInfo.packedOverlay(),
+                                        0xFFFFFFFF
+                                )
+                        );
+                    } finally {
+                        poseStack.popPose();
+                    }
                 }
         );
     }
