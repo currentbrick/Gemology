@@ -48,10 +48,10 @@ public class ModItems {
 
     public static final DeferredHolder<Item, FusionItem> FUSION = ITEMS.registerItem("fusion", FusionItem::new);
 
-    public static final DeferredItem<Item> WHITE_ESSENCE = ITEMS.registerSimpleItem("white_essence");
-    public static final DeferredItem<Item> YELLOW_ESSENCE = ITEMS.registerSimpleItem("yellow_essence");
-    public static final DeferredItem<Item> BLUE_ESSENCE = ITEMS.registerSimpleItem("blue_essence");
-    public static final DeferredItem<Item> PINK_ESSENCE = ITEMS.registerSimpleItem("pink_essence");
+    public static final DeferredItem<Item> WHITE_ESSENCE = ITEMS.registerSimpleItem("white_essence", properties -> (properties.stacksTo(1)));
+    public static final DeferredItem<Item> YELLOW_ESSENCE = ITEMS.registerSimpleItem("yellow_essence", properties -> (properties.stacksTo(1)));
+    public static final DeferredItem<Item> BLUE_ESSENCE = ITEMS.registerSimpleItem("blue_essence", properties -> (properties.stacksTo(1)));
+    public static final DeferredItem<Item> PINK_ESSENCE = ITEMS.registerSimpleItem("pink_essence", properties -> (properties.stacksTo(1)));
 
 
     // ----------- GEMS ------------

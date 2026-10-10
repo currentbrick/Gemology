@@ -45,7 +45,7 @@ public class FusionGemLayer extends GeoRenderLayer<EntityFusion, Void, FusionRen
                             renderPassInfo.model().render(
                                     renderPassInfo,
                                     vertexConsumer,
-                                    renderPassInfo.packedLight(),
+                                    0x00F000F0,
                                     renderPassInfo.packedOverlay(),
                                     renderPassInfo.renderState().gemColour
                             )

@@ -27,8 +27,10 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -660,5 +662,19 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
     public Component getDisplayName() {
         if (getFusionTypeId(getGem1ID()).equals(getFusionTypeId(getGem1ID()))) return Component.literal(getGemName());
         return Component.literal(Gemology.FUSION_NAME_MANAGER.getName(getFusionId()));
+    }
+
+
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, source, recentlyHit);
+
+        ItemStack stack = EntityGem.createGemItem(getGem1ID(), getGem1InstanceId(), getFirstGemData().getFloat("Quality").get(), getFirstGemData().getIntOr("Variant", 0));
+        ItemStack stack2 = EntityGem.createGemItem(getGem2ID(), getGem2InstanceId(), getSecondGemData().getFloat("Quality").get(), getSecondGemData().getIntOr("Variant", 0));
+
+        if (stack != null && stack2 != null) {
+            spawnAtLocation(level, stack);
+            spawnAtLocation(level, stack2);
+        }
     }
 }

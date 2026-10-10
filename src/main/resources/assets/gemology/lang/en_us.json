@@ -82,6 +82,8 @@
 
   "death.attack.bio_poison": "%1$s was consumed by toxins",
 
+  "gemology.subtitle.poof": "Gem Poofed",
+
   "gemology.configuration.title": "Gemology Configs",
   "gemology.configuration.section.gemology.common.toml": "Gemology Configs",
   "gemology.configuration.section.gemology.common.toml.title": "Gemology Configs",

@@ -6,7 +6,7 @@ import net.minecraft.world.item.context.UseOnContext;
 
 public class FusionItem extends Item {
     public FusionItem(Properties properties) {
-        super(properties.stacksTo(1));
+        super(properties.stacksTo(1).durability(5));
     }
 
     @Override

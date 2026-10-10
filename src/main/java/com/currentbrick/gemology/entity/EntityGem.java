@@ -19,6 +19,7 @@ import com.currentbrick.gemology.entity.gem.palette.GemPaletteGenerator;
 import com.currentbrick.gemology.entity.gem.palette.GemPaletteLoader;
 import com.currentbrick.gemology.init.ModEntities;
 import com.currentbrick.gemology.init.ModItems;
+import com.currentbrick.gemology.init.ModSounds;
 import com.currentbrick.gemology.item.FusionItem;
 import com.currentbrick.gemology.item.ItemGem;
 import com.geckolib.animatable.GeoAnimatable;
@@ -1005,6 +1006,8 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
                     }
 
                     stack.remove(DataComponents.CUSTOM_DATA);
+
+                    stack.hurtAndBreak(1, player, hand);
                 });
 
                 this.playSound(getInstrument(), this.getSoundVolume(), (interactPitch()));
@@ -1074,12 +1077,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
     private ItemStack createGemItem() {
         GemInstanceData instance = getInstanceData();
 
-        return createGemItem(
-                getGemId(),
-                instance.getInstanceId(),
-                instance.getQuality(),
-                instance.getVariant()
-        );
+        return createGemItem(getGemId(), instance.getInstanceId(), instance.getQuality(), instance.getVariant());
     }
 
     public static ItemStack createGemItem(Identifier gemId, UUID instanceId, float quality, int variant) {
@@ -1133,6 +1131,8 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         if (!stack.isEmpty()) {
             spawnAtLocation((ServerLevel) level(), stack);
         }
+
+        this.playSound(ModSounds.POOF.get(), 1.0F, 1.0F);
 
         discard();
     }
@@ -1246,6 +1246,12 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
     protected SoundEvent getHurtSound(DamageSource p_30424_) {
         return getInstrument();
+    }
+
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.POOF.get();
     }
 
     @Override

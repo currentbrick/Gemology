@@ -117,6 +117,19 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('D', Items.DIAMOND)
                 .unlockedBy("has_tungsten_ingot", has(ModItems.TUNGSTEN_INGOT.get()))
                 .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, ModItems.FUSION.get())
+                .pattern("TWT")
+                .pattern("YCB")
+                .pattern("TPT")
+                .define('T', ModItems.TUNGSTEN_BLOCK.get())
+                .define('W', ModItems.WHITE_ESSENCE.get())
+                .define('B', ModItems.BLUE_ESSENCE.get())
+                .define('Y', ModItems.YELLOW_ESSENCE.get())
+                .define('P', ModItems.PINK_ESSENCE.get())
+                .define('C', ModItems.PRISMATIC_CHROMA.get())
+                .unlockedBy("has_tungsten_ingot", has(ModItems.TUNGSTEN_INGOT.get()))
+                .save(output);
     }
 
     public static MultiRegistryBootstrap create() {

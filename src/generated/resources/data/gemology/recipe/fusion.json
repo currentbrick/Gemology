@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "gemology:blue_essence",
+    "C": "gemology:prismatic_chroma",
+    "P": "gemology:pink_essence",
+    "T": "gemology:tungsten_block",
+    "W": "gemology:white_essence",
+    "Y": "gemology:yellow_essence"
+  },
+  "pattern": [
+    "TWT",
+    "YCB",
+    "TPT"
+  ],
+  "result": {
+    "id": "gemology:fusion"
+  }
+}

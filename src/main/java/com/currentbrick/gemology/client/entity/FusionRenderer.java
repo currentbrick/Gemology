@@ -104,7 +104,7 @@ public class FusionRenderer extends GeoEntityRenderer<EntityFusion, FusionRender
             state.outfitTexture = Identifier.fromNamespaceAndPath(textureGemId.getNamespace(), "textures/entity/" + textureGemId.getPath() + "/outfits/outfit_0.png");
 
             state.irisTexture = Identifier.fromNamespaceAndPath(textureGemId.getNamespace(), "textures/entity/" + textureGemId.getPath() + "/" + textureGemId.getPath() + ".png");
-
+            state.eyeTexture = Identifier.fromNamespaceAndPath(textureGemId.getNamespace(), "textures/entity/" + textureGemId.getPath() + "/blank.png");
 
             if (gem1Id != null && gem2Id != null) {
                 GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(gem1Id);
