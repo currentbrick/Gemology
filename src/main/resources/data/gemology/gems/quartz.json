@@ -43,13 +43,15 @@
       "id": 2,
       "name": "Cherry",
       "chroma": "gemology:magenta_chroma",
-      "item_texture": "gemology:item/quartz/cherry"
+      "item_texture": "gemology:item/quartz/cherry",
+      "marking_variants": 2
     },
     {
       "id": 3,
       "name": "Blue Aventurine",
       "chroma": "gemology:light_blue_chroma",
-      "item_texture": "gemology:item/quartz/blue_aventurine"
+      "item_texture": "gemology:item/quartz/blue_aventurine",
+      "marking_variants": 2
     },
     {
       "id": 4,
@@ -59,7 +61,7 @@
     },
     {
       "id": 5,
-      "name": "prasiolite",
+      "name": "Prasiolite",
       "chroma": "gemology:lime_chroma",
       "item_texture": "gemology:item/quartz/prasiolite"
     },
@@ -67,7 +69,8 @@
       "id": 6,
       "name": "Rose",
       "chroma": "gemology:pink_chroma",
-      "item_texture": "gemology:item/quartz/rose"
+      "item_texture": "gemology:item/quartz/rose",
+      "marking_variants": 1
     },
     {
       "id": 7,
@@ -131,12 +134,14 @@
     {
       "id": 17,
       "name": "Lace Amethyst",
-      "item_texture": "gemology:item/quartz/lace_amethyst"
+      "item_texture": "gemology:item/quartz/lace_amethyst",
+      "marking_variants": 2
     },
     {
       "id": 17,
       "name": "Ametrine",
-      "item_texture": "gemology:item/quartz/ametrine"
+      "item_texture": "gemology:item/quartz/ametrine",
+      "marking_variants": 1
     }
   ]
 }
