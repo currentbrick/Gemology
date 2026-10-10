@@ -88,7 +88,7 @@ public class GemRenderer extends GeoEntityRenderer<EntityGem, GemRenderState> {
         state.skinTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/skin_"+visualVariant.skin()+".png");
         state.hairTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/hair_"+visualVariant.hair()+".png");
         state.outfitTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/outfits/outfit_"+visualVariant.outfit()+".png");
-        state.insigniaTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/outfits/insignia_"+visualVariant.insignia()+".png");
+        state.insigniaTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/outfits/insignia_"+visualVariant.outfit()+".png");
         state.gemTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/gemstones/gem_"+visualVariant.gem()+".png");
         state.faceTexture = Identifier.fromNamespaceAndPath(gemId.getNamespace(), "textures/entity/"+gemId.getPath()+"/"+gemId.getPath()+".png");
 
@@ -133,10 +133,6 @@ public class GemRenderer extends GeoEntityRenderer<EntityGem, GemRenderState> {
         state.outfitColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.OUTFIT);
         state.markingColour = entity.getPaletteColour(GemPaletteGenerator.PaletteType.MARKINGS);
 
-        System.out.printf(
-                "[Gemology] Skin palette colour: 0x%08X%n",
-                state.skinColour
-        );
 
         state.compositeSkinTexture = GemCompositeTextureManager.getCompositeTexture(state.skinTexture, state.markingTexture, state.skinColour, state.markingColour);
     }

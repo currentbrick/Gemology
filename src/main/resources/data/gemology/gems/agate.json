@@ -31,31 +31,36 @@
       "id": 0,
       "name": "White",
       "chroma": "gemology:white_chroma",
-      "item_texture": "gemology:item/agate/white"
+      "item_texture": "gemology:item/agate/white",
+      "marking_variants": 1
     },
     {
       "id": 1,
       "name": "Sardonyx",
       "chroma": "gemology:orange_chroma",
-      "item_texture": "gemology:item/agate/sardonyx"
+      "item_texture": "gemology:item/agate/sardonyx",
+      "marking_variants": 1
     },
     {
       "id": 2,
       "name": "Agua Nueva",
       "chroma": "gemology:magenta_chroma",
-      "item_texture": "gemology:item/agate/agua_nueva"
+      "item_texture": "gemology:item/agate/agua_nueva",
+      "marking_variants": 1
     },
     {
       "id": 3,
       "name": "Blue Lace",
       "chroma": "gemology:light_blue_chroma",
-      "item_texture": "gemology:item/agate/blue_lace"
+      "item_texture": "gemology:item/agate/blue_lace",
+      "marking_variants": 1
     },
     {
       "id": 4,
       "name": "Kentucky",
       "chroma": "gemology:yellow_chroma",
-      "item_texture": "gemology:item/agate/kentucky"
+      "item_texture": "gemology:item/agate/kentucky",
+      "marking_variants": 1
     },
     {
       "id": 5,
@@ -67,31 +72,36 @@
       "id": 6,
       "name": "Apricot",
       "chroma": "gemology:pink_chroma",
-      "item_texture": "gemology:item/agate/apricot"
+      "item_texture": "gemology:item/agate/apricot",
+      "marking_variants": 1
     },
     {
       "id": 7,
       "name": "Botswana",
       "chroma": "gemology:gray_chroma",
-      "item_texture": "gemology:item/agate/botswana"
+      "item_texture": "gemology:item/agate/botswana",
+      "marking_variants": 1
     },
     {
       "id": 8,
       "name": "Montana",
       "chroma": "gemology:light_gray_chroma",
-      "item_texture": "gemology:item/agate/montana"
+      "item_texture": "gemology:item/agate/montana",
+      "marking_variants": 1
     },
     {
       "id": 9,
       "name": "Ellensburg Blue",
       "chroma": "gemology:cyan_chroma",
-      "item_texture": "gemology:item/agate/ellensburg_blue"
+      "item_texture": "gemology:item/agate/ellensburg_blue",
+      "marking_variants": 1
     },
     {
       "id": 10,
       "name": "Grape",
       "chroma": "gemology:purple_chroma",
-      "item_texture": "gemology:item/agate/grape"
+      "item_texture": "gemology:item/agate/grape",
+      "marking_variants": 1
     },
     {
       "id": 11,
@@ -103,25 +113,29 @@
       "id": 12,
       "name": "Brazilian",
       "chroma": "gemology:brown_chroma",
-      "item_texture": "gemology:item/agate/brazilian"
+      "item_texture": "gemology:item/agate/brazilian",
+      "marking_variants": 1
     },
     {
       "id": 13,
       "name": "Moss",
       "chroma": "gemology:green_chroma",
-      "item_texture": "gemology:item/agate/moss"
+      "item_texture": "gemology:item/agate/moss",
+      "marking_variants": 1
     },
     {
       "id": 14,
       "name": "Lake Superior",
       "chroma": "gemology:red_chroma",
-      "item_texture": "gemology:item/agate/lake_superior"
+      "item_texture": "gemology:item/agate/lake_superior",
+      "marking_variants": 1
     },
     {
       "id": 15,
       "name": "Onyx",
       "chroma": "gemology:black_chroma",
-      "item_texture": "gemology:item/agate/onyx"
+      "item_texture": "gemology:item/agate/onyx",
+      "marking_variants": 1
     },
     {
       "id": 16,

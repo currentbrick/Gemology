@@ -503,13 +503,13 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         ensureInstanceData();
 
         if (instanceData == null) {
-            return new GemVisualVariant(0, 0, 0, 0, 0, 0, 0, 0);
+            return new GemVisualVariant(0, 0, 0, 0, 0, 0, 0);
         }
 
         GemDefinition definition = getGemDefinition();
 
         if (definition == null) {
-            return new GemVisualVariant(0, 0, 0, 0, 0, 0, 0, 0);
+            return new GemVisualVariant(0, 0, 0, 0, 0, 0, 0);
         }
 
         int skin = getVisualVariant(definition.getSkinVariants(), "skin");
@@ -537,7 +537,7 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
             marking = getVisualVariant(gemVariant.getMarkingVariants(), "markings");
         }
 
-        return new GemVisualVariant(skin, hair, gem, outfit, insignia, marking, visor, wing);
+        return new GemVisualVariant(skin, hair, gem, outfit, marking, visor, wing);
     }
 
     public GemVariant getGemVariant() {
