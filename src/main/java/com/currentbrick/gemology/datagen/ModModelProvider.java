@@ -110,21 +110,21 @@ public class ModModelProvider extends ModelProvider {
 
         createGemItemModel(itemModels, ModItems.JASPER.get(),
                 List.of(
-                        new GemItemVariant(0, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/zebra")),
+                        new GemItemVariant(0, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/dalmatian")),
                         new GemItemVariant(1, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/red_striped")),
-                        new GemItemVariant(2, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/ripple")),
-                        new GemItemVariant(3, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/imperial")),
-                        new GemItemVariant(4, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/golden")),
+                        new GemItemVariant(2, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/mookaite")),
+                        new GemItemVariant(3, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/picture")),
+                        new GemItemVariant(4, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/yellow")),
                         new GemItemVariant(5, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/rainforest")),
-                        new GemItemVariant(6, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/mookaite")),
-                        new GemItemVariant(7, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/matrix")),
-                        new GemItemVariant(8, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/picasso")),
+                        new GemItemVariant(6, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/butterfly")),
+                        new GemItemVariant(7, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/picasso")),
+                        new GemItemVariant(8, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/silver_leaf")),
                         new GemItemVariant(9, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/ocean")),
-                        new GemItemVariant(10, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/royal_plume")),
-                        new GemItemVariant(11, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/blue_snakeskin")),
+                        new GemItemVariant(10, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/lavender")),
+                        new GemItemVariant(11, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/k2")),
                         new GemItemVariant(12, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/biggs")),
-                        new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/kambaba")),
-                        new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/flame")),
+                        new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/bloodstone")),
+                        new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/red")),
                         new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/black"))
                 )
         );
