@@ -20,10 +20,10 @@
 
   "visual_variants": {
     "skin": 1,
-    "hair": 4,
-    "gem": 18,
-    "outfit": 9,
-    "insignia": 9
+    "hair": 9,
+    "gem": 20,
+    "outfit": 2,
+    "insignia": 2
   },
 
   "variants": [
