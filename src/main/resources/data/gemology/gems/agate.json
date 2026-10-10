@@ -29,45 +29,45 @@
   "variants": [
     {
       "id": 0,
-      "name": "Dendritic",
+      "name": "White",
       "chroma": "gemology:white_chroma",
-      "item_texture": "gemology:item/agate/dendritic"
+      "item_texture": "gemology:item/agate/white"
     },
     {
       "id": 1,
-      "name": "Wingate Pass Plume",
+      "name": "Sardonyx",
       "chroma": "gemology:orange_chroma",
-      "item_texture": "gemology:item/agate/wingate_pass_plume"
+      "item_texture": "gemology:item/agate/sardonyx"
     },
     {
       "id": 2,
-      "name": "Rose",
+      "name": "Agua Nueva",
       "chroma": "gemology:magenta_chroma",
-      "item_texture": "gemology:item/agate/rose"
+      "item_texture": "gemology:item/agate/agua_nueva"
     },
     {
       "id": 3,
-      "name": "Holly Blue",
+      "name": "Blue Lace",
       "chroma": "gemology:light_blue_chroma",
-      "item_texture": "gemology:item/agate/holly_blue"
+      "item_texture": "gemology:item/agate/blue_lace"
     },
     {
       "id": 4,
-      "name": "Tawny",
+      "name": "Kentucky",
       "chroma": "gemology:yellow_chroma",
-      "item_texture": "gemology:item/agate/tawny"
+      "item_texture": "gemology:item/agate/kentucky"
     },
     {
       "id": 5,
-      "name": "Dragons Vein",
+      "name": "Chrysoprase",
       "chroma": "gemology:lime_chroma",
-      "item_texture": "gemology:item/agate/dragons_vein"
+      "item_texture": "gemology:item/agate/chrysoprase"
     },
     {
       "id": 6,
-      "name": "Sakura",
+      "name": "Apricot",
       "chroma": "gemology:pink_chroma",
-      "item_texture": "gemology:item/agate/sakura"
+      "item_texture": "gemology:item/agate/apricot"
     },
     {
       "id": 7,
@@ -77,15 +77,15 @@
     },
     {
       "id": 8,
-      "name": "Water",
+      "name": "Montana",
       "chroma": "gemology:light_gray_chroma",
-      "item_texture": "gemology:item/agate/water"
+      "item_texture": "gemology:item/agate/montana"
     },
     {
       "id": 9,
-      "name": "Blue Lace",
+      "name": "Ellensburg Blue",
       "chroma": "gemology:cyan_chroma",
-      "item_texture": "gemology:item/agate/blue_lace"
+      "item_texture": "gemology:item/agate/ellensburg_blue"
     },
     {
       "id": 10,
@@ -95,21 +95,21 @@
     },
     {
       "id": 11,
-      "name": "Ellensburg Blue",
+      "name": "Holly Blue",
       "chroma": "gemology:blue_chroma",
-      "item_texture": "gemology:item/agate/ellensburg_blue"
+      "item_texture": "gemology:item/agate/holly_blue"
     },
     {
       "id": 12,
-      "name": "Turritella",
+      "name": "Brazilian",
       "chroma": "gemology:brown_chroma",
-      "item_texture": "gemology:item/agate/turritella"
+      "item_texture": "gemology:item/agate/brazilian"
     },
     {
       "id": 13,
-      "name": "Tree",
+      "name": "Moss",
       "chroma": "gemology:green_chroma",
-      "item_texture": "gemology:item/agate/tree"
+      "item_texture": "gemology:item/agate/moss"
     },
     {
       "id": 14,
@@ -119,14 +119,13 @@
     },
     {
       "id": 15,
-      "name": "Orca",
+      "name": "Onyx",
       "chroma": "gemology:black_chroma",
-      "item_texture": "gemology:item/agate/orca"
+      "item_texture": "gemology:item/agate/onyx"
     },
     {
       "id": 16,
       "name": "Iris",
-      "chroma": "gemology:white_chroma",
       "item_texture": "gemology:item/agate/iris"
     }
   ]
