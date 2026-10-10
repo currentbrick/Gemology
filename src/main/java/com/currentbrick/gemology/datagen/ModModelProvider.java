@@ -145,7 +145,10 @@ public class ModModelProvider extends ModelProvider {
                         new GemItemVariant(12, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/tigers_eye")),
                         new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/heliotrope")),
                         new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/carnelian")),
-                        new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/onyx"))
+                        new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/onyx")),
+                        new GemItemVariant(16, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/angel_aura")),
+                        new GemItemVariant(17, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/lace_amethyst")),
+                        new GemItemVariant(18, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/ametrine"))
                 )
         );
         createGemItemModel(itemModels, ModItems.AGATE.get(),

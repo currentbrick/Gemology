@@ -126,14 +126,17 @@
     {
       "id": 16,
       "name": "Angel Aura",
-      "chroma": "gemology:white_chroma",
       "item_texture": "gemology:item/quartz/angel_aura"
     },
     {
       "id": 17,
       "name": "Lace Amethyst",
-      "chroma": "gemology:white_chroma",
       "item_texture": "gemology:item/quartz/lace_amethyst"
+    },
+    {
+      "id": 17,
+      "name": "Ametrine",
+      "item_texture": "gemology:item/quartz/ametrine"
     }
   ]
 }
