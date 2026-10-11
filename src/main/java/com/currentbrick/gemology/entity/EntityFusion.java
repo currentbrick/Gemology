@@ -812,6 +812,11 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         }
     }
 
+    @Override
+    public boolean shouldDropExperience() {
+        return false;
+    }
+
     public MovementMode getMovementMode() {
         return movementMode;
     }
