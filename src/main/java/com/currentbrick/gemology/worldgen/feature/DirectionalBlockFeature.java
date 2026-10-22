@@ -61,6 +61,9 @@ public class DirectionalBlockFeature implements Feature {
             blockpos$mutableblockpos.setWithOffset(blockPos, dir);
 
             if (worldGenLevel.getBlockState(blockpos$mutableblockpos).is(canBePlacedOn)) {
+                if (!worldGenLevel.getBlockState(blockPos).isAir()) {
+                    return false;
+                }
                 BlockState state = toPlace.value().defaultBlockState().setValue(DirectionalBlock.FACING, dir.getOpposite());
                 this.setBlock(worldGenLevel, blockPos, state);
                 return true;

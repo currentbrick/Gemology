@@ -26,6 +26,7 @@ import com.geckolib.util.GeckoLibUtil;
 import com.sun.jna.platform.win32.WinDef;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,6 +34,8 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
@@ -74,7 +77,7 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
     private static final EntityDataAccessor<Float> FUSION_STRENGTH = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> FUSION_SPEED = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<String> FUSION_ABILITIES = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<String> OWNER_UUID = SynchedEntityData.defineId(EntityGem.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> OWNER_UUID = SynchedEntityData.defineId(EntityFusion.class, EntityDataSerializers.STRING);
 
     private static final int INVENTORY_SIZE = 32;
 
@@ -89,6 +92,53 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
 
     public EntityFusion(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    public boolean isPersistenceRequired() {
+        return true;
+    }
+
+    public SoundEvent getInstrument1() {
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(getGemId(getFirstGemData()));
+
+        if (definition == null) {
+            return SoundEvents.NOTE_BLOCK_HARP.value();
+        }
+
+        return BuiltInRegistries.SOUND_EVENT.getValue(definition.getInstrumentSound());
+    }
+    public SoundEvent getInstrument2() {
+        GemDefinition definition = Gemology.GEM_DEFINITION_MANAGER.get(getGemId(getSecondGemData()));
+
+        if (definition == null) {
+            return SoundEvents.NOTE_BLOCK_HARP.value();
+        }
+
+        return BuiltInRegistries.SOUND_EVENT.getValue(definition.getInstrumentSound());
+    }
+
+    public void playFusionSound(float pitch1, float pitch2) {
+        this.playSound(getInstrument1(), this.getSoundVolume(), pitch1);
+        this.playSound(getInstrument2(), this.getSoundVolume(), pitch2);
+    }
+
+    @Override
+    protected void playHurtSound(DamageSource p_21160_) {
+        playFusionSound(hurtPitch(), hurtPitch());
+    }
+
+    public float interactPitch() {
+        return (float) (1 + random.nextFloat() * (1.5 - 1));
+    }
+
+    public float hurtPitch() {
+        return (float) (0.25 + random.nextFloat() * (0.75 - 0.25));
+    }
+
+    @Override
+    public void playAmbientSound() {
+        playFusionSound(interactPitch(), interactPitch());
     }
 
     @Override
@@ -492,7 +542,7 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         if (player.isShiftKeyDown()) {
             setMovementMode(getMovementMode().next());
             player.sendSystemMessage(Component.literal("Set "  + getGemName() + " to "+ getMovementMode().name().toLowerCase().replace("_", " ")));
-            //this.playSound(getInstrument(), this.getSoundVolume(), (interactPitch()));
+            playFusionSound(interactPitch(), interactPitch());
             return InteractionResult.SUCCESS;
         }
 
@@ -500,11 +550,12 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         System.out.println("check fusion item");
         if ((stack.getItem() instanceof FusionItem)) {
             unfuse(player);
-
+            playFusionSound(interactPitch(), interactPitch());
             return InteractionResult.SUCCESS;
         } else {
             System.out.println("open menu");
             player.openMenu(this, buf -> buf.writeInt(this.getId()));
+            playFusionSound(interactPitch(), interactPitch());
             return InteractionResult.SUCCESS;
         }
     }
@@ -794,7 +845,7 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
 
     @Override
     public Component getDisplayName() {
-        if (getFusionTypeId(getGem1ID()).equals(getFusionTypeId(getGem1ID()))) return Component.literal(getGemName());
+        if (getFusionTypeId(getGem1ID()).equals(getFusionTypeId(getGem2ID()))) return Component.literal(getGemName());
         return Component.literal(Gemology.FUSION_NAME_MANAGER.getName(getFusionId()));
     }
 

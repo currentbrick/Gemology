@@ -42,6 +42,11 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_tungsten_ingot", has(ModItems.TUNGSTEN_INGOT.get()))
                 .save(output);
 
+        ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.TUNGSTEN_INGOT.get(), 9)
+                .requires(ModItems.TUNGSTEN_BLOCK.get())
+                .unlockedBy("has_tungsten_block", has(ModItems.TUNGSTEN_BLOCK.get()))
+                .save(output);
+
         ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.RAW_TUNGSTEN_BLOCK.get())
                 .requires(ModItems.RAW_TUNGSTEN.get(), 9)
                 .unlockedBy("has_raw_tungsten", has(ModItems.RAW_TUNGSTEN.get()))

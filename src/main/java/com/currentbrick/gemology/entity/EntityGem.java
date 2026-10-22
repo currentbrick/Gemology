@@ -42,6 +42,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
@@ -59,6 +60,8 @@ import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
@@ -95,6 +98,11 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
     public EntityGem(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    public boolean isPersistenceRequired() {
+        return true;
     }
 
     private void ensureInstanceData() {
@@ -287,6 +295,10 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
             return false;
         }
 
+        if (target == getOwner()) {
+            return false;
+        }
+
         if (target instanceof EntityGem) {
             return false;
         }
@@ -439,34 +451,43 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         tag.putFloat("Quality", instance.getQuality());
         tag.putInt("Variant", instance.getVariant());
 
+        TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registryAccess());
+        ContainerHelper.saveAllItems(output, gemInventory);
+        tag.merge(output.buildResult());
+
         System.out.println("INSTANCE: " + getInstanceData().getInstanceId());
 
         return tag;
     }
 
-    public void applyGemData(CompoundTag tag) {
-        tag.getString("GemType").ifPresent(value ->
-                setGemId(Identifier.parse(value))
-        );
+    public CompoundTag createGemItemData() {
+        CompoundTag tag = createGemData();
+        TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registryAccess());
 
-        tag.getString("Owner").ifPresent(value ->
-                setOwnerUUID(UUID.fromString(value))
-        );
+        ContainerHelper.saveAllItems(output, gemInventory);
+
+        tag.merge(output.buildResult());
+
+        return tag;
+    }
+
+    public void applyGemData(CompoundTag tag) {
+        tag.getString("GemType").ifPresent(value -> setGemId(Identifier.parse(value)));
+
+        tag.getString("Owner").ifPresent(value -> setOwnerUUID(UUID.fromString(value)));
 
         tag.getString("InstanceId").ifPresent(value -> {
             UUID instanceId = UUID.fromString(value);
             float quality = tag.getFloat("Quality").orElse(1.0F);
             int variant = tag.getInt("Variant").orElse(-1);
 
-            System.out.println(
-                    "APPLY GEM DATA | instance="
-                            + instanceId
-                            + " | variant="
-                            + variant
-            );
+            System.out.println("APPLY GEM DATA | instance=" + instanceId + " | variant=" + variant);
 
             setInstanceData(new GemInstanceData(instanceId, quality, variant));
         });
+
+        ValueInput input = TagValueInput.create(ProblemReporter.DISCARDING, registryAccess(), tag);
+        ContainerHelper.loadAllItems(input, gemInventory);
 
         if (instanceData == null) {
             int variant = tag.getInt("Variant").orElse(-1);
@@ -1086,9 +1107,25 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
     }
 
     private ItemStack createGemItem() {
-        GemInstanceData instance = getInstanceData();
+        Identifier gemId = getGemId();
 
-        return createGemItem(getGemId(), instance.getInstanceId(), instance.getQuality(), instance.getVariant(), getOwnerUUID());
+        if (gemId == null) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemGem item = ModItems.getGemItem(gemId);
+
+        if (item == null) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack stack = new ItemStack(item);
+
+        CompoundTag tag = createGemItemData();
+
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+
+        return stack;
     }
 
     public static ItemStack createGemItem(Identifier gemId, UUID instanceId, float quality, int variant, UUID owner) {
