@@ -35,9 +35,9 @@
     },
     {
       "id": 1,
-      "name": "Chert",
+      "name": "Carnelian",
       "chroma": "gemology:orange_chroma",
-      "item_texture": "gemology:item/quartz/chert"
+      "item_texture": "gemology:item/quartz/carnelian"
     },
     {
       "id": 2,
@@ -48,9 +48,9 @@
     },
     {
       "id": 3,
-      "name": "Blue Aventurine",
+      "name": "Blue Chalcedony",
       "chroma": "gemology:light_blue_chroma",
-      "item_texture": "gemology:item/quartz/blue_aventurine",
+      "item_texture": "gemology:item/quartz/blue_chalcedony",
       "marking_variants": 2
     },
     {
@@ -80,15 +80,15 @@
     },
     {
       "id": 8,
-      "name": "Smoky",
+      "name": "Gray",
       "chroma": "gemology:light_gray_chroma",
-      "item_texture": "gemology:item/quartz/smoky"
+      "item_texture": "gemology:item/quartz/gray"
     },
     {
       "id": 9,
-      "name": "Chalcedony",
+      "name": "Troelite",
       "chroma": "gemology:cyan_chroma",
-      "item_texture": "gemology:item/quartz/chalcedony"
+      "item_texture": "gemology:item/quartz/troelite"
     },
     {
       "id": 10,
@@ -98,33 +98,33 @@
     },
     {
       "id": 11,
-      "name": "Dumortierite",
+      "name": "Blue Aventurine",
       "chroma": "gemology:blue_chroma",
-      "item_texture": "gemology:item/quartz/dumortierite"
+      "item_texture": "gemology:item/quartz/blue_aventurine"
     },
     {
       "id": 12,
-      "name": "Tiger's Eye",
+      "name": "Chert",
       "chroma": "gemology:brown_chroma",
-      "item_texture": "gemology:item/quartz/tigers_eye"
+      "item_texture": "gemology:item/quartz/chert"
     },
     {
       "id": 13,
-      "name": "Heliotrope",
+      "name": "Garden",
       "chroma": "gemology:green_chroma",
-      "item_texture": "gemology:item/quartz/heliotrope"
+      "item_texture": "gemology:item/quartz/garden"
     },
     {
       "id": 14,
-      "name": "Carnelian",
+      "name": "Sard",
       "chroma": "gemology:red_chroma",
-      "item_texture": "gemology:item/quartz/carnelian"
+      "item_texture": "gemology:item/quartz/sard"
     },
     {
       "id": 15,
-      "name": "Onyx",
+      "name": "Smoky Quartz",
       "chroma": "gemology:black_chroma",
-      "item_texture": "gemology:item/quartz/onyx"
+      "item_texture": "gemology:item/quartz/smoky"
     },
     {
       "id": 16,

@@ -131,21 +131,22 @@ public class ModModelProvider extends ModelProvider {
         createGemItemModel(itemModels, ModItems.QUARTZ.get(),
                 List.of(
                         new GemItemVariant(0, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/milky")),
-                        new GemItemVariant(1, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/chert")),
+                        new GemItemVariant(1, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/carnelian")),
                         new GemItemVariant(2, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/cherry")),
-                        new GemItemVariant(3, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/blue_aventurine")),
+                        new GemItemVariant(3, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/blue_chalcedony")),
                         new GemItemVariant(4, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/citrine")),
                         new GemItemVariant(5, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/prasiolite")),
                         new GemItemVariant(6, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/rose")),
                         new GemItemVariant(7, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/flint")),
-                        new GemItemVariant(8, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/smoky")),
-                        new GemItemVariant(9, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/chalcedony")),
+                        new GemItemVariant(8, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/gray")),
+                        new GemItemVariant(9, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/troelite")),
                         new GemItemVariant(10, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/amethyst")),
-                        new GemItemVariant(11, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/dumortierite")),
-                        new GemItemVariant(12, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/tigers_eye")),
-                        new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/heliotrope")),
-                        new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/carnelian")),
-                        new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/onyx")),
+                        new GemItemVariant(11, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/blue_aventurine")),
+                        new GemItemVariant(12, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/chert")),
+                        new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/garden")),
+                        new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/sard")),
+                        new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/smoky")),
+                        //special variants below
                         new GemItemVariant(16, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/angel_aura")),
                         new GemItemVariant(17, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/lace_amethyst")),
                         new GemItemVariant(18, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/quartz/ametrine"))
@@ -169,6 +170,7 @@ public class ModModelProvider extends ModelProvider {
                         new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/moss")),
                         new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/lake_superior")),
                         new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/onyx")),
+                        //special variants below
                         new GemItemVariant(16, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/agate/iris"))
                 )
         );
