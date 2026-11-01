@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NIN",
+    "FSF",
+    "MIM"
+  ],
+  "key": {
+    "I": "minecraft:quartz",
+    "S": "minecraft:stone",
+    "N": "minecraft:blaze_powder",
+    "M": "minecraft:terracotta",
+    "F": "minecraft:raw_iron"
+  },
+  "result": {
+    "id": "gemology:inactive_jasper_base"
+  }
+}

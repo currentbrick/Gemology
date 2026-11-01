@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NIN",
+    "FSF",
+    "MIM"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "S": "minecraft:stone",
+    "N": "minecraft:netherrack",
+    "M": "minecraft:magma_block",
+    "F": "minecraft:flint"
+  },
+  "result": {
+    "id": "gemology:inactive_ruby_base"
+  }
+}

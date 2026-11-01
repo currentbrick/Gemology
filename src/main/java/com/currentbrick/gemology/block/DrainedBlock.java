@@ -24,10 +24,16 @@ public class DrainedBlock extends Block {
         super(properties);
     }
 
+    private static final int SPREAD_CHANCE = 5;
+    private static final int SPREAD_RANGE = 5;
+    private static final int SPREAD_HEIGHT = 3;
+    private static final int MOSS_GROWTH_CHANCE = 30;
+    private static final int MOSS_GROWTH_RANGE = 3;
+
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (random.nextInt(5) == 0) {
-            BlockPos target = pos.offset(random.nextInt(5) - 2, random.nextInt(3) - 1, random.nextInt(5) - 2);
+        if (random.nextInt(SPREAD_CHANCE) == 0) {
+            BlockPos target = pos.offset(random.nextInt(SPREAD_RANGE) - 2, random.nextInt(SPREAD_HEIGHT) - 1, random.nextInt(SPREAD_RANGE) - 2);
 
             BlockState targetState = level.getBlockState(target);
 
@@ -37,6 +43,9 @@ public class DrainedBlock extends Block {
                 level.setBlock(target, ModBlocks.DRAINED_SOIL.get().defaultBlockState(), Block.UPDATE_ALL);
             }
             super.randomTick(state, level, pos, random);
+        }
+        if (random.nextInt(MOSS_GROWTH_CHANCE) == 0) {
+            tryGrowMoss(level, pos, random);
         }
     }
 
@@ -50,5 +59,22 @@ public class DrainedBlock extends Block {
         }
 
         super.stepOn(level, pos, onState, entity);
+    }
+
+    private void tryGrowMoss(ServerLevel level, BlockPos pos, RandomSource random) {
+        if (random.nextInt(MOSS_GROWTH_CHANCE) != 0) return;
+
+        int x = random.nextInt(MOSS_GROWTH_RANGE * 2 + 1) - MOSS_GROWTH_RANGE;
+        int z = random.nextInt(MOSS_GROWTH_RANGE * 2 + 1) - MOSS_GROWTH_RANGE;
+
+        BlockPos target = pos.offset(x, 1, z);
+
+        if (!level.getBlockState(target).isAir()) return;
+
+        BlockState mossState = ModBlocks.TOXIC_MOSS.get().defaultBlockState();
+
+        if (mossState.canSurvive(level, target)) {
+            level.setBlockAndUpdate(target, mossState);
+        }
     }
 }

@@ -15,8 +15,6 @@ public class BioPoison {
         int radius = 3;
         int depth = 4;
 
-        System.out.println("initial infection");
-
         for (int x = -radius; x <= radius; x++) {
             for (int y = -depth; y <= 0; y++) {
                 for (int z = -radius; z <= radius; z++) {

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NIN",
+    "FSF",
+    "MIM"
+  ],
+  "key": {
+    "I": "minecraft:quartz",
+    "S": "minecraft:stone",
+    "N": "minecraft:blaze_powder",
+    "M": "minecraft:quartz_block",
+    "F": "minecraft:amethyst_shard"
+  },
+  "result": {
+    "id": "gemology:inactive_quartz_base"
+  }
+}

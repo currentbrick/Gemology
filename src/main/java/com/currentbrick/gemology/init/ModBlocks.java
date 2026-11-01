@@ -1,15 +1,11 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
-import com.currentbrick.gemology.block.ChromaBlock;
-import com.currentbrick.gemology.block.ChromaClusterBlock;
-import com.currentbrick.gemology.block.DrainedBlock;
-import com.currentbrick.gemology.block.IncubatorBlock;
+import com.currentbrick.gemology.block.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -48,6 +44,9 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> DRAINED_SOIL = BLOCKS.registerBlock("drained_soil",
             p -> new DrainedBlock(p.strength(0.5F).randomTicks()));
+
+    public static final DeferredBlock<Block> TOXIC_MOSS = BLOCKS.registerBlock("toxic_moss",
+            p -> new ToxicMossBlock(p.strength(0.5F).randomTicks()));
 
 
     public static final DeferredBlock<Block> INCUBATOR = BLOCKS.registerBlock("incubator",

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NIN",
+    "FSF",
+    "MIM"
+  ],
+  "key": {
+    "I": "minecraft:quartz",
+    "S": "minecraft:stone",
+    "N": "minecraft:quartz_block",
+    "M": "minecraft:raw_copper_block",
+    "F": "minecraft:calcite"
+  },
+  "result": {
+    "id": "gemology:inactive_agate_base"
+  }
+}
