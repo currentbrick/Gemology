@@ -125,7 +125,7 @@ public class ModModelProvider extends ModelProvider {
                         new GemItemVariant(12, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/biggs")),
                         new GemItemVariant(13, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/bloodstone")),
                         new GemItemVariant(14, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/red")),
-                        new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/black"))
+                        new GemItemVariant(15, Identifier.fromNamespaceAndPath(Gemology.MODID, "item/jasper/zebra"))
                 )
         );
         createGemItemModel(itemModels, ModItems.QUARTZ.get(),
