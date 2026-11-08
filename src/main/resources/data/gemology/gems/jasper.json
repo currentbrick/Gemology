@@ -135,9 +135,9 @@
     },
     {
       "id": 15,
-      "name": "Black",
+      "name": "Zebra",
       "chroma": "gemology:black_chroma",
-      "item_texture": "gemology:item/jasper/black"
+      "item_texture": "gemology:item/jasper/zebra"
     }
   ]
 }
