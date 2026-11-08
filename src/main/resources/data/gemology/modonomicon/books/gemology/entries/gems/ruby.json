@@ -9,7 +9,7 @@
   "condition": {
     "type": "modonomicon:none"
   },
-  "description": "ruby description",
+  "description": "Description of a ruby",
   "icon": {
     "id": "gemology:ruby"
   },
@@ -17,13 +17,5 @@
   "name": "Ruby",
   "sort_number": 0,
   "x": 0,
-  "y": 0,
-  "pages": [
-    {
-      "type": "modonomicon:text",
-      "id": "ruby_intro",
-      "title": "Ruby",
-      "text": "A ruby guard, but just a single one. This gem has pyrokinetic powers and is a great combat gem for beginners."
-    }
-  ]
+  "y": 0
 }

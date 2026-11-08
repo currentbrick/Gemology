@@ -1,0 +1,37 @@
+{
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gray",
+    "width": 26
+  },
+  "category": "gemology:gems",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "Description of an agate",
+  "icon": {
+    "id": "gemology:agate",
+    "components": {
+      "minecraft:custom_data":
+      {
+        "Variant": 0
+      }
+    }
+  },
+  "id": "gemology:gems/agate",
+  "name": "Agate",
+  "sort_number": 3,
+  "x": 0,
+  "y": 2,
+  "parents": [
+    {
+      "entry": "gemology:gems/quartz",
+      "draw_arrow": false
+    },
+    {
+      "entry": "gemology:gems/jasper",
+      "draw_arrow": false
+    }
+  ]
+}

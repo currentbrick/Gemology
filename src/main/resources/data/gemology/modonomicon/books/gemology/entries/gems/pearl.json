@@ -1,0 +1,27 @@
+{
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gray",
+    "width": 26
+  },
+  "category": "gemology:gems",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "Description of a pearl (NOT YET IMPLEMENTED)",
+  "icon": {
+    "id": "minecraft:stick"
+  },
+  "id": "gemology:gems/pearl",
+  "name": "Pearl",
+  "sort_number": 5,
+  "x": 0,
+  "y": 3,
+  "parents": [
+    {
+      "entry": "gemology:gems/agate",
+      "draw_arrow": false
+    }
+  ]
+}

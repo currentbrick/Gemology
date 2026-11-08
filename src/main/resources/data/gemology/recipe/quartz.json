@@ -6,43 +6,43 @@
   "cruxes": [
     {
       "ingredient": "minecraft:quartz",
-      "quality": 0.25,
-      "chance": 0.95
+      "quality": 0.95,
+      "chance": 0.25
     },
     {
       "ingredient": "minecraft:amethyst_block",
-      "quality": 0.25,
-      "chance": 0.9
+      "quality": 0.9,
+      "chance": 0.25
     },
     {
       "ingredient": "minecraft:iron_ore",
-      "quality": 0.25,
-      "chance": 0.85
+      "quality": 0.85,
+      "chance": 0.25
     },
     {
       "ingredient": "minecraft:basalt",
-      "quality": 0.25,
-      "chance": 0.8
+      "quality": 0.8,
+      "chance": 0.25
     },
     {
       "ingredient": "minecraft:calcite",
-      "quality": 0.25,
-      "chance": 0.75
+      "quality": 0.75,
+      "chance": 0.25
     },
     {
       "ingredient": "minecraft:blaze_rod",
-      "quality": 0.25,
-      "chance": 0.7
+      "quality": 0.7,
+      "chance": 0.25
     },
     {
       "ingredient": "minecraft:gold_nugget",
-      "quality": 0.25,
-      "chance": 0.65
+      "quality": 0.65,
+      "chance": 0.25
     },
     {
       "ingredient": "minecraft:cobbled_deepslate",
-      "quality": 0.25,
-      "chance": 0.6
+      "quality": 0.6,
+      "chance": 0.25
     }
   ],
   "essence1": "gemology:white_essence",

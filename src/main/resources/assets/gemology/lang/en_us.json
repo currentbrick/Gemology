@@ -79,6 +79,8 @@
   "entity.gemology.gem": "Gem",
 
   "jei.gemology.incubation": "Gem Incubation",
+  "book.gemology.gemology.name": "GEM Field Guide",
+  "book.gemology.gemology.tooltip": "A guide to your colony",
 
   "death.attack.bio_poison": "%1$s was consumed by toxins",
 

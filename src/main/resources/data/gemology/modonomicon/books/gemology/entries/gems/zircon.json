@@ -1,0 +1,27 @@
+{
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gray",
+    "width": 26
+  },
+  "category": "gemology:gems",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "Description of a zircon (NOT YET IMPLEMENTED)",
+  "icon": {
+    "id": "minecraft:stick"
+  },
+  "id": "gemology:gems/zircon",
+  "name": "Zircon",
+  "sort_number": 7,
+  "x": 1,
+  "y": 4,
+  "parents": [
+    {
+      "entry": "gemology:gems/pearl",
+      "draw_arrow": false
+    }
+  ]
+}

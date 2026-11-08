@@ -1,0 +1,27 @@
+{
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gray",
+    "width": 26
+  },
+  "category": "gemology:gems",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "Description of a jade (NOT YET IMPLEMENTED)",
+  "icon": {
+    "id": "minecraft:stick"
+  },
+  "id": "gemology:gems/jade",
+  "name": "Jade",
+  "sort_number": 6,
+  "x": -1,
+  "y": 4,
+  "parents": [
+    {
+      "entry": "gemology:gems/pearl",
+      "draw_arrow": false
+    }
+  ]
+}
