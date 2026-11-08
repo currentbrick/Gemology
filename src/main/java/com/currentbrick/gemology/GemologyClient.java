@@ -71,6 +71,7 @@ public class GemologyClient {
                                 )
                         ))
                         .add(ModRecipeProvider.create())
+                        //.add(Registries.TRIM_MATERIAL, ModTrimMaterials::bootstrap)
         );
     }
 

@@ -15,6 +15,7 @@ import com.currentbrick.gemology.init.*;
 import com.currentbrick.gemology.item.ItemGem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableProvider;
@@ -22,6 +23,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
@@ -122,6 +124,15 @@ public class Gemology {
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+
+
+        ItemStack stack = new ItemStack(ModItems.PRISMATIC_INGOT.get());
+
+        Gemology.LOGGER.info("PRISMATIC COMPONENT: " +
+                stack.get(DataComponents.PROVIDES_TRIM_MATERIAL));
+
+        Gemology.LOGGER.info("PRISMATIC ITEM: " +
+                ModItems.PRISMATIC_INGOT.get());
     }
 
     @SubscribeEvent

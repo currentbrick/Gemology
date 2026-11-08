@@ -30,12 +30,12 @@ public class ModRecipeProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.TUNGSTEN_INGOT.get())
                 .requires(ModItems.TUNGSTEN_NUGGET.get(), 9)
                 .unlockedBy("has_tungsten_nugget", has(ModItems.TUNGSTEN_NUGGET.get()))
-                .save(output);
+                .save(output, "gemology:tungsten_ingot_from_nuggets");
 
         ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.TUNGSTEN_NUGGET.get(), 9)
-                .requires(ModItems.TUNGSTEN_INGOT.get(), 1)
+                .requires(ModItems.TUNGSTEN_INGOT.get())
                 .unlockedBy("has_tungsten_ingot", has(ModItems.TUNGSTEN_INGOT.get()))
-                .save(output);
+                .save(output, "gemology:tungsten_nuggets_from_ingot");
 
         ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.TUNGSTEN_BLOCK.get())
                 .requires(ModItems.TUNGSTEN_INGOT.get(), 9)
@@ -45,7 +45,7 @@ public class ModRecipeProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.TUNGSTEN_INGOT.get(), 9)
                 .requires(ModItems.TUNGSTEN_BLOCK.get())
                 .unlockedBy("has_tungsten_block", has(ModItems.TUNGSTEN_BLOCK.get()))
-                .save(output);
+                .save(output, "gemology:tungsten_ingots_from_block");
 
         ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.RAW_TUNGSTEN_BLOCK.get())
                 .requires(ModItems.RAW_TUNGSTEN.get(), 9)

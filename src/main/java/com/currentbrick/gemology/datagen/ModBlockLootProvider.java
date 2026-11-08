@@ -70,6 +70,7 @@ public class ModBlockLootProvider extends BlockLootSubProvider {
         list.remove(ModBlocks.LIGHT_GRAY_CHROMA_CRYSTAL.get());
         list.remove(ModBlocks.GRAY_CHROMA_CRYSTAL.get());
         list.remove(ModBlocks.BLACK_CHROMA_CRYSTAL.get());
+        list.remove(ModBlocks.TOXIC_MOSS.get());
         return list::iterator;
     }
 }

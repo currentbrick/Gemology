@@ -1,10 +1,11 @@
 package com.currentbrick.gemology.init;
 
 import com.currentbrick.gemology.Gemology;
-import com.currentbrick.gemology.item.ChromaCatalystItem;
-import com.currentbrick.gemology.item.FusionItem;
-import com.currentbrick.gemology.item.ItemGem;
+import com.currentbrick.gemology.item.*;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -25,24 +26,32 @@ public class ModItems {
     public static final DeferredItem<Item> TUNGSTEN_INGOT = ITEMS.registerSimpleItem("tungsten_ingot");
     public static final DeferredItem<Item> TUNGSTEN_NUGGET = ITEMS.registerSimpleItem("tungsten_nugget");
 
+    public static final DeferredItem<Item> PRISMATIC_INGOT =
+            ITEMS.registerItem("prismatic_ingot", key ->
+                    new Item(new Item.Properties()
+                            .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Gemology.MODID, "prismatic_ingot")))
+                            .trimMaterial(ModTrimMaterials.PRISMATIC)
+                    )
+            );
 
-    public static final DeferredItem<Item> WHITE_CHROMA = ITEMS.registerSimpleItem("white_chroma");
-    public static final DeferredItem<Item> LIGHT_GRAY_CHROMA = ITEMS.registerSimpleItem("light_gray_chroma");
-    public static final DeferredItem<Item> GRAY_CHROMA = ITEMS.registerSimpleItem("gray_chroma");
-    public static final DeferredItem<Item> BLACK_CHROMA = ITEMS.registerSimpleItem("black_chroma");
-    public static final DeferredItem<Item> PINK_CHROMA = ITEMS.registerSimpleItem("pink_chroma");
-    public static final DeferredItem<Item> RED_CHROMA = ITEMS.registerSimpleItem("red_chroma");
-    public static final DeferredItem<Item> ORANGE_CHROMA = ITEMS.registerSimpleItem("orange_chroma");
-    public static final DeferredItem<Item> YELLOW_CHROMA = ITEMS.registerSimpleItem("yellow_chroma");
-    public static final DeferredItem<Item> LIME_CHROMA = ITEMS.registerSimpleItem("lime_chroma");
-    public static final DeferredItem<Item> GREEN_CHROMA = ITEMS.registerSimpleItem("green_chroma");
-    public static final DeferredItem<Item> CYAN_CHROMA = ITEMS.registerSimpleItem("cyan_chroma");
-    public static final DeferredItem<Item> LIGHT_BLUE_CHROMA = ITEMS.registerSimpleItem("light_blue_chroma");
-    public static final DeferredItem<Item> BLUE_CHROMA = ITEMS.registerSimpleItem("blue_chroma");
-    public static final DeferredItem<Item> MAGENTA_CHROMA = ITEMS.registerSimpleItem("magenta_chroma");
-    public static final DeferredItem<Item> PURPLE_CHROMA = ITEMS.registerSimpleItem("purple_chroma");
-    public static final DeferredItem<Item> BROWN_CHROMA = ITEMS.registerSimpleItem("brown_chroma");
-    public static final DeferredItem<Item> PRISMATIC_CHROMA = ITEMS.registerSimpleItem("prismatic_chroma");
+
+    public static final DeferredItem<Item> WHITE_CHROMA = registerChroma("white_chroma");
+    public static final DeferredItem<Item> LIGHT_GRAY_CHROMA = registerChroma("light_gray_chroma");
+    public static final DeferredItem<Item> GRAY_CHROMA = registerChroma("gray_chroma");
+    public static final DeferredItem<Item> BLACK_CHROMA = registerChroma("black_chroma");
+    public static final DeferredItem<Item> PINK_CHROMA = registerChroma("pink_chroma");
+    public static final DeferredItem<Item> RED_CHROMA = registerChroma("red_chroma");
+    public static final DeferredItem<Item> ORANGE_CHROMA = registerChroma("orange_chroma");
+    public static final DeferredItem<Item> YELLOW_CHROMA = registerChroma("yellow_chroma");
+    public static final DeferredItem<Item> LIME_CHROMA = registerChroma("lime_chroma");
+    public static final DeferredItem<Item> GREEN_CHROMA = registerChroma("green_chroma");
+    public static final DeferredItem<Item> CYAN_CHROMA = registerChroma("cyan_chroma");
+    public static final DeferredItem<Item> LIGHT_BLUE_CHROMA = registerChroma("light_blue_chroma");
+    public static final DeferredItem<Item> BLUE_CHROMA = registerChroma("blue_chroma");
+    public static final DeferredItem<Item> MAGENTA_CHROMA = registerChroma("magenta_chroma");
+    public static final DeferredItem<Item> PURPLE_CHROMA = registerChroma("purple_chroma");
+    public static final DeferredItem<Item> BROWN_CHROMA = registerChroma("brown_chroma");
+    public static final DeferredItem<Item> PRISMATIC_CHROMA = registerChroma("prismatic_chroma");
 
     public static final DeferredItem<Item> CHROMA_CATALYST = ITEMS.registerItem("chroma_catalyst", ChromaCatalystItem::new);
 
@@ -56,10 +65,10 @@ public class ModItems {
 
     // ----------- GEMS ------------
 
-    public static final DeferredItem<Item> INACTIVE_RUBY_BASE = ITEMS.registerSimpleItem("inactive_ruby_base");
-    public static final DeferredItem<Item> INACTIVE_JASPER_BASE = ITEMS.registerSimpleItem("inactive_jasper_base");
-    public static final DeferredItem<Item> INACTIVE_QUARTZ_BASE = ITEMS.registerSimpleItem("inactive_quartz_base");
-    public static final DeferredItem<Item> INACTIVE_AGATE_BASE = ITEMS.registerSimpleItem("inactive_agate_base");
+    public static final DeferredItem<Item> INACTIVE_RUBY_BASE = registerGemBase("inactive_ruby_base");
+    public static final DeferredItem<Item> INACTIVE_JASPER_BASE = registerGemBase("inactive_jasper_base");
+    public static final DeferredItem<Item> INACTIVE_QUARTZ_BASE = registerGemBase("inactive_quartz_base");
+    public static final DeferredItem<Item> INACTIVE_AGATE_BASE = registerGemBase("inactive_agate_base");
 
     public static final DeferredItem<Item> RUBY = registerGemItem("ruby", Identifier.fromNamespaceAndPath(Gemology.MODID, "ruby"));
     public static final DeferredItem<Item> BLUE_RUBY = registerGemItem("blue_ruby", Identifier.fromNamespaceAndPath(Gemology.MODID, "blue_ruby"));
@@ -124,5 +133,13 @@ public class ModItems {
         }
 
         return (ItemGem) item.get();
+    }
+
+    private static DeferredItem<Item> registerChroma(String name) {
+        return ITEMS.registerItem(name, ItemChroma::new);
+    }
+
+    private static DeferredItem<Item> registerGemBase(String name) {
+        return ITEMS.registerItem(name, ItemGemBase::new);
     }
 }

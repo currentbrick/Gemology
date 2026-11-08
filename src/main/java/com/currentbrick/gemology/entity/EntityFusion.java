@@ -541,7 +541,7 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
 
         if (player.isShiftKeyDown()) {
             setMovementMode(getMovementMode().next());
-            player.sendSystemMessage(Component.literal("Set "  + getGemName() + " to "+ getMovementMode().name().toLowerCase().replace("_", " ")));
+            player.sendSystemMessage(Component.literal("Set "  + getFusionName() + " to "+ getMovementMode().name().toLowerCase().replace("_", " ")));
             playFusionSound(interactPitch(), interactPitch());
             return InteractionResult.SUCCESS;
         }
@@ -829,6 +829,11 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
         return result.toString().trim();
     }
 
+    public String getFusionName() {
+        if (getFusionTypeId(getGem1ID()).equals(getFusionTypeId(getGem2ID()))) return getGemName();
+        return Gemology.FUSION_NAME_MANAGER.getName(getFusionId());
+    }
+
     private Identifier getFusionTypeId(Identifier gemId) {
         if (gemId == null) {
             return null;
@@ -862,6 +867,9 @@ public class EntityFusion extends Monster implements GeoAnimatable, Container, M
             spawnAtLocation(level, stack2);
         }
     }
+
+    @Override
+    protected void dropEquipment(ServerLevel level) {}
 
     @Override
     public boolean shouldDropExperience() {

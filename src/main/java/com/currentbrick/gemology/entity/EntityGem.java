@@ -699,6 +699,16 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
 
         GemInstanceData secondInstance = FusionGenerator.getInstanceData(secondGemData);
 
+        if (FusionGenerator.shouldSwap(firstInstance, secondInstance)) {
+            CompoundTag tempData = firstGemData;
+            firstGemData = secondGemData;
+            secondGemData = tempData;
+
+            GemInstanceData tempInstance = firstInstance;
+            firstInstance = secondInstance;
+            secondInstance = tempInstance;
+        }
+
         long seed = FusionGenerator.getFusionSeed(firstInstance, secondInstance);
         System.out.println("FUSION SEED: " + seed);
 
@@ -1099,6 +1109,11 @@ public class EntityGem extends Monster implements GeoAnimatable, Container, Menu
         if (stack != null) {
             spawnAtLocation(level, stack);
         }
+    }
+
+    @Override
+    protected void dropEquipment(ServerLevel level) {
+
     }
 
     @Override

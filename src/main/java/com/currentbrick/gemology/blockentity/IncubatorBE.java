@@ -78,6 +78,11 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
             return;
         }
 
+        if (!hasValidInputs()) {
+            cancelIncubation();
+            return;
+        }
+
         if (incubationTime <= 0) {
             completeIncubation();
             return;
@@ -420,5 +425,25 @@ public class IncubatorBE extends BlockEntity implements Container, MenuProvider,
         }
 
         return totalQuality;
+    }
+
+    private boolean hasValidInputs() {
+        if (currentRecipeId == null) {
+            return false;
+        }
+
+        Optional<RecipeHolder<IncubationRecipe>> matchingRecipe = getMatchingRecipe();
+
+        return matchingRecipe.isPresent()
+                && matchingRecipe.get().id().identifier().equals(currentRecipeId);
+    }
+
+    private void cancelIncubation() {
+        incubating = false;
+        incubationProgress = 0;
+        incubationTime = 0;
+        currentRecipeId = null;
+
+        setChanged();
     }
 }

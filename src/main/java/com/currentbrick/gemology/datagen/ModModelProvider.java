@@ -72,6 +72,8 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.TUNGSTEN_INGOT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.TUNGSTEN_NUGGET.get(), ModelTemplates.FLAT_ITEM);
 
+        itemModels.generateFlatItem(ModItems.PRISMATIC_INGOT.get(), ModelTemplates.FLAT_ITEM);
+
         itemModels.generateFlatItem(ModItems.WHITE_CHROMA.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.LIGHT_GRAY_CHROMA.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.GRAY_CHROMA.get(), ModelTemplates.FLAT_ITEM);
@@ -234,8 +236,8 @@ public class ModModelProvider extends ModelProvider {
                 .filter(holder -> !holder.is(ModBlocks.PURPLE_CHROMA_CRYSTAL.getKey()))
                 .filter(holder -> !holder.is(ModBlocks.MAGENTA_CHROMA_CRYSTAL.getKey()))
                 .filter(holder -> !holder.is(ModBlocks.PINK_CHROMA_CRYSTAL.getKey()))
-                .filter(holder -> !holder.is(ModBlocks.CHROMA_CLUSTER_CROP.getKey())
-
+                .filter(holder -> !holder.is(ModBlocks.CHROMA_CLUSTER_CROP.getKey()))
+                .filter(holder -> !holder.is(ModBlocks.TOXIC_MOSS.getKey())
 
         );
     }

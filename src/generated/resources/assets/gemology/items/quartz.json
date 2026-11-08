@@ -12,7 +12,7 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/quartz/chert"
+          "model": "gemology:item/quartz/carnelian"
         },
         "when": 1
       },
@@ -26,7 +26,7 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/quartz/blue_aventurine"
+          "model": "gemology:item/quartz/blue_chalcedony"
         },
         "when": 3
       },
@@ -61,14 +61,14 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/quartz/smoky"
+          "model": "gemology:item/quartz/gray"
         },
         "when": 8
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/quartz/chalcedony"
+          "model": "gemology:item/quartz/troelite"
         },
         "when": 9
       },
@@ -82,35 +82,35 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/quartz/dumortierite"
+          "model": "gemology:item/quartz/blue_aventurine"
         },
         "when": 11
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/quartz/tigers_eye"
+          "model": "gemology:item/quartz/chert"
         },
         "when": 12
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/quartz/heliotrope"
+          "model": "gemology:item/quartz/garden"
         },
         "when": 13
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/quartz/carnelian"
+          "model": "gemology:item/quartz/sard"
         },
         "when": 14
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "gemology:item/quartz/onyx"
+          "model": "gemology:item/quartz/smoky"
         },
         "when": 15
       },

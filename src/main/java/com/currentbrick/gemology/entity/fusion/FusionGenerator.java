@@ -84,6 +84,10 @@ public class FusionGenerator {
 
         List<Identifier> abilities = new ArrayList<>(abilityPool);
 
+        System.out.println("FIRST ABILITIES: " + firstDefinition.getAbilities());
+        System.out.println("SECOND ABILITIES: " + secondDefinition.getAbilities());
+        System.out.println("ABILITY POOL: " + abilities);
+
         if (abilities.isEmpty()) {
             return List.of();
         }
@@ -98,6 +102,9 @@ public class FusionGenerator {
 
         int maxAbilities = Math.min(3, abilities.size());
         int abilityCount = 1 + random.nextInt(maxAbilities);
+
+        System.out.println("SHUFFLED ABILITIES: " + abilities);
+        System.out.println("ABILITY COUNT: " + abilityCount);
 
         return new ArrayList<>(abilities.subList(0, abilityCount));
     }
@@ -120,5 +127,9 @@ public class FusionGenerator {
         float randomVariation = random.nextFloat() * 0.10F - 0.05F;
         float qualityModifier = (quality - 1.0F) * 0.25F;
         return average * (1.0F + randomVariation + qualityModifier) * 1.5f;
+    }
+
+    public static boolean shouldSwap(GemInstanceData first, GemInstanceData second) {
+        return first.getInstanceId().compareTo(second.getInstanceId()) > 0;
     }
 }

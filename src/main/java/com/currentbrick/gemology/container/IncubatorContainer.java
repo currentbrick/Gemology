@@ -2,6 +2,10 @@ package com.currentbrick.gemology.container;
 
 import com.currentbrick.gemology.blockentity.IncubatorBE;
 import com.currentbrick.gemology.init.ModContainers;
+import com.currentbrick.gemology.init.ModItems;
+import com.currentbrick.gemology.item.ItemChroma;
+import com.currentbrick.gemology.item.ItemGem;
+import com.currentbrick.gemology.item.ItemGemBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -50,17 +54,38 @@ public class IncubatorContainer extends AbstractContainerMenu {
         // Gem base
         addSlot(new Slot(incubator, 8, 76, 65) {
             @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.getItem() instanceof ItemGemBase;
+            }
+
+            @Override
             public int getMaxStackSize() {
                 return 1;
             }
         });
 
         // Essences
-        addSlot(new Slot(incubator, 9, 168, 35));
-        addSlot(new Slot(incubator, 10, 168, 53));
+        addSlot(new Slot(incubator, 9, 168, 35) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return isEssence(stack);
+            }
+        });
+
+        addSlot(new Slot(incubator, 10, 168, 53) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return isEssence(stack);
+            }
+        });
 
         // Chroma
-        addSlot(new Slot(incubator, 11, 168, 17));
+        addSlot(new Slot(incubator, 11, 168, 17) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.getItem() instanceof ItemChroma;
+            }
+        });
 
         // Output
         addSlot(new Slot(incubator, IncubatorBE.OUTPUT_SLOT, 163, 110) {
@@ -112,6 +137,10 @@ public class IncubatorContainer extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
+        if (index < 0 || index >= slots.size()) {
+            return ItemStack.EMPTY;
+        }
+
         Slot slot = slots.get(index);
 
         if (!slot.hasItem()) {
@@ -122,22 +151,40 @@ public class IncubatorContainer extends AbstractContainerMenu {
         ItemStack originalStack = sourceStack.copy();
 
         if (index < 13) {
+            if (index == IncubatorBE.OUTPUT_SLOT) {
+                if (!moveItemStackTo(sourceStack, 13, 49, true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                if (!moveItemStackTo(sourceStack, 13, 49, true)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+        } else {
+            boolean moved = false;
 
-            if (!moveItemStackTo(sourceStack, 13, slots.size(), true)) {
-                return ItemStack.EMPTY;
+            // Chroma
+            if (!moved && sourceStack.getItem() instanceof ItemChroma) {
+                moved = moveItemStackTo(sourceStack, 11, 12, false);
             }
 
-        } else {
-            if (!moveItemStackTo(sourceStack, 0, 12, false)) {
-                if (index < 40) {
-                    if (!moveItemStackTo(sourceStack, 40, 49, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else {
-                    if (!moveItemStackTo(sourceStack, 13, 40, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
+            // Essence
+            if (!moved && isEssence(sourceStack)) {
+                moved = moveItemStackTo(sourceStack, 9, 11, false);
+            }
+
+            // Gem base
+            if (!moved && sourceStack.getItem() instanceof ItemGemBase) {
+                moved = moveItemStackTo(sourceStack, 8, 9, false);
+            }
+
+            // Cruxes
+            if (!moved) {
+                moved = moveItemStackTo(sourceStack, 0, 8, false);
+            }
+
+            if (!moved) {
+                return ItemStack.EMPTY;
             }
         }
 
@@ -158,5 +205,12 @@ public class IncubatorContainer extends AbstractContainerMenu {
 
     public BlockPos getBlockPos() {
         return incubator.getBlockPos();
+    }
+
+    private boolean isEssence(ItemStack stack) {
+        return stack.is(ModItems.PINK_ESSENCE.get())
+                || stack.is(ModItems.BLUE_ESSENCE.get())
+                || stack.is(ModItems.YELLOW_ESSENCE.get())
+                || stack.is(ModItems.WHITE_ESSENCE.get());
     }
 }
